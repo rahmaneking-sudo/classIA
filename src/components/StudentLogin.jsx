@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 
 const StudentLogin = () => {
   const [email, setEmail] = useState('');
