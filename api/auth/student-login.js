@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import connectDB from '../../_lib/db.js';
+import connectDB from '../_lib/db.js';
 import Lead from '../../backend/models/Lead.js';
 
 const generateToken = (id) =>

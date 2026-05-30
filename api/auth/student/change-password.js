@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
-import connectDB from '../../../_lib/db.js';
-import { protectStudent } from '../../../_lib/protect.js';
+import connectDB from '../../_lib/db.js';
+import { protectStudent } from '../../_lib/protect.js';
 import Lead from '../../../backend/models/Lead.js';
 
 export default async function handler(req, res) {

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import connectDB from '../../_lib/db.js';
+import connectDB from '../_lib/db.js';
 import Admin from '../../backend/models/Admin.js';
 
 const generateToken = (id) =>
