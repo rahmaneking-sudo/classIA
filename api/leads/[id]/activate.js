@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 const getLeadModel = async () => {
   await connectDB();
   if (mongoose.models.Lead) return mongoose.models.Lead;
-  const { default: Lead } = await import('../../../../backend/models/Lead.js');
+  const { default: Lead } = await import('../../../backend/models/Lead.js');
   return Lead;
 };
 

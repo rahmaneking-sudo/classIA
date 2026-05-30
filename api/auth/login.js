@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const getAdminModel = async () => {
   await connectDB();
   if (mongoose.models.Admin) return mongoose.models.Admin;
-  const { default: Admin } = await import('../../../backend/models/Admin.js');
+  const { default: Admin } = await import('../../backend/models/Admin.js');
   return Admin;
 };
 
