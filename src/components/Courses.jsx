@@ -5,9 +5,9 @@ const courseData = {
   gemini: {
     title: "Gemini / Midjourney (Images)",
     badPrompt: "dessine moi une ville futuriste avec des voitures volantes",
-    badResultImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop", 
+    badResultImage: "/courses_assets/bad_cyberpunk.png", 
     goodPrompt: "Cinematic wide angle shot of a cyberpunk metropolis at night, rain pouring down, flying cars leaving neon light trails, photorealistic, 8k resolution, Unreal Engine 5 render, highly detailed, dramatic lighting --ar 16:9",
-    goodResultImage: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=1000&auto=format&fit=crop", 
+    goodResultImage: "/courses_assets/cyberpunk.png", 
     goodResultVideo: null,
     explanation: "Un mauvais prompt donne un résultat basique. Un bon prompt précise le style (Cinematic), la météo (rain), la résolution (8k), et le moteur de rendu (Unreal Engine 5)."
   },
@@ -16,7 +16,7 @@ const courseData = {
     badPrompt: "un aigle qui vole dans le ciel",
     badResultImage: "https://images.unsplash.com/photo-1551085254-e96b210db58a?q=80&w=1000&auto=format&fit=crop", 
     goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
-    goodResultImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000&auto=format&fit=crop", // Image de montagne incroyable
+    goodResultImage: "/courses_assets/eagle.png", // Image locale
     explanation: "Pour la vidéo IA (Kling, Haiper, Luma), le secret absolu est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
   },
   claude: {
@@ -24,7 +24,7 @@ const courseData = {
     badPrompt: "code moi le jeu flappy bird en html stp",
     badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", 
     goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier avec le CSS et JS intégrés.",
-    goodResultImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop", // Jeu retro
+    goodResultImage: "/courses_assets/retro.png", // Image locale
     explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable généré en 5 secondes."
   }
 };
