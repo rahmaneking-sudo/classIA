@@ -196,7 +196,7 @@ const CinematicSlideshow = () => {
       <FloatingAvatar />
 
       {/* Content */}
-      <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center pt-32 pb-16 md:pt-0 md:pb-40 z-10 px-4 md:px-6">
+      <div ref={textRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center w-full px-4 md:px-6 z-10 mt-12 md:mt-16">
         {/* Badge (only on first slide) */}
         {scene.badge && (
           <div className="mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 rounded-full border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 backdrop-blur-md shadow-[0_0_20px_rgba(0,212,255,0.2)] max-w-[95%] text-center">
