@@ -22,6 +22,24 @@ const courseData = {
         goodPrompt: "Professional headshot photography of a handsome 35-year-old man, tailored navy blue suit, standing in a bright modern glass office, shallow depth of field, natural window lighting, 85mm portrait lens, 8k, ultra-realistic",
         goodResultImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop", 
         explanation: "La focale (85mm portrait lens), la lumière (natural window lighting) et la profondeur de champ (shallow depth of field) font toute la différence."
+      },
+      {
+        id: 3,
+        title: "Logo Minimaliste",
+        badPrompt: "logo pour mon entreprise de tech",
+        badResultImage: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "A modern minimalist logo for a tech startup, negative space design, flat vector design, clean white background, high contrast, corporate identity, dribbble style, masterpiece --no text --v 6.0",
+        goodResultImage: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop", 
+        explanation: "Il faut interdire le texte (--no text) car l'IA ne sait pas bien écrire. Préciser 'flat vector' garantit un logo utilisable."
+      },
+      {
+        id: 4,
+        title: "Design d'Intérieur",
+        badPrompt: "une belle chambre moderne",
+        badResultImage: "https://images.unsplash.com/photo-1522771731478-44bf104a524c?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "Interior design of a luxurious modern bedroom, panoramic floor-to-ceiling windows overlooking a snowy mountain, warm ambient lighting, minimalist furniture, architectural digest style, 8k --ar 16:9",
+        goodResultImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop", 
+        explanation: "Le secret est d'invoquer une référence connue de design (architectural digest style) et de décrire la vue (overlooking a snowy mountain)."
       }
     ]
   },
@@ -32,19 +50,37 @@ const courseData = {
         id: 1,
         title: "Plan de Drone (Animalier)",
         badPrompt: "un aigle qui vole dans le ciel",
-        badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", // Remplacer par une mauvaise vidéo d'aigle
+        badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", 
         goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
-        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", // Remplacer par votre vraie vidéo d'aigle
+        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", 
         explanation: "Pour la vidéo IA, le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
       },
       {
         id: 2,
         title: "Morphing Cinématographique",
         badPrompt: "une voiture qui se transforme en robot",
-        badResultImage: "/courses_assets/bad_cyberpunk.png", 
+        badResultVideo: "https://media.w3.org/2010/05/video/movie_300.mp4", 
         goodPrompt: "Continuous single take. A red sports car driving fast on a highway smoothly transforming into a metallic robotic cheetah running on the street. Seamless morphing, cinematic lighting.",
-        goodResultImage: "/courses_assets/eagle.png", // Exemple visuel
+        goodResultVideo: "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4", 
         explanation: "Les IA vidéos comme Runway ou Haiper ont besoin des mots 'Continuous single take' et 'Seamless morphing' pour éviter les coupures."
+      },
+      {
+        id: 3,
+        title: "Action Rapide (Slow Motion)",
+        badPrompt: "quelqu'un verse du café",
+        badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", 
+        goodPrompt: "Slow motion, high-speed camera. A cup of coffee splashing in reverse, liquid reforming into a perfect sphere. Hyper-realistic lighting, macro photography lens, stable physics.",
+        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", 
+        explanation: "Sur des vidéos physiques, préciser 'stable physics' et 'high-speed camera' force l'IA à analyser la gravité correctement."
+      },
+      {
+        id: 4,
+        title: "Animation 3D Pixar",
+        badPrompt: "un petit garcon qui sourit 3d",
+        badResultVideo: "https://media.w3.org/2010/05/video/movie_300.mp4", 
+        goodPrompt: "A cute 3D character, young boy with curly brown hair, wearing a yellow hoodie, big expressive eyes, looking surprised with mouth open, Pixar animation style, octane render, soft studio lighting.",
+        goodResultVideo: "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4", 
+        explanation: "Demander le 'Pixar animation style' couplé à 'octane render' donne ce look de film d'animation à plusieurs millions de dollars."
       }
     ]
   },
@@ -59,6 +95,33 @@ const courseData = {
         goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier.",
         goodResultImage: "/courses_assets/retro.png", 
         explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable."
+      },
+      {
+        id: 2,
+        title: "Dashboard Data B2B",
+        badPrompt: "fais moi un tableau de bord",
+        badResultImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "Crée un composant React complet pour un Dashboard SaaS B2B. Utilise TailwindCSS, Recharts pour les graphiques, et Lucide-React pour les icônes. Ajoute un mode sombre, des cartes statistiques avec KPI en hausse, et un design Glassmorphism.",
+        goodResultImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop", 
+        explanation: "Il faut imposer les bibliothèques exactes (Tailwind, Recharts, Lucide) pour que Claude génère un rendu magnifique."
+      },
+      {
+        id: 3,
+        title: "Expérience Web 3D",
+        badPrompt: "un site web en 3d",
+        badResultImage: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "Génère une scène Three.js intégrée dans une page HTML. Affiche un globe terrestre interactif avec des points lumineux pour chaque ville majeure. Ajoute des contrôles OrbitControls et un fond étoilé dynamique.",
+        goodResultImage: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format&fit=crop", 
+        explanation: "Claude connaît Three.js par cœur, mais il faut lui préciser quels objets 3D (globe) et contrôles (OrbitControls) inclure."
+      },
+      {
+        id: 4,
+        title: "Landing Page Hypnotique",
+        badPrompt: "une page de vente pour mon ebook",
+        badResultImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "Code une Landing Page HTML/Tailwind pour un Ebook sur l'IA. Structure : 1. Hero Section avec un gros titre. 2. Preuve Sociale (3 logos). 3. Section Bénéfices. 4. Appel à l'action. Utilise un design épuré inspiré de Stripe avec des dégradés subtils.",
+        goodResultImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop", 
+        explanation: "Toujours donner la structure exacte des sections (Hero, Preuve sociale, etc.) et une inspiration design (Stripe)."
       }
     ]
   }
