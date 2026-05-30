@@ -14,11 +14,9 @@ const courseData = {
   kling: {
     title: "Kling AI / Haiper (Vidéos)",
     badPrompt: "un aigle qui vole dans le ciel",
-    badResultImage: null, 
-    badResultVideo: "https://cdn.pixabay.com/video/2015/11/02/1172-143977507_tiny.mp4", // Oiseau basique
+    badResultImage: "https://images.unsplash.com/photo-1551085254-e96b210db58a?q=80&w=1000&auto=format&fit=crop", 
     goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
-    goodResultImage: null,
-    goodResultVideo: "https://cdn.pixabay.com/video/2021/08/04/83864-584742610_tiny.mp4", // Drone spectaculaire
+    goodResultImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000&auto=format&fit=crop", // Image de montagne incroyable
     explanation: "Pour la vidéo IA (Kling, Haiper, Luma), le secret absolu est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
   },
   claude: {
@@ -26,8 +24,7 @@ const courseData = {
     badPrompt: "code moi le jeu flappy bird en html stp",
     badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", 
     goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier avec le CSS et JS intégrés.",
-    goodResultImage: null, 
-    goodResultVideo: "https://cdn.pixabay.com/video/2022/10/24/136202-764506307_tiny.mp4", // Vidéo de code/jeu animé
+    goodResultImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop", // Jeu retro
     explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable généré en 5 secondes."
   }
 };
@@ -136,11 +133,7 @@ const Courses = () => {
                   <span className="text-gray-600 animate-pulse font-mono">En attente du prompt...</span>
                 ) : (
                   <>
-                    {currentCourse.badResultVideo ? (
-                      <video src={currentCourse.badResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60" />
-                    ) : (
-                      <img src={currentCourse.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
-                    )}
+                    <img src={currentCourse.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="bg-red-500/80 text-white px-4 py-1 rounded-full text-sm font-bold uppercase backdrop-blur-md">Résultat Médiocre</span>
                     </div>
@@ -175,11 +168,7 @@ const Courses = () => {
                   <span className="text-[var(--color-neon-blue)]/50 animate-pulse font-mono">Génération en cours...</span>
                 ) : (
                   <>
-                    {currentCourse.goodResultVideo ? (
-                      <video src={currentCourse.goodResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                    ) : (
-                      <img src={currentCourse.goodResultImage} alt="Good Result" className="w-full h-full object-cover" />
-                    )}
+                    <img src={currentCourse.goodResultImage} alt="Good Result" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
                     <div className="absolute bottom-4 left-4 right-4">
                       <span className="bg-green-500/80 text-white px-4 py-1 rounded-full text-sm font-bold uppercase backdrop-blur-md mb-2 inline-block">Résultat Pro</span>
