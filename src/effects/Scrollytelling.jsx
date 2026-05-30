@@ -14,7 +14,7 @@ const scenes = [
     image: dakarSkyline,
     title: "CLASSE IA",
     subtitle: "Découvre l'univers de l'Intelligence Artificielle. Maîtrise les outils de demain.",
-    badge: "🚀 FORMATION IA ET VIBE CODING ACTU IA",
+    badge: "🚀 FORMATION IA - VIBE CODING - ACTU IA ⚡",
     transitionIcon: "✈️",
   },
   {
@@ -196,11 +196,11 @@ const CinematicSlideshow = () => {
       <FloatingAvatar />
 
       {/* Content */}
-      <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center pb-32 md:pb-40 z-10 px-6">
+      <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center pt-32 pb-16 md:pt-0 md:pb-40 z-10 px-4 md:px-6">
         {/* Badge (only on first slide) */}
         {scene.badge && (
-          <div className="mb-6 px-6 py-3 rounded-full border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 backdrop-blur-md shadow-[0_0_20px_rgba(0,212,255,0.2)]">
-            <span className="text-sm md:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-neon-blue)]">
+          <div className="mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 rounded-full border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 backdrop-blur-md shadow-[0_0_20px_rgba(0,212,255,0.2)] max-w-[95%] text-center">
+            <span className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-[var(--color-neon-blue)]">
               {scene.badge}
             </span>
           </div>
