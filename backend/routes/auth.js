@@ -46,8 +46,14 @@ router.post('/student-login', async (req, res) => {
   try {
     const student = await Lead.findOne({ email });
 
-    if (!student || !student.isActive) {
-      return res.status(401).json({ message: 'Compte inactif ou inexistant' });
+    // Case 1: No account found → they haven't applied yet
+    if (!student) {
+      return res.status(401).json({ message: 'Compte étudiant introuvable' });
+    }
+
+    // Case 2: Account found but not activated yet by admin
+    if (!student.isActive) {
+      return res.status(401).json({ message: 'Votre compte n\'est pas encore activé' });
     }
 
     const isMatch = await bcrypt.compare(password, student.password);
@@ -60,6 +66,7 @@ router.post('/student-login', async (req, res) => {
         token: generateToken(student._id),
       });
     } else {
+      // Case 3: Account exists, is active, but wrong password
       res.status(401).json({ message: 'Mot de passe incorrect' });
     }
   } catch (error) {
