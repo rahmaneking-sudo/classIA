@@ -75,52 +75,66 @@ const StudentLogin = () => {
         </h2>
         <p className="text-gray-400 text-center mb-8 text-sm">Connecte-toi pour accéder à ta formation CLASSE IA</p>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <div className="space-y-6 relative z-10" onKeyDown={(e) => {
+          if (e.key === 'Enter') handleLogin(e);
+        }}>
           <div>
-            <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-widest">
-              Email
+            <label className="block text-sm font-medium text-[var(--accent-cyan)] mb-2">
+              Email Étudiant
             </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all"
-              placeholder="ton@email.com"
-              required
-            />
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--accent-cyan)]/50" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-[var(--accent-cyan)]/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent-cyan)] focus:ring-1 focus:ring-[var(--accent-cyan)] transition-all duration-300"
+                placeholder="votre@email.com"
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-widest">
+            <label className="block text-sm font-medium text-[var(--accent-cyan)] mb-2">
               Mot de passe
             </label>
             <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--accent-cyan)]/50" />
               <input
                 type={showPassword ? "text" : "password"}
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all pr-10"
-                placeholder="Votre mot de passe"
-                required
+                className="w-full pl-10 pr-12 py-3 bg-black/40 border border-[var(--accent-cyan)]/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent-cyan)] focus:ring-1 focus:ring-[var(--accent-cyan)] transition-all duration-300"
+                placeholder="••••••••"
               />
-              <button 
+              <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[var(--accent-cyan)] transition-colors"
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
           <button
-            type="submit"
+            type="button"
+            onClick={handleLogin}
             disabled={loading}
-            className="w-full btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`w-full py-3 px-4 rounded-xl font-bold text-black transition-all duration-300 transform hover:scale-[1.02] ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-[var(--accent-cyan)] hover:shadow-[0_0_20px_var(--accent-cyan)]'}`}
           >
-            {loading ? 'Connexion en cours...' : 'Accéder à ma formation'}
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                Connexion en cours...
+              </div>
+            ) : (
+              'Accéder à mon espace'
+            )}
           </button>
-        </form>
+        </div>
 
         <div className="mt-6 text-center">
           <Link to="/" className="text-xs text-gray-400 hover:text-[var(--color-neon-blue)] transition-colors">
