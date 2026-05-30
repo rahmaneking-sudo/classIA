@@ -41,6 +41,6 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('Student login error:', error);
-    return res.status(500).json({ message: error.message || 'Erreur lors de la connexion' });
+    return res.status(500).json({ message: 'Erreur lors de la connexion' });
   }
 }
