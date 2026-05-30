@@ -14,7 +14,7 @@ const scenes = [
     image: dakarSkyline,
     title: "CLASSE IA",
     subtitle: "Découvre l'univers de l'Intelligence Artificielle. Maîtrise les outils de demain.",
-    badge: "🚀 Formation IA · Vibe Coding · Afrofuturisme",
+    badge: "🚀 FORMATION IA ET VIBE CODING ACTU IA",
     transitionIcon: "✈️",
   },
   {
@@ -64,7 +64,7 @@ const FloatingAvatar = () => {
 
   return (
     <div className="absolute top-28 lg:top-36 right-8 lg:right-12 z-[40] pointer-events-none hidden md:flex flex-col items-center gap-4">
-      <div className="relative w-32 h-32 lg:w-40 lg:h-40 rounded-full border-4 border-[var(--color-neon-blue)] shadow-[0_0_30px_rgba(0,212,255,0.6)] overflow-hidden animate-[float_4s_ease-in-out_infinite]">
+      <div className="relative w-20 h-20 lg:w-28 lg:h-28 rounded-full border-4 border-[var(--color-neon-blue)] shadow-[0_0_30px_rgba(0,212,255,0.6)] overflow-hidden animate-[float_4s_ease-in-out_infinite]">
         <div 
           className="w-full h-full bg-cover bg-center"
           style={{ backgroundImage: `url(${abdouAvatar})` }}
@@ -143,9 +143,18 @@ const CinematicSlideshow = () => {
     if (!slideRef.current) return;
 
     // Animate new slide in
-    gsap.fromTo(slideRef.current,
-      { scale: 1.1, opacity: 0 },
-      { scale: 1.02, opacity: 1, duration: 1.5, ease: 'power2.out' }
+    const tlIn = gsap.timeline();
+    // Quick fade in
+    tlIn.fromTo(slideRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 1.5, ease: 'power2.out' },
+      0
+    );
+    // Continuous slow zoom across the entire slide duration
+    tlIn.fromTo(slideRef.current,
+      { scale: 1 },
+      { scale: 1.15, duration: SLIDE_DURATION / 1000, ease: 'none' },
+      0
     );
 
     animateTextIn();
@@ -187,11 +196,11 @@ const CinematicSlideshow = () => {
       <FloatingAvatar />
 
       {/* Content */}
-      <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6">
+      <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center pb-32 md:pb-40 z-10 px-6">
         {/* Badge (only on first slide) */}
         {scene.badge && (
-          <div className="mb-6 px-5 py-2 rounded-full border border-[var(--color-neon-blue)]/30 bg-[var(--color-neon-blue)]/5 backdrop-blur-md">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--color-neon-blue)]">
+          <div className="mb-6 px-6 py-3 rounded-full border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 backdrop-blur-md shadow-[0_0_20px_rgba(0,212,255,0.2)]">
+            <span className="text-sm md:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-neon-blue)]">
               {scene.badge}
             </span>
           </div>
