@@ -12,7 +12,27 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5175',
+  'http://localhost:5173',
+  // Vercel déploiement — remplace par ton domaine réel après déploiement
+  /\.vercel\.app$/,
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Autoriser les requêtes sans origin (ex: curl, Postman)
+    if (!origin) return callback(null, true);
+    const isAllowed = allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    if (isAllowed) return callback(null, true);
+    callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes

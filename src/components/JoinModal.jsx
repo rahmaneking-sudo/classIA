@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 
 const JoinModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
@@ -13,7 +14,7 @@ const JoinModal = ({ isOpen, onClose }) => {
     setStatus('loading');
     
     try {
-      await axios.post('http://localhost:5001/api/leads', formData);
+      await axios.post(`${API_BASE_URL}/leads`, formData);
       setStatus('success');
       
       // Reset form after 3 seconds and close

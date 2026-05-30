@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
 
 const StudentDashboard = () => {
@@ -76,7 +77,7 @@ const StudentDashboard = () => {
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem('studentToken');
-          await axios.put('http://localhost:5001/api/auth/student/change-password', result.value, {
+          await axios.put(`${API_BASE_URL}/auth/student/change-password`, result.value, {
             headers: { Authorization: `Bearer ${token}` }
           });
           Swal.fire({

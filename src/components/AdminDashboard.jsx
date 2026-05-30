@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
 
 const AdminDashboard = () => {
@@ -19,7 +20,7 @@ const AdminDashboard = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:5001/api/leads', {
+        const response = await axios.get(`${API_BASE_URL}/leads`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -48,7 +49,7 @@ const AdminDashboard = () => {
   const handleActivate = async (leadId) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put(`http://localhost:5001/api/leads/${leadId}/activate`, {}, {
+      await axios.put(`${API_BASE_URL}/leads/${leadId}/activate`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -82,7 +83,7 @@ const AdminDashboard = () => {
   const handleDeactivate = async (leadId) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put(`http://localhost:5001/api/leads/${leadId}/deactivate`, {}, {
+      await axios.put(`${API_BASE_URL}/leads/${leadId}/deactivate`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       

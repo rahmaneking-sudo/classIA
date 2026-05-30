@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -18,7 +19,7 @@ const StudentLogin = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5001/api/auth/student-login', {
+      const response = await axios.post(`${API_BASE_URL}/auth/student-login`, {
         email,
         password
       });
