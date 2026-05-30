@@ -1,13 +1,6 @@
 import jwt from 'jsonwebtoken';
 import connectDB from '../../_lib/db.js';
-import mongoose from 'mongoose';
-
-const getAdminModel = async () => {
-  await connectDB();
-  if (mongoose.models.Admin) return mongoose.models.Admin;
-  const { default: Admin } = await import('../../backend/models/Admin.js');
-  return Admin;
-};
+import Admin from '../../backend/models/Admin.js';
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -20,7 +13,7 @@ export default async function handler(req, res) {
   const { username, password } = req.body;
 
   try {
-    const Admin = await getAdminModel();
+    await connectDB();
     const admin = await Admin.findOne({ username });
 
     if (admin && (await admin.matchPassword(password))) {

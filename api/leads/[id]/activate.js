@@ -1,14 +1,7 @@
 import bcrypt from 'bcryptjs';
 import connectDB from '../../../_lib/db.js';
 import { protectAdmin } from '../../../_lib/protect.js';
-import mongoose from 'mongoose';
-
-const getLeadModel = async () => {
-  await connectDB();
-  if (mongoose.models.Lead) return mongoose.models.Lead;
-  const { default: Lead } = await import('../../../backend/models/Lead.js');
-  return Lead;
-};
+import Lead from '../../../backend/models/Lead.js';
 
 // Helper WaSender
 const sendWaSenderMessage = async (to, text) => {
@@ -45,7 +38,7 @@ export default async function handler(req, res) {
     if (!admin) return res.status(401).json({ message: 'Non autorisé' });
 
     try {
-      const Lead = await getLeadModel();
+      await connectDB();
       const lead = await Lead.findById(id);
 
       if (!lead) return res.status(404).json({ message: 'Candidat introuvable' });

@@ -1,14 +1,7 @@
 import bcrypt from 'bcryptjs';
 import connectDB from '../../../_lib/db.js';
 import { protectStudent } from '../../../_lib/protect.js';
-import mongoose from 'mongoose';
-
-const getLeadModel = async () => {
-  await connectDB();
-  if (mongoose.models.Lead) return mongoose.models.Lead;
-  const { default: Lead } = await import('../../../backend/models/Lead.js');
-  return Lead;
-};
+import Lead from '../../../backend/models/Lead.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'PUT') {
@@ -23,7 +16,7 @@ export default async function handler(req, res) {
   const { currentPassword, newPassword } = req.body;
 
   try {
-    const Lead = await getLeadModel();
+    await connectDB();
     const student = await Lead.findById(user._id);
 
     if (!student || !student.isActive) {

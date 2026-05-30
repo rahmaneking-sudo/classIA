@@ -1,14 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import connectDB from '../../_lib/db.js';
-import mongoose from 'mongoose';
-
-const getLeadModel = async () => {
-  await connectDB();
-  if (mongoose.models.Lead) return mongoose.models.Lead;
-  const { default: Lead } = await import('../../backend/models/Lead.js');
-  return Lead;
-};
+import Lead from '../../backend/models/Lead.js';
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -21,7 +14,7 @@ export default async function handler(req, res) {
   const { email, password } = req.body;
 
   try {
-    const Lead = await getLeadModel();
+    await connectDB();
     const student = await Lead.findOne({ email });
 
     // Cas 1 : email inconnu → pas encore candidaté
