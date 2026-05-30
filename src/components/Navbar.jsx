@@ -6,12 +6,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const links = [
-    { name: 'Accueil', href: '#' },
-    { name: 'Cours', href: '#cours' },
-    { name: 'Vidéos', href: '#videos' },
-    { name: 'Prompts', href: '#prompts' },
-    { name: 'Ressources PDF', href: '#resources' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Accueil', href: '/' },
+    { name: 'Cours', href: '/cours' },
+    { name: 'Prompts', href: '/prompts' },
+    { name: 'Boutique', href: '/boutique' },
+    { name: 'Actu-IA', href: '/actu-ia' },
   ];
 
   return (
@@ -30,13 +29,13 @@ const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
               {links.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
+                  to={link.href}
                   className="text-gray-300 hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wider"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
               <Link
                 to="/login"
@@ -65,14 +64,14 @@ const Navbar = () => {
         <div className="md:hidden glass-panel border-t border-[var(--color-neon-blue)]/20 absolute w-full">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 onClick={() => setIsOpen(false)}
                 className="text-gray-300 hover:text-[var(--color-neon-blue)] hover:bg-[var(--color-neon-blue)]/10 block px-3 py-3 rounded-md text-base font-medium tracking-widest uppercase"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
             <Link
               to="/login"
