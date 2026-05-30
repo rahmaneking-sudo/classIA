@@ -1,0 +1,34 @@
+[
+  {
+    "id": "p1",
+    "category": "ChatGPT / Claude",
+    "title": "Création d'une Landing Page Hypnotique",
+    "description": "Un prompt ultra-détaillé pour demander à l'IA d'écrire le texte (copywriting) d'une page de vente qui convertit à 40%.",
+    "prompt": "Agis comme un copywriter de classe mondiale avec 10 ans d'expérience. Ton objectif est d'écrire le texte d'une Landing Page pour le produit suivant : [NOM DU PRODUIT]. Utilise le framework AIDA (Attention, Intérêt, Désir, Action). Sois persuasif, utilise des mots émotionnels puissants, et structure le texte avec des titres H1, H2, et des listes à puces. Inclus une garantie forte et 3 appels à l'action (CTA) irrésistibles.",
+    "tips": "Remplace [NOM DU PRODUIT] par ton offre. Ce prompt marche mieux si tu ajoutes aussi la cible (ex: pour des mamans entrepreneuses)."
+  },
+  {
+    "id": "p2",
+    "category": "Midjourney / Image",
+    "title": "Photographie Hyper-réaliste Cyberpunk",
+    "description": "Génère des images époustouflantes d'une ville futuriste avec des néons et une lumière dramatique.",
+    "prompt": "Cinematic wide shot, hyper-realistic photography of a cyberpunk city at night, raining, glowing neon signs reflecting in puddles, busy street, highly detailed, 8k resolution, shot on RED monstro 8k VV, 35mm lens, volumetric lighting, Unreal Engine 5 render style --ar 16:9 --v 6.0",
+    "tips": "Utilise le paramètre --ar 16:9 pour un format fond d'écran. Modifie 'cyberpunk city' par ce que tu veux."
+  },
+  {
+    "id": "p3",
+    "category": "Dessin Animé / Animation",
+    "title": "Personnage Style Pixar 3D",
+    "description": "Crée un personnage 3D mignon et expressif pour tes vidéos d'animation ou ton branding.",
+    "prompt": "A cute 3D character, young boy with curly brown hair, wearing a yellow hoodie and blue jeans, big expressive eyes, Pixar style, Disney animation style, octane render, soft studio lighting, clean solid pastel background, highly detailed 8k --v 6.0",
+    "tips": "Tu peux utiliser cette image dans des outils d'animation IA (comme Runway ou Pika) pour le faire parler !"
+  },
+  {
+    "id": "p4",
+    "category": "Gemini / Analyse",
+    "title": "Synthèse de document Complexe",
+    "description": "Force l'IA à extraire l'essence d'un très long PDF ou document technique sans perdre les détails cruciaux.",
+    "prompt": "Je vais te fournir un document technique. Ta tâche est de l'analyser en profondeur et de me fournir : 1. Un résumé exécutif de 5 lignes. 2. Les 3 idées principales sous forme de bullet points. 3. Les applications pratiques (Comment je peux utiliser ces infos aujourd'hui). Ne fais pas de paraphrases inutiles, va droit au but avec un langage clair.",
+    "tips": "Gemini 1.5 Pro est le meilleur modèle pour ce prompt grâce à sa capacité de contexte géante."
+  }
+]

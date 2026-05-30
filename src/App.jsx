@@ -7,6 +7,10 @@ import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import StudentLogin from './components/StudentLogin';
 import StudentDashboard from './components/StudentDashboard';
+import PromptsLibrary from './components/PromptsLibrary';
+import Courses from './components/Courses';
+import Shop from './components/Shop';
+import NewsFeed from './components/NewsFeed';
 
 function App() {
   return (
@@ -21,6 +25,10 @@ function App() {
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/prompts" element={<PromptsLibrary />} />
+          <Route path="/cours" element={<Courses />} />
+          <Route path="/boutique" element={<Shop />} />
+          <Route path="/actu-ia" element={<NewsFeed />} />
         </Routes>
       </div>
     </BrowserRouter>
