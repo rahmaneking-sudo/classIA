@@ -143,10 +143,21 @@ const StudentDashboard = () => {
             Tu es officiellement inscrit(e) à CLASSE IA. La plateforme de cours est actuellement en cours de finalisation par nos experts. 
           </p>
           
-          <div className="inline-block border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 px-8 py-4 rounded-xl relative z-10">
+          <div className="inline-block border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 px-8 py-4 rounded-xl relative z-10 mb-8">
             <span className="text-[var(--color-neon-blue)] font-bold tracking-widest uppercase animate-pulse">
-              Les modules seront disponibles très bientôt
+              Les modules vidéo seront disponibles très bientôt
             </span>
+          </div>
+
+          <div className="relative z-10 w-full max-w-md">
+            <button
+              onClick={() => navigate('/prompts')}
+              className="w-full btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all flex flex-col items-center justify-center gap-2"
+            >
+              <span className="text-xl">✨</span>
+              <span>Accéder à la Bibliothèque de Prompts</span>
+              <span className="text-xs text-[var(--color-neon-blue)] normal-case tracking-normal">Premium (ChatGPT, Claude, Midjourney...)</span>
+            </button>
           </div>
         </div>
 
