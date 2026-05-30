@@ -79,40 +79,40 @@ const StudentLogin = () => {
           if (e.key === 'Enter') handleLogin(e);
         }}>
           <div>
-            <label className="block text-sm font-medium text-[var(--accent-cyan)] mb-2">
+            <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-widest">
               Email Étudiant
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--accent-cyan)]/50" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-neon-blue)]/50" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-black/40 border border-[var(--accent-cyan)]/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent-cyan)] focus:ring-1 focus:ring-[var(--accent-cyan)] transition-all duration-300"
+                className="w-full pl-10 pr-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all"
                 placeholder="votre@email.com"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[var(--accent-cyan)] mb-2">
+            <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-widest">
               Mot de passe
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--accent-cyan)]/50" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-neon-blue)]/50" />
               <input
                 type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 bg-black/40 border border-[var(--accent-cyan)]/20 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent-cyan)] focus:ring-1 focus:ring-[var(--accent-cyan)] transition-all duration-300"
+                className="w-full pl-10 pr-12 py-3 bg-black/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all"
                 placeholder="••••••••"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[var(--accent-cyan)] transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -123,15 +123,15 @@ const StudentLogin = () => {
             type="button"
             onClick={handleLogin}
             disabled={loading}
-            className={`w-full py-3 px-4 rounded-xl font-bold text-black transition-all duration-300 transform hover:scale-[1.02] ${loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-[var(--accent-cyan)] hover:shadow-[0_0_20px_var(--accent-cyan)]'}`}
+            className="w-full btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
-                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                Connexion en cours...
+                <div className="w-5 h-5 border-2 border-[var(--color-neon-blue)] border-t-transparent rounded-full animate-spin" />
+                Connexion...
               </div>
             ) : (
-              'Accéder à mon espace'
+              'Accéder à ma formation'
             )}
           </button>
         </div>
