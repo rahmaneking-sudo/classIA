@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Bot, User, Play, Sparkles, AlertCircle, CheckCircle2 } from 'lucide-react';
 
-// Données des cours interactifs
 const courseData = {
   gemini: {
-    title: "Gemini / Midjourney (Génération d'Images)",
+    title: "Gemini / Midjourney (Images)",
     badPrompt: "dessine moi une ville futuriste avec des voitures volantes",
-    badResultImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop", // Image un peu basique/floue
+    badResultImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop", 
     goodPrompt: "Cinematic wide angle shot of a cyberpunk metropolis at night, rain pouring down, flying cars leaving neon light trails, photorealistic, 8k resolution, Unreal Engine 5 render, highly detailed, dramatic lighting --ar 16:9",
-    goodResultImage: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=1000&auto=format&fit=crop", // Image cyberpunk incroyable
+    goodResultImage: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=1000&auto=format&fit=crop", 
     goodResultVideo: null,
     explanation: "Un mauvais prompt donne un résultat basique. Un bon prompt précise le style (Cinematic), la météo (rain), la résolution (8k), et le moteur de rendu (Unreal Engine 5)."
   },
   kling: {
-    title: "Kling AI / Haiper (Génération de Vidéos)",
+    title: "Kling AI / Haiper (Vidéos)",
     badPrompt: "un aigle qui vole dans le ciel",
-    badResultImage: "https://images.unsplash.com/photo-1551085254-e96b210db58a?q=80&w=1000&auto=format&fit=crop", // Image statique basique
+    badResultImage: null, 
+    badResultVideo: "https://cdn.pixabay.com/video/2015/11/02/1172-143977507_tiny.mp4", // Oiseau basique
     goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
     goodResultImage: null,
-    goodResultVideo: "https://cdn.pixabay.com/video/2021/08/04/83864-584742610_tiny.mp4", // Unplash/Pixabay drone video as example
-    explanation: "Pour la vidéo IA (Kling, Haiper), le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
+    goodResultVideo: "https://cdn.pixabay.com/video/2021/08/04/83864-584742610_tiny.mp4", // Drone spectaculaire
+    explanation: "Pour la vidéo IA (Kling, Haiper, Luma), le secret absolu est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
   },
   claude: {
-    title: "Claude 3.5 (Création de Jeux Vidéo)",
+    title: "Claude 3.5 (Jeux Vidéo)",
     badPrompt: "code moi le jeu flappy bird en html stp",
-    badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", // Code erreur ou console moche
+    badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", 
     goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier avec le CSS et JS intégrés.",
-    goodResultImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop", // Image de jeu retro
-    explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable."
+    goodResultImage: null, 
+    goodResultVideo: "https://cdn.pixabay.com/video/2022/10/24/136202-764506307_tiny.mp4", // Vidéo de code/jeu animé
+    explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable généré en 5 secondes."
   }
 };
 
@@ -135,7 +136,11 @@ const Courses = () => {
                   <span className="text-gray-600 animate-pulse font-mono">En attente du prompt...</span>
                 ) : (
                   <>
-                    <img src={currentCourse.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
+                    {currentCourse.badResultVideo ? (
+                      <video src={currentCourse.badResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60" />
+                    ) : (
+                      <img src={currentCourse.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
+                    )}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="bg-red-500/80 text-white px-4 py-1 rounded-full text-sm font-bold uppercase backdrop-blur-md">Résultat Médiocre</span>
                     </div>
@@ -152,8 +157,8 @@ const Courses = () => {
               
               <div className="bg-[var(--color-neon-blue)]/5 p-4 rounded-xl border border-[var(--color-neon-blue)]/30 h-32 mb-6 font-mono text-sm text-[var(--color-neon-blue)]">
                 {step >= 2 && step < 3 && (
-                  <button onClick={() => setStep(3)} className="w-full h-full flex items-center justify-center text-[var(--color-neon-blue)] font-bold uppercase tracking-widest hover:bg-[var(--color-neon-blue)]/10 rounded-lg transition-colors">
-                    <Play className="w-5 h-5 mr-2" /> Injecter le Prompt Premium
+                  <button onClick={() => setStep(3)} className="w-full h-full flex items-center justify-center bg-[var(--color-neon-blue)] text-black font-black uppercase tracking-widest hover:bg-white rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(0,212,255,0.6)] animate-pulse text-lg md:text-xl">
+                    <Play className="w-8 h-8 mr-3" fill="currentColor" /> INJECTER LE PROMPT PREMIUM
                   </button>
                 )}
                 {step >= 3 && (
