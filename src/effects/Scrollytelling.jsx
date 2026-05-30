@@ -183,7 +183,6 @@ const CinematicSlideshow = () => {
       {/* Light overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#020205]/70 via-transparent to-[#020205]/20" />
 
-      {/* Flying Transition Icon */}
       <div
         ref={iconRef}
         className="absolute top-1/2 left-0 text-8xl md:text-9xl pointer-events-none z-20 drop-shadow-[0_0_30px_rgba(0,212,255,0.8)]"
@@ -192,21 +191,17 @@ const CinematicSlideshow = () => {
         {scene.transitionIcon}
       </div>
 
-      {/* Floating Cartoon Avatar of the User (Top Right Corner, below header) */}
       <FloatingAvatar />
 
-      {/* Content */}
-      <div ref={textRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center w-full px-4 md:px-6 z-10 mt-12 md:mt-16">
-        {/* Badge (only on first slide) */}
+      <div ref={textRef} className="absolute inset-0 flex flex-col items-center justify-center w-full px-4 md:px-6 z-10" style={{ paddingTop: '72px' }}>
         {scene.badge && (
-          <div className="mb-4 md:mb-6 px-4 py-2 md:px-6 md:py-3 rounded-full border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 backdrop-blur-md shadow-[0_0_20px_rgba(0,212,255,0.2)] max-w-[95%] text-center">
-            <span className="text-[10px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-[var(--color-neon-blue)]">
+          <div className="mb-2 md:mb-4 px-3 py-1 md:px-5 md:py-2 rounded-full border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 backdrop-blur-md shadow-[0_0_20px_rgba(0,212,255,0.2)] max-w-[92%] text-center">
+            <span className="text-[9px] sm:text-[10px] md:text-xs font-bold uppercase tracking-[0.08em] md:tracking-[0.15em] text-[var(--color-neon-blue)]">
               {scene.badge}
             </span>
           </div>
         )}
 
-        {/* Slide counter (on non-hero slides) */}
         {!scene.badge && (
           <p className="text-xs md:text-sm uppercase tracking-[0.5em] text-[var(--color-neon-blue)] mb-4 font-bold">
             {String(currentIndex + 1).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')}
@@ -214,35 +209,34 @@ const CinematicSlideshow = () => {
         )}
 
         <h2
-          className={`font-black text-white mb-6 drop-shadow-[0_0_40px_rgba(0,212,255,0.6)] tracking-wider text-center ${
-            currentIndex === 0 
-              ? 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl' 
-              : 'text-4xl sm:text-6xl md:text-8xl'
+          className={`font-black text-white mb-2 md:mb-4 drop-shadow-[0_0_40px_rgba(0,212,255,0.6)] tracking-wider text-center ${
+            currentIndex === 0
+              ? 'text-4xl sm:text-6xl md:text-7xl lg:text-8xl'
+              : 'text-3xl sm:text-5xl md:text-7xl'
           }`}
           style={{ fontFamily: 'var(--font-heading)' }}
         >
-          {currentIndex === 0 
+          {currentIndex === 0
             ? <>CLASSE <span className="text-[var(--color-neon-blue)]">IA</span></>
             : scene.title
           }
         </h2>
 
-        <p className="text-lg md:text-2xl text-gray-200 font-light leading-relaxed text-center max-w-3xl">
+        <p className="text-sm sm:text-base md:text-xl text-gray-200 font-light leading-relaxed text-center max-w-2xl mb-5 md:mb-7">
           {scene.subtitle}
         </p>
-      </div>
 
-      {/* Fixed CTA Buttons (Always visible) */}
-      <div className="absolute bottom-[20%] left-0 w-full flex flex-wrap justify-center gap-6 z-20 px-4 pointer-events-auto">
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="btn-sci-fi px-8 py-4 sm:px-10 sm:py-5 rounded-lg bg-[var(--color-neon-blue)]/15 text-white font-bold tracking-widest text-sm uppercase border-2 border-[var(--color-neon-blue)] hover:bg-[var(--color-neon-blue)]/25 hover:shadow-[0_0_30px_rgba(0,212,255,0.5)] transition-all duration-300"
-        >
-          Commencer maintenant
-        </button>
-        <button className="px-8 py-4 sm:px-10 sm:py-5 rounded-lg text-gray-300 font-bold tracking-widest text-sm uppercase border border-white/20 hover:text-[var(--color-neon-purple)] hover:border-[var(--color-neon-purple)]/50 transition-all duration-300 backdrop-blur-sm">
-          Voir le programme
-        </button>
+        <div className="flex flex-wrap justify-center gap-6 pointer-events-auto">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="btn-sci-fi px-8 py-4 sm:px-10 sm:py-5 rounded-lg bg-[var(--color-neon-blue)]/15 text-white font-bold tracking-widest text-sm uppercase border-2 border-[var(--color-neon-blue)] hover:bg-[var(--color-neon-blue)]/25 hover:shadow-[0_0_30px_rgba(0,212,255,0.5)] transition-all duration-300"
+          >
+            Commencer maintenant
+          </button>
+          <button className="px-8 py-4 sm:px-10 sm:py-5 rounded-lg text-gray-300 font-bold tracking-widest text-sm uppercase border border-white/20 hover:text-[var(--color-neon-purple)] hover:border-[var(--color-neon-purple)]/50 transition-all duration-300 backdrop-blur-sm">
+            Voir le programme
+          </button>
+        </div>
       </div>
 
       <JoinModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
