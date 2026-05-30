@@ -3,32 +3,123 @@
     "id": "p1",
     "category": "ChatGPT / Claude",
     "title": "Création d'une Landing Page Hypnotique",
-    "description": "Un prompt ultra-détaillé pour demander à l'IA d'écrire le texte (copywriting) d'une page de vente qui convertit à 40%.",
-    "prompt": "Agis comme un copywriter de classe mondiale avec 10 ans d'expérience. Ton objectif est d'écrire le texte d'une Landing Page pour le produit suivant : [NOM DU PRODUIT]. Utilise le framework AIDA (Attention, Intérêt, Désir, Action). Sois persuasif, utilise des mots émotionnels puissants, et structure le texte avec des titres H1, H2, et des listes à puces. Inclus une garantie forte et 3 appels à l'action (CTA) irrésistibles.",
-    "tips": "Remplace [NOM DU PRODUIT] par ton offre. Ce prompt marche mieux si tu ajoutes aussi la cible (ex: pour des mamans entrepreneuses)."
+    "description": "Un prompt ultra-détaillé pour demander à l'IA d'écrire le texte d'une page de vente qui convertit à haut niveau.",
+    "prompt": "Agis comme un copywriter de classe mondiale (façon Dan Kennedy) avec 10 ans d'expérience. Ton objectif est d'écrire le texte d'une Landing Page pour le produit suivant : [NOM DU PRODUIT]. Utilise le framework AIDA (Attention, Intérêt, Désir, Action). Sois persuasif, utilise des mots émotionnels puissants, et structure le texte avec des titres H1, H2, et des listes à puces. Inclus une garantie forte de renversement de risque et 3 appels à l'action (CTA) irrésistibles. Ton ton doit être confiant, direct, et orienté sur les bénéfices profonds du client.",
+    "tips": "Remplace [NOM DU PRODUIT] par ton offre. Ce prompt marche mieux si tu ajoutes aussi la cible exacte (ex: pour des mamans entrepreneuses de 30-40 ans)."
   },
   {
     "id": "p2",
-    "category": "Midjourney / Image",
-    "title": "Photographie Hyper-réaliste Cyberpunk",
-    "description": "Génère des images époustouflantes d'une ville futuriste avec des néons et une lumière dramatique.",
-    "prompt": "Cinematic wide shot, hyper-realistic photography of a cyberpunk city at night, raining, glowing neon signs reflecting in puddles, busy street, highly detailed, 8k resolution, shot on RED monstro 8k VV, 35mm lens, volumetric lighting, Unreal Engine 5 render style --ar 16:9 --v 6.0",
-    "tips": "Utilise le paramètre --ar 16:9 pour un format fond d'écran. Modifie 'cyberpunk city' par ce que tu veux."
+    "category": "ChatGPT / Claude",
+    "title": "Stratégie de Contenu Instagram / TikTok sur 30 jours",
+    "description": "Génère un calendrier éditorial complet pour exploser sur les réseaux sociaux.",
+    "prompt": "Agis comme un Social Media Manager expert en viralité. Crée-moi un calendrier de contenu sur 30 jours pour le réseau [TikTok/Instagram] dans la niche de [TA NICHE]. Je veux 1 vidéo par jour. Pour chaque jour, donne-moi : 1. Le type de vidéo (Face caméra, B-roll, Trend). 2. Un 'Hook' (phrase d'accroche visuelle et textuelle) de 3 secondes ultra-captivant. 3. Le script résumé. 4. Le Call To Action (ex: abonne-toi, commente le mot 'X'). Structure le résultat dans un tableau clair.",
+    "tips": "Sois très spécifique sur 'TA NICHE'. (Exemple: Coach sportif pour cadres stressés)."
   },
   {
     "id": "p3",
-    "category": "Dessin Animé / Animation",
-    "title": "Personnage Style Pixar 3D",
-    "description": "Crée un personnage 3D mignon et expressif pour tes vidéos d'animation ou ton branding.",
-    "prompt": "A cute 3D character, young boy with curly brown hair, wearing a yellow hoodie and blue jeans, big expressive eyes, Pixar style, Disney animation style, octane render, soft studio lighting, clean solid pastel background, highly detailed 8k --v 6.0",
-    "tips": "Tu peux utiliser cette image dans des outils d'animation IA (comme Runway ou Pika) pour le faire parler !"
+    "category": "ChatGPT / Claude",
+    "title": "Le 'CEO Advisor' : Résolution de Problèmes",
+    "description": "Transforme l'IA en conseiller stratégique (type McKinsey) pour résoudre un problème business complexe.",
+    "prompt": "Agis comme un consultant en stratégie de chez McKinsey. J'ai un problème majeur dans mon entreprise : [DÉCRIS LE PROBLÈME]. Utilise la méthode MECE (Mutuellement Exclusif, Collectivement Exhaustif) pour décomposer ce problème en sous-catégories. Ensuite, pour chaque sous-catégorie, propose 3 actions radicales et applicables en moins de 7 jours pour inverser la situation. Pose-moi 5 questions difficiles avant de commencer si tu as besoin de clarifier la situation.",
+    "tips": "Plus tu décriras ton problème en détail, plus le conseil de l'IA sera précis et chirurgical."
   },
   {
     "id": "p4",
+    "category": "ChatGPT / Claude",
+    "title": "Création d'un Lead Magnet (Ebook gratuit)",
+    "description": "Génère la structure complète et le contenu d'un guide gratuit pour capturer des emails.",
+    "prompt": "Je veux créer un Lead Magnet (Ebook gratuit de 10 pages) pour attirer des [CIBLE] et leur vendre ensuite [PRODUIT PAYANT]. Propose-moi 3 titres d'Ebook clickbaits mais professionnels. Une fois que je choisis un titre, tu rédigeras la structure (Sommaire détaillé) puis tu écriras l'Ebook chapitre par chapitre, en incluant une introduction qui crée l'urgence et une conclusion qui pitche mon produit payant de manière subtile.",
+    "tips": "Fais générer l'Ebook chapitre par chapitre (en tapant 'continue' ou 'écris le chapitre 1') pour garder un niveau de qualité maximal."
+  },
+  {
+    "id": "p5",
+    "category": "ChatGPT / Claude",
+    "title": "Générateur de Séquence Email (Cold Emailing)",
+    "description": "Une séquence de prospection à froid par email pour trouver de nouveaux clients B2B.",
+    "prompt": "Écris une séquence de 4 Cold Emails B2B destinée à [CIBLE]. L'objectif est de décrocher un appel téléphonique de 15 minutes. Email 1 : Brise la glace avec un compliment sincère et mentionne une douleur précise de son industrie. Email 2 (J+3) : Apporte de la valeur gratuite (une astuce ou étude de cas). Email 3 (J+7) : Email très court (2 phrases) de relance polie. Email 4 (J+14) : Email de rupture 'Breakup email'. Les objets d'emails doivent être ultra-courts (1 à 3 mots) et sans majuscule au début.",
+    "tips": "Les objets très courts (ex: 'question rapide', 'ton site') ont des taux d'ouverture massifs en B2B."
+  },
+  
+  {
+    "id": "p6",
     "category": "Gemini / Analyse",
-    "title": "Synthèse de document Complexe",
-    "description": "Force l'IA à extraire l'essence d'un très long PDF ou document technique sans perdre les détails cruciaux.",
-    "prompt": "Je vais te fournir un document technique. Ta tâche est de l'analyser en profondeur et de me fournir : 1. Un résumé exécutif de 5 lignes. 2. Les 3 idées principales sous forme de bullet points. 3. Les applications pratiques (Comment je peux utiliser ces infos aujourd'hui). Ne fais pas de paraphrases inutiles, va droit au but avec un langage clair.",
-    "tips": "Gemini 1.5 Pro est le meilleur modèle pour ce prompt grâce à sa capacité de contexte géante."
+    "title": "Extraction d'insights à partir d'un PDF dense",
+    "description": "Force Gemini 1.5 Pro (qui peut avaler des livres entiers) à synthétiser un document complexe.",
+    "prompt": "[Fournir le PDF en pièce jointe] Voici un rapport technique de 100 pages. Je n'ai pas le temps de le lire. Ta tâche est de me faire un rapport exécutif avec : 1. La conclusion principale et l'idée directrice. 2. Les 5 statistiques ou données chiffrées les plus choquantes ou importantes du document. 3. Les 3 implications majeures pour le marché. 4. Un lexique des 5 mots techniques les plus utilisés avec leur définition. Sois concis, utilise des bullet points.",
+    "tips": "Gemini 1.5 Pro a une fenêtre de contexte immense. N'hésite pas à lui envoyer des rapports financiers entiers !"
+  },
+  {
+    "id": "p7",
+    "category": "Gemini / Analyse",
+    "title": "Analyse de la concurrence (Data scraping)",
+    "description": "Utilise l'accès à internet de Gemini pour analyser ce que font les concurrents.",
+    "prompt": "Analyse les sites web et la présence en ligne de mes 3 principaux concurrents : [LIEN 1], [LIEN 2], [LIEN 3]. Dresse un tableau comparatif avec les colonnes suivantes : Nom, Prix de leur offre principale, Promesse marketing (USP), Points forts, Faiblesses (ce qui manque sur leur site). Enfin, propose-moi un 'Océan Bleu' (une stratégie de différenciation qu'ils n'utilisent pas).",
+    "tips": "Gemini a accès au web en temps réel. Assure-toi que les liens sont valides."
+  },
+
+  {
+    "id": "p8",
+    "category": "Midjourney / Image",
+    "title": "Photographie Hyper-réaliste Cyberpunk",
+    "description": "Génère des images époustouflantes d'une ville futuriste avec des néons.",
+    "prompt": "Cinematic wide shot, hyper-realistic photography of a cyberpunk city at night, raining, glowing neon signs reflecting in puddles, busy street, highly detailed, 8k resolution, shot on RED monstro 8k VV, 35mm lens, volumetric lighting, Unreal Engine 5 render style --ar 16:9 --style raw --v 6.0",
+    "tips": "Le paramètre '--style raw' avec Midjourney v6 permet un rendu photographique ultra-réaliste sans l'aspect 'dessin 3D'."
+  },
+  {
+    "id": "p9",
+    "category": "Midjourney / Image",
+    "title": "Logo Minimaliste et Vectoriel",
+    "description": "Générer un logo moderne, épuré, idéal pour une startup SaaS ou une marque de luxe.",
+    "prompt": "A modern minimalist logo for a tech startup, negative space design, letter [LETTRE], geometric shapes, flat vector design, clean white background, high contrast, corporate identity, dribbble style, behance style, masterpiece --no text, typography, letters --v 6.0",
+    "tips": "Midjourney n'est pas bon pour écrire du texte. Génère l'icône seule, puis ajoute le texte du logo sur Photoshop ou Canva."
+  },
+  {
+    "id": "p10",
+    "category": "Midjourney / Image",
+    "title": "Portrait Corporate / Photo de Profil LinkedIn",
+    "description": "Générer une photo professionnelle ultra-réaliste pour un profil pro ou un site web.",
+    "prompt": "Professional headshot photography of a handsome 35-year-old [HOMME/FEMME], wearing a tailored navy blue suit, standing in a bright modern glass office, shallow depth of field, blurred background with city view, natural window lighting, 85mm portrait lens, ultra-detailed, photorealistic, 8k --ar 4:5 --style raw --v 6.0",
+    "tips": "Joue avec 'navy blue suit' ou 'casual white shirt' selon le style souhaité."
+  },
+  {
+    "id": "p11",
+    "category": "Midjourney / Image",
+    "title": "Design d'Interface Utilisateur (UI/UX App)",
+    "description": "Créer des mockups magnifiques pour s'inspirer lors du design d'une application.",
+    "prompt": "UI/UX design of a modern fitness tracking mobile app, dark mode, glowing neon accents, clean typography, dashboard with charts and health metrics, glassmorphism elements, dribbble trending, high resolution, figma style --ar 9:16 --v 6.0",
+    "tips": "Précise toujours 'dark mode' ou 'light mode' et 'dribbble trending' pour avoir les meilleurs designs modernes."
+  },
+
+  {
+    "id": "p12",
+    "category": "Dessin Animé / Animation",
+    "title": "Personnage Style Pixar 3D (Émotion pure)",
+    "description": "Crée un personnage 3D mignon et expressif pour tes vidéos d'animation ou ton branding.",
+    "prompt": "A cute 3D character, young boy with curly brown hair, wearing a yellow hoodie and blue jeans, big expressive eyes, looking surprised with mouth open, Pixar style, Disney animation style, octane render, soft studio lighting, clean solid pastel background, highly detailed 8k --v 6.0",
+    "tips": "Tu peux utiliser cette image de base dans des outils d'animation IA (comme Runway Gen-2 ou Pika) pour le faire parler !"
+  },
+  {
+    "id": "p13",
+    "category": "Dessin Animé / Animation",
+    "title": "Style Ghibli / Anime Japonais (Décor de fond)",
+    "description": "Des décors grandioses pour des chaînes YouTube de type 'Lofi Music' ou storytelling.",
+    "prompt": "Studio Ghibli style animation background, a magical cozy room filled with glowing plants and old books, sunset light streaming through a large window, highly detailed, 2D anime style, Hayao Miyazaki art style, beautiful anime aesthetic, 8k --ar 16:9 --v 6.0",
+    "tips": "L'ajout de 'Hayao Miyazaki art style' force l'IA à adopter les codes des plus grands chefs d'oeuvre japonais."
+  },
+  {
+    "id": "p14",
+    "category": "Dessin Animé / Animation",
+    "title": "Prompt RunwayML / Luma Dream Machine (Vidéo)",
+    "description": "Le prompt textuel parfait à copier-coller dans une IA de génération vidéo pour animer une image.",
+    "prompt": "Cinematic tracking shot, slow motion. A young woman walking down a futuristic neon street. Her hair is blowing gently in the wind. Hyper-realistic, 4k, cinematic lighting, shallow depth of field. High quality, smooth motion.",
+    "tips": "Pour générer de la vidéo, les IA ont besoin qu'on décrive le MOUVEMENT de la caméra (tracking shot, pan, zoom) et le mouvement du SUJET."
+  },
+  {
+    "id": "p15",
+    "category": "ChatGPT / Claude",
+    "title": "Le 'Professeur Feynman' (Apprendre n'importe quoi)",
+    "description": "Utilise l'IA pour t'expliquer un concept extrêmement complexe de manière enfantine.",
+    "prompt": "Agis comme Richard Feynman, célèbre physicien et pédagogue. Je veux que tu m'expliques le concept de [CONCEPT COMPLEXE, ex: La Physique Quantique ou La Blockchain]. Utilise la technique de Feynman : explique-le-moi d'abord comme si j'avais 10 ans avec une analogie tirée de la vie quotidienne. Ensuite, donne-moi l'explication pour un adulte, et termine en testant ma compréhension avec une question piège.",
+    "tips": "Idéal pour apprendre à coder, comprendre la bourse, ou la médecine en un temps record."
   }
 ]
