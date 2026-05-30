@@ -1,9 +1,7 @@
 // Configuration centrale de l'API
-// - En développement local : proxy Vite redirige /api → localhost:5001
-// - En production (Vercel experimentalServices) : le backend est à /_/backend
-//   donc les appels API vont vers /_/backend/api/...
+// En développement local : proxy Vite redirige /api → localhost:5001
+// En production (Vercel) : les fonctions serverless sont à /api directement
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD ? '/_/backend/api' : '/api');
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export default API_BASE_URL;
