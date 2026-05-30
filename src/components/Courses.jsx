@@ -1,31 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { Bot, User, Play, Sparkles, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Bot, User, Play, Sparkles, AlertCircle, CheckCircle2, ChevronRight, ChevronLeft } from 'lucide-react';
 
 const courseData = {
   gemini: {
     title: "Gemini / Midjourney (Images)",
-    badPrompt: "dessine moi une ville futuriste avec des voitures volantes",
-    badResultImage: "/courses_assets/bad_cyberpunk.png", 
-    goodPrompt: "Cinematic wide angle shot of a cyberpunk metropolis at night, rain pouring down, flying cars leaving neon light trails, photorealistic, 8k resolution, Unreal Engine 5 render, highly detailed, dramatic lighting --ar 16:9",
-    goodResultImage: "/courses_assets/cyberpunk.png", 
-    goodResultVideo: null,
-    explanation: "Un mauvais prompt donne un résultat basique. Un bon prompt précise le style (Cinematic), la météo (rain), la résolution (8k), et le moteur de rendu (Unreal Engine 5)."
+    simulations: [
+      {
+        id: 1,
+        title: "Ville Cyberpunk",
+        badPrompt: "dessine moi une ville futuriste avec des voitures volantes",
+        badResultImage: "/courses_assets/bad_cyberpunk.png", 
+        goodPrompt: "Cinematic wide angle shot of a cyberpunk metropolis at night, rain pouring down, flying cars leaving neon light trails, photorealistic, 8k resolution, Unreal Engine 5 render, highly detailed, dramatic lighting --ar 16:9",
+        goodResultImage: "/courses_assets/cyberpunk.png", 
+        explanation: "Un mauvais prompt donne un résultat basique. Un bon prompt précise le style (Cinematic), la météo (rain), la résolution (8k), et le moteur de rendu (Unreal Engine 5)."
+      },
+      {
+        id: 2,
+        title: "Portrait Photoréaliste",
+        badPrompt: "photo d'un homme en costume de face",
+        badResultImage: "https://images.unsplash.com/photo-1542156822-6924d1a71ace?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "Professional headshot photography of a handsome 35-year-old man, tailored navy blue suit, standing in a bright modern glass office, shallow depth of field, natural window lighting, 85mm portrait lens, 8k, ultra-realistic",
+        goodResultImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop", 
+        explanation: "La focale (85mm portrait lens), la lumière (natural window lighting) et la profondeur de champ (shallow depth of field) font toute la différence."
+      }
+    ]
   },
   kling: {
     title: "Kling AI / Haiper (Vidéos)",
-    badPrompt: "un aigle qui vole dans le ciel",
-    badResultImage: "https://images.unsplash.com/photo-1551085254-e96b210db58a?q=80&w=1000&auto=format&fit=crop", 
-    goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
-    goodResultImage: "/courses_assets/eagle.png", // Image locale
-    explanation: "Pour la vidéo IA (Kling, Haiper, Luma), le secret absolu est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
+    simulations: [
+      {
+        id: 1,
+        title: "Plan de Drone (Animalier)",
+        badPrompt: "un aigle qui vole dans le ciel",
+        badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", // Remplacer par une mauvaise vidéo d'aigle
+        goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
+        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", // Remplacer par votre vraie vidéo d'aigle
+        explanation: "Pour la vidéo IA, le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
+      },
+      {
+        id: 2,
+        title: "Morphing Cinématographique",
+        badPrompt: "une voiture qui se transforme en robot",
+        badResultImage: "/courses_assets/bad_cyberpunk.png", 
+        goodPrompt: "Continuous single take. A red sports car driving fast on a highway smoothly transforming into a metallic robotic cheetah running on the street. Seamless morphing, cinematic lighting.",
+        goodResultImage: "/courses_assets/eagle.png", // Exemple visuel
+        explanation: "Les IA vidéos comme Runway ou Haiper ont besoin des mots 'Continuous single take' et 'Seamless morphing' pour éviter les coupures."
+      }
+    ]
   },
   claude: {
     title: "Claude 3.5 (Jeux Vidéo)",
-    badPrompt: "code moi le jeu flappy bird en html stp",
-    badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", 
-    goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier avec le CSS et JS intégrés.",
-    goodResultImage: "/courses_assets/retro.png", // Image locale
-    explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable généré en 5 secondes."
+    simulations: [
+      {
+        id: 1,
+        title: "Jeu Rétro (Clone Flappy Bird)",
+        badPrompt: "code moi le jeu flappy bird en html stp",
+        badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", 
+        goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier.",
+        goodResultImage: "/courses_assets/retro.png", 
+        explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable."
+      }
+    ]
   }
 };
 
@@ -52,17 +87,29 @@ const Typewriter = ({ text, onComplete, speed = 30 }) => {
 
 const Courses = () => {
   const [activeTab, setActiveTab] = useState('gemini');
+  const [simIndex, setSimIndex] = useState(0);
   const [step, setStep] = useState(0); // 0: init, 1: typing bad, 2: show bad, 3: typing good, 4: show good
 
-  const currentCourse = courseData[activeTab];
+  const categoryData = courseData[activeTab];
+  const currentSim = categoryData.simulations[simIndex];
 
-  // Reset animation when changing tabs
+  // Reset when changing tabs
   useEffect(() => {
+    setSimIndex(0);
     setStep(0);
   }, [activeTab]);
 
-  const handleStartSimulation = () => {
-    setStep(1);
+  // Reset when changing simulation
+  useEffect(() => {
+    setStep(0);
+  }, [simIndex]);
+
+  const nextSim = () => {
+    setSimIndex((prev) => (prev + 1) % categoryData.simulations.length);
+  };
+
+  const prevSim = () => {
+    setSimIndex((prev) => (prev - 1 + categoryData.simulations.length) % categoryData.simulations.length);
   };
 
   return (
@@ -74,13 +121,13 @@ const Courses = () => {
           <h1 className="text-4xl md:text-5xl font-black tracking-widest uppercase mb-4 text-glow-blue">
             LABORATOIRE <span className="text-[var(--color-neon-purple)]">INTERACTIF</span>
           </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Voyez la différence en temps réel entre un prompt amateur et un prompt Ultra-Premium.
+          <p className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
+            Testez plusieurs modèles de simulation sur différentes IA (Images, Vidéos, Code).
           </p>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
           {Object.keys(courseData).map((key) => (
             <button
               key={key}
@@ -95,17 +142,32 @@ const Courses = () => {
           ))}
         </div>
 
+        {/* Multiple Simulations Navigation */}
+        {categoryData.simulations.length > 1 && (
+          <div className="flex items-center justify-center gap-6 mb-8">
+            <button onClick={prevSim} className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors border border-white/10">
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <h3 className="text-xl font-bold tracking-widest text-[var(--color-neon-blue)]">
+              Simulation {simIndex + 1} : {currentSim.title}
+            </h3>
+            <button onClick={nextSim} className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors border border-white/10">
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+        )}
+
         {/* Simulator Area */}
-        <div className="glass-panel border border-white/10 rounded-3xl p-6 md:p-10 relative overflow-hidden">
+        <div className="glass-panel border border-white/10 rounded-3xl p-6 md:p-10 relative overflow-hidden bg-black/40">
           
           {step === 0 && (
-            <div className="absolute inset-0 z-20 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
+            <div className="absolute inset-0 z-20 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center">
               <Sparkles className="w-16 h-16 text-[var(--color-neon-blue)] mb-6 animate-pulse" />
               <button 
-                onClick={handleStartSimulation}
-                className="btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] px-8 py-4 rounded-xl text-xl font-bold tracking-widest uppercase hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] flex items-center gap-3"
+                onClick={() => setStep(1)}
+                className="btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] px-8 py-4 rounded-xl text-xl font-bold tracking-widest uppercase hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_30px_rgba(0,212,255,0.6)] flex items-center gap-3 transition-all"
               >
-                <Play className="w-6 h-6" /> Démarrer la simulation
+                <Play className="w-6 h-6" /> Lancer la simulation "{currentSim.title}"
               </button>
             </div>
           )}
@@ -118,10 +180,10 @@ const Courses = () => {
                 <AlertCircle className="w-5 h-5" /> Mauvais Prompt
               </div>
               
-              <div className="bg-black/50 p-4 rounded-xl border border-white/5 h-32 mb-6 font-mono text-sm text-gray-300">
+              <div className="bg-black/80 p-4 rounded-xl border border-white/5 h-32 mb-6 font-mono text-sm text-gray-300">
                 {step >= 1 && (
                   <Typewriter 
-                    text={currentCourse.badPrompt} 
+                    text={currentSim.badPrompt} 
                     speed={20}
                     onComplete={() => setTimeout(() => setStep(2), 500)}
                   />
@@ -133,7 +195,11 @@ const Courses = () => {
                   <span className="text-gray-600 animate-pulse font-mono">En attente du prompt...</span>
                 ) : (
                   <>
-                    <img src={currentCourse.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
+                    {currentSim.badResultVideo ? (
+                      <video src={currentSim.badResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60" />
+                    ) : (
+                      <img src={currentSim.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
+                    )}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="bg-red-500/80 text-white px-4 py-1 rounded-full text-sm font-bold uppercase backdrop-blur-md">Résultat Médiocre</span>
                     </div>
@@ -150,13 +216,16 @@ const Courses = () => {
               
               <div className="bg-[var(--color-neon-blue)]/5 p-4 rounded-xl border border-[var(--color-neon-blue)]/30 h-32 mb-6 font-mono text-sm text-[var(--color-neon-blue)]">
                 {step >= 2 && step < 3 && (
-                  <button onClick={() => setStep(3)} className="w-full h-full flex items-center justify-center bg-[var(--color-neon-blue)] text-black font-black uppercase tracking-widest hover:bg-white rounded-lg transition-all duration-300 shadow-[0_0_30px_rgba(0,212,255,0.6)] animate-pulse text-lg md:text-xl">
+                  <button 
+                    onClick={() => setStep(3)} 
+                    className="w-full h-full flex items-center justify-center bg-white text-black font-black uppercase tracking-widest hover:bg-[var(--color-neon-blue)] rounded-lg transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.4)] animate-pulse text-lg"
+                  >
                     <Play className="w-8 h-8 mr-3" fill="currentColor" /> INJECTER LE PROMPT PREMIUM
                   </button>
                 )}
                 {step >= 3 && (
                   <Typewriter 
-                    text={currentCourse.goodPrompt} 
+                    text={currentSim.goodPrompt} 
                     speed={15}
                     onComplete={() => setTimeout(() => setStep(4), 800)}
                   />
@@ -168,13 +237,17 @@ const Courses = () => {
                   <span className="text-[var(--color-neon-blue)]/50 animate-pulse font-mono">Génération en cours...</span>
                 ) : (
                   <>
-                    <img src={currentCourse.goodResultImage} alt="Good Result" className="w-full h-full object-cover" />
+                    {currentSim.goodResultVideo ? (
+                      <video src={currentSim.goodResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                    ) : (
+                      <img src={currentSim.goodResultImage} alt="Good Result" className="w-full h-full object-cover" />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
                     <div className="absolute bottom-4 left-4 right-4">
                       <span className="bg-green-500/80 text-white px-4 py-1 rounded-full text-sm font-bold uppercase backdrop-blur-md mb-2 inline-block">Résultat Pro</span>
                       <p className="text-xs text-white/80 leading-relaxed bg-black/50 p-2 rounded-lg backdrop-blur-md border border-white/10">
                         <strong className="text-[var(--color-neon-blue)]">L'Analyse du formateur : </strong>
-                        {currentCourse.explanation}
+                        {currentSim.explanation}
                       </p>
                     </div>
                   </>
@@ -186,13 +259,23 @@ const Courses = () => {
           
           {/* Replay Button */}
           {step === 4 && (
-            <div className="mt-8 text-center">
+            <div className="mt-8 flex justify-center gap-4">
               <button 
                 onClick={() => setStep(1)}
-                className="text-gray-400 hover:text-white uppercase tracking-widest text-sm font-bold underline underline-offset-8 transition-colors"
+                className="px-6 py-2 border border-white/20 text-white hover:bg-white/10 rounded-full transition-all text-sm font-bold tracking-widest uppercase"
               >
-                Rejouer la simulation
+                Rejouer
               </button>
+              {categoryData.simulations.length > 1 && (
+                <button 
+                  onClick={() => {
+                    nextSim();
+                  }}
+                  className="px-6 py-2 bg-[var(--color-neon-blue)] text-black rounded-full transition-all text-sm font-bold tracking-widest uppercase hover:shadow-[0_0_20px_rgba(0,212,255,0.4)]"
+                >
+                  Simulation Suivante →
+                </button>
+              )}
             </div>
           )}
 
