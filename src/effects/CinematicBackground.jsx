@@ -9,6 +9,7 @@ const CinematicBackground = () => {
     if (pathname.includes('/prompts')) return '/bg_prompts.png';
     if (pathname.includes('/boutique')) return '/bg_boutique.png';
     if (pathname.includes('/actu-ia')) return '/bg_actu.png';
+    if (pathname.includes('/creation-site') || pathname.includes('/builder')) return '/bg_builder.png';
     // No image background for other pages (to avoid pixelation)
     return null;
   };
@@ -27,7 +28,7 @@ const CinematicBackground = () => {
               filter: 'brightness(1.1) contrast(1.1)' 
             }}
           />
-          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#0a0a10]/20 via-transparent to-[#0a0a10]/90" />
+          <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#0a0a10]/60 via-transparent to-[#0a0a10]/95" />
         </>
       ) : (
         // Clean, smooth CSS gradient for other pages to avoid pixelation
