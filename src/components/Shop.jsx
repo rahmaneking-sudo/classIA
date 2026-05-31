@@ -26,7 +26,7 @@ const Shop = () => {
   }, []);
 
   const handleBuy = (product) => {
-    const message = `Bonjour Abdou, je souhaite acheter le modèle de site "${product.title}" au prix de ${product.price.toLocaleString()} FCFA.\n\nPouvez-vous me donner la marche à suivre pour le paiement et récupérer les accès admin ?`;
+    const message = `Bonjour Abdou, je souhaite commander la création du modèle "${product.title}" à partir de ${product.price.toLocaleString()} FCFA.\n\nPouvons-nous discuter de mon projet ?`;
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`, '_blank');
   };
@@ -43,7 +43,7 @@ const Shop = () => {
             La Boutique ClassIA
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto font-light">
-            Découvrez nos templates de sites web premium. Chaque site est livré avec <strong className="text-white">son propre panel d'administration</strong> privé pour vous permettre de modifier votre contenu en toute autonomie.
+            Découvrez nos concepts de sites web premium. Vous flashez sur un modèle ? Nous développons <strong className="text-white">sur-mesure</strong> votre site basé sur ce concept avec un panel d'administration complet.
           </p>
         </div>
 
@@ -72,16 +72,16 @@ const Shop = () => {
               className="bg-[#0a0a10]/80 border border-white/10 rounded-2xl overflow-hidden group hover:border-[var(--color-neon-blue)]/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,212,255,0.1)] backdrop-blur-md flex flex-col"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Image Preview */}
-              <div className="relative h-56 w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a10] to-transparent z-10" />
+              {/* Image Preview - Animated Mockup Effect */}
+              <div className="relative h-64 w-full overflow-hidden bg-black">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a10] via-transparent to-transparent z-10" />
                 <img 
                   src={product.previewUrl} 
                   alt={product.title}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-auto min-h-full object-cover transform transition-transform duration-[4s] ease-in-out group-hover:-translate-y-1/4"
                   onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000'; }}
                 />
-                <div className="absolute top-4 left-4 z-20 bg-[var(--color-neon-purple)]/90 backdrop-blur text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">
+                <div className="absolute top-4 left-4 z-20 bg-[var(--color-neon-purple)]/90 backdrop-blur text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wider shadow-lg">
                   {product.category}
                 </div>
               </div>
@@ -105,7 +105,7 @@ const Shop = () => {
                 {/* Actions */}
                 <div className="flex flex-col gap-4 mt-auto">
                   <div className="flex items-end justify-between mb-2">
-                    <span className="text-gray-400 text-sm uppercase tracking-widest">Prix unique</span>
+                    <span className="text-gray-400 text-sm uppercase tracking-widest">À partir de</span>
                     <span className="text-3xl font-bold text-white">{product.price.toLocaleString()} <span className="text-lg text-[var(--color-neon-blue)]">FCFA</span></span>
                   </div>
 
@@ -113,22 +113,18 @@ const Shop = () => {
                     onClick={() => handleBuy(product)}
                     className="w-full py-4 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white font-bold tracking-widest uppercase rounded-xl hover:shadow-[0_0_20px_rgba(186,85,211,0.5)] transition-all flex items-center justify-center group-hover:scale-[1.02]"
                   >
-                    <MessageCircle className="w-5 h-5 mr-2" /> Acheter via WhatsApp
+                    <MessageCircle className="w-5 h-5 mr-2" /> Commander ce modèle
                   </button>
 
-                  {product.demoUrl ? (
+                  {product.demoUrl && (
                     <a 
                       href={product.demoUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-full py-3 bg-white/5 text-white font-bold tracking-widest uppercase rounded-xl border border-white/10 hover:bg-white/10 transition-colors flex items-center justify-center text-sm"
+                      className="w-full py-3 bg-white/5 text-white font-bold tracking-widest uppercase rounded-xl border border-white/10 hover:bg-white/10 transition-colors flex items-center justify-center text-sm mt-2"
                     >
                       <Globe className="w-4 h-4 mr-2" /> Voir la démo en direct
                     </a>
-                  ) : (
-                    <div className="w-full py-3 text-gray-500 font-bold tracking-widest uppercase text-center text-sm">
-                      Démo non disponible
-                    </div>
                   )}
                 </div>
               </div>

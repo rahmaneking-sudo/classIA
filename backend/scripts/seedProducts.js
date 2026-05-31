@@ -10,68 +10,61 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const initialProducts = [
   {
-    title: 'Site de Booking Hôtels (Dakar)',
-    description: 'Une plateforme complète pour réserver des hôtels ou des hébergements. Interface client élégante et panel administrateur pour gérer les réservations, les chambres et les prix.',
-    price: 250000,
-    previewUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000',
-    demoUrl: 'https://booking-demo.vercel.app',
-    features: ['Panel Admin Hébergeur', 'Paiement Intégré', 'Système de Disponibilités', 'Design Ultra Moderne', 'Code Source Fourni'],
-    category: 'Réservation'
-  },
-  {
-    title: 'Site Vitrine Restaurant',
-    description: 'Parfait pour un restaurant ou fast-food. Présentez votre menu, recevez des réservations de tables et permettez les commandes à emporter directement depuis le site.',
-    price: 150000,
-    previewUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000',
-    demoUrl: 'https://restaurant-demo.vercel.app',
-    features: ['Menu Numérique Interactif', 'Réservation de Table', 'Interface Gérant', 'Optimisé Mobile'],
-    category: 'Restaurant'
-  },
-  {
-    title: 'Application type Uber (VTC)',
-    description: 'Un système complet comprenant une application web progressive pour les passagers et une interface de gestion pour les chauffeurs.',
+    title: 'Concept VTC "ClassIA Drive"',
+    description: 'Une application mobile de transport (type Uber). Le design sera adapté à vos couleurs avec un panel pour les chauffeurs et un autre pour les clients.',
     price: 450000,
-    previewUrl: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1000',
-    demoUrl: 'https://vtc-demo.vercel.app',
-    features: ['Panel Chauffeur', 'Panel Client', 'Géolocalisation', 'Gestion des Courses', 'Paiement Mobile Money'],
+    previewUrl: 'https://images.unsplash.com/photo-1612458031023-eb3e9bd51a13?q=80&w=800&h=1600&fit=crop', // Mobile app UI tall
+    demoUrl: '',
+    features: ['Design UI Mobile Inclus', 'Géolocalisation', 'Panel Chauffeur & Client', 'Développement sur mesure'],
     category: 'Application Mobile'
   },
   {
-    title: 'Site Booking Pharmacies de Garde',
-    description: 'Annuaire dynamique et système de réservation en ligne pour les pharmacies. Permet aux patients de trouver facilement la pharmacie ouverte la plus proche.',
+    title: 'Booking Hôtels Dakar',
+    description: 'Une plateforme de réservation d\'hôtels ou d\'hébergements. Interface client élégante et panel administrateur complet.',
+    price: 300000,
+    previewUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&h=1600&fit=crop', // Dashboard / Web UI tall
+    demoUrl: '',
+    features: ['Design Epuré', 'Système de Réservation', 'Paiement en ligne', 'Panel Hébergeur'],
+    category: 'Réservation'
+  },
+  {
+    title: 'Agence de Voyage Africaine',
+    description: 'Présentez vos circuits touristiques au Sénégal et en Afrique. Un design qui fait rêver avec espace de devis et réservation.',
+    price: 250000,
+    previewUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&h=1600&fit=crop', // Web layout
+    demoUrl: '',
+    features: ['Galerie Photos Immersive', 'Formulaires de Devis', 'Panel Agence', 'Design Responsive'],
+    category: 'Vitrine'
+  },
+  {
+    title: 'Annuaire Pharmacies de Garde',
+    description: 'Plateforme dynamique pour trouver la pharmacie ouverte la plus proche. Intégration de cartes et panel pour les pharmaciens.',
     price: 200000,
-    previewUrl: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=1000',
-    demoUrl: 'https://pharmacy-demo.vercel.app',
-    features: ['Géolocalisation des Pharmacies', 'Panel Pharmacien', 'Mise à jour des gardes', 'Design Épuré'],
+    previewUrl: 'https://images.unsplash.com/photo-1507238692062-7101eea35ceb?q=80&w=800&h=1600&fit=crop', // Web map layout
+    demoUrl: '',
+    features: ['Carte Interactive', 'Recherche Avancée', 'Espace Pharmacien', 'Haute Performance'],
     category: 'Annuaire'
   },
   {
-    title: 'Site Vitrine Agence de Voyage',
-    description: 'Proposez vos circuits touristiques, billets d\'avion et séjours. Un design qui fait rêver avec un espace pour gérer vos différentes offres et réservations.',
-    price: 180000,
-    previewUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000',
-    demoUrl: 'https://travel-demo.vercel.app',
-    features: ['Gestion des Packages', 'Formulaires de Devis', 'Galerie Photos Avancée', 'Panel Admin Agence'],
-    category: 'Vitrine'
+    title: 'Restaurant Gastronomique',
+    description: 'Le site parfait pour votre restaurant. Menu numérique, réservation de table et module de commandes en ligne.',
+    price: 150000,
+    previewUrl: 'https://images.unsplash.com/photo-1556740714-a8395b3bf30f?q=80&w=800&h=1600&fit=crop', // Food web layout
+    demoUrl: '',
+    features: ['Menu Interactif', 'Réservation de Table', 'Interface Gérant', 'Design Appétissant'],
+    category: 'Restaurant'
   }
 ];
 
 const seedDB = async () => {
   try {
-    console.log('Connecting to MongoDB...');
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB');
-
-    // On efface les anciens pour éviter les doublons si on relance
     await Product.deleteMany({});
-    console.log('Produits précédents effacés');
-
     await Product.insertMany(initialProducts);
-    console.log('Produits injectés avec succès !');
-
+    console.log('Concepts injectés !');
     process.exit(0);
   } catch (error) {
-    console.error('Erreur lors du seeding:', error);
+    console.error('Erreur:', error);
     process.exit(1);
   }
 };
