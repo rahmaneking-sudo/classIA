@@ -30,7 +30,7 @@ const AdminMicroSites = () => {
   const handleToggleActive = async (id, currentState) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.put(`${API_BASE_URL}/microsites/${id}/activate`, {}, {
+      const response = await axios.put(`${API_BASE_URL}/microsites/activate`, { id }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
