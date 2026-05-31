@@ -1,6 +1,6 @@
 import connectDB from '../../_lib/db.js';
 import { protectAdmin } from '../../_lib/protect.js';
-import Simulation from '../../../backend/models/Simulation.js';
+import Simulation from '../../backend/models/Simulation.js';
 
 export default async function handler(req, res) {
   // GET /api/simulations — Liste de toutes les simulations
