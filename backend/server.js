@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 // Import Routes
 import authRoutes from './routes/auth.js';
 import leadRoutes from './routes/leads.js';
+import simulationRoutes from './routes/simulations.js';
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', leadRoutes);
+app.use('/api/simulations', simulationRoutes);
 
 // Root Endpoint
 app.get('/', (req, res) => {

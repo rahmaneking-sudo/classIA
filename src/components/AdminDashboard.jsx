@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
+import AdminSimulations from './AdminSimulations';
 
 const AdminDashboard = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('leads'); // 'leads' or 'simulations'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -143,8 +145,25 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-[#0a0a10]/80 rounded-2xl border border-white/10 backdrop-blur-md overflow-hidden">
+        {/* Tabs */}
+        <div className="flex gap-4 mb-8">
+          <button 
+            onClick={() => setActiveTab('leads')}
+            className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${activeTab === 'leads' ? 'bg-[var(--color-neon-blue)] text-black shadow-[0_0_15px_rgba(0,212,255,0.4)]' : 'bg-[#0a0a10]/80 text-gray-400 border border-white/10 hover:border-white/30'}`}
+          >
+            Étudiants Inscrits
+          </button>
+          <button 
+            onClick={() => setActiveTab('simulations')}
+            className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${activeTab === 'simulations' ? 'bg-[var(--color-neon-purple)] text-white shadow-[0_0_15px_rgba(186,85,211,0.4)]' : 'bg-[#0a0a10]/80 text-gray-400 border border-white/10 hover:border-white/30'}`}
+          >
+            Simulations / Cours
+          </button>
+        </div>
+
+        {/* Content */}
+        {activeTab === 'leads' ? (
+          <div className="bg-[#0a0a10]/80 rounded-2xl border border-white/10 backdrop-blur-md overflow-hidden">
           <div className="p-6 border-b border-white/10">
             <h2 className="text-xl font-bold tracking-widest">LISTE DES CONTACTS</h2>
           </div>
@@ -210,6 +229,9 @@ const AdminDashboard = () => {
             </div>
           )}
         </div>
+        ) : (
+          <AdminSimulations />
+        )}
 
       </div>
       
