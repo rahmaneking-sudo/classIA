@@ -2,8 +2,17 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { CheckCircle2 } from 'lucide-react';
 import Navbar from '../Navbar';
 import API_BASE_URL from '../../config/api';
+
+const THEMES = [
+  { id: 'restaurant', name: 'Restauration', image: '/mockups/restaurant.png' },
+  { id: 'vtc', name: 'Transport & VTC', image: '/mockups/vtc.png' },
+  { id: 'pharmacy', name: 'Santé & Pharmacie', image: '/mockups/pharmacy.png' },
+  { id: 'travel', name: 'Voyage & Tourisme', image: '/mockups/travel.png' },
+  { id: 'hotel', name: 'Hôtellerie', image: '/mockups/hotel.png' }
+];
 
 const Builder = () => {
   const navigate = useNavigate();
@@ -14,7 +23,7 @@ const Builder = () => {
     slug: '',
     ownerEmail: '',
     whatsapp: '',
-    themeId: 'dark',
+    themeId: 'restaurant',
     description: '',
     service1_title: '',
     service1_desc: '',
@@ -137,12 +146,26 @@ const Builder = () => {
               <h3 className="text-xl font-bold text-[var(--color-neon-blue)] mb-4 border-b border-white/10 pb-2 uppercase tracking-widest mt-8">Design & Contenu</h3>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Thème visuel</label>
-                  <select name="themeId" value={formData.themeId} onChange={handleChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)] transition-colors">
-                    <option value="dark">Dark Tech (Mode Sombre, Accents Bleus)</option>
-                    <option value="light">Light Minimalist (Mode Clair, Épuré)</option>
-                    <option value="luxury">Luxury Gold (Mode Sombre, Accents Dorés)</option>
-                  </select>
+                  <label className="block text-sm text-[var(--color-neon-purple)] mb-4 uppercase tracking-widest font-bold">Sélectionnez votre Modèle (Thème)</label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {THEMES.map(theme => (
+                      <div 
+                        key={theme.id}
+                        onClick={() => setFormData(prev => ({ ...prev, themeId: theme.id }))}
+                        className={`relative cursor-pointer rounded-xl overflow-hidden border-2 transition-all duration-300 group ${formData.themeId === theme.id ? 'border-[var(--color-neon-blue)] shadow-[0_0_15px_rgba(0,212,255,0.5)] scale-[1.02]' : 'border-transparent hover:border-white/20'}`}
+                      >
+                        <img src={theme.image} alt={theme.name} className="w-full h-32 object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3">
+                          <span className="text-white text-sm font-bold tracking-wider">{theme.name}</span>
+                        </div>
+                        {formData.themeId === theme.id && (
+                          <div className="absolute top-2 right-2 bg-[var(--color-neon-blue)] rounded-full text-black">
+                            <CheckCircle2 className="w-5 h-5" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-2">Description courte de votre activité</label>

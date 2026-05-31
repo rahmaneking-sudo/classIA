@@ -12,6 +12,8 @@ import PromptsLibrary from './components/PromptsLibrary';
 import Courses from './components/Courses';
 import Shop from './components/Shop';
 import NewsFeed from './components/NewsFeed';
+import ClientLogin from './components/ClientLogin';
+import ClientDashboard from './components/ClientDashboard';
 import Landing from './components/ExpressBuilder/Landing';
 import Builder from './components/ExpressBuilder/Builder';
 import SiteViewer from './components/ExpressBuilder/SiteViewer';
@@ -30,6 +32,12 @@ function App() {
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+          {/* Client Portal (Agency) */}
+          <Route path="/client/login" element={<ClientLogin />} />
+          <Route path="/client/dashboard" element={<ClientDashboard />} />
+
+          <Route path="/student/login" element={<StudentLogin />} />
           <Route path="/prompts" element={<PromptsLibrary />} />
           <Route path="/cours" element={<Courses />} />
           <Route path="/boutique" element={<Shop />} />
