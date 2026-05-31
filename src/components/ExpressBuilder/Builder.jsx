@@ -6,6 +6,7 @@ import { CheckCircle2, ArrowRight, Plus, Trash2, ArrowLeft } from 'lucide-react'
 import Navbar from '../Navbar';
 import API_BASE_URL from '../../config/api';
 import ThemeRenderer from './ThemeRenderer';
+import ImageUpload from './ImageUpload';
 
 const THEMES = [
   { id: 'restaurant', name: 'Restaurant & Fast Food', image: '/restaurant.png' },
@@ -21,7 +22,7 @@ const THEMES = [
 const Builder = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0); // 0: Theme Selection (Full screen), 1: Info (Split), 2: Content (Split)
+  const [currentStep, setCurrentStep] = useState(0); 
 
   const [formData, setFormData] = useState({
     businessName: '',
@@ -30,14 +31,15 @@ const Builder = () => {
     whatsapp: '',
     themeId: null,
     content: {
+      heroImage: '',
       description: '',
-      services: [{ title: '', description: '' }],
-      rooms: [{ title: '', price: '', desc: '' }],
-      projects: [{ title: '', desc: '' }],
-      menus: [{ title: '', price: '', desc: '' }],
-      vehicles: [{ title: '', price: '', desc: '' }],
-      properties: [{ title: '', price: '', desc: '' }],
-      products: [{ title: '', price: '' }]
+      services: [{ title: '', description: '', image: '' }],
+      rooms: [{ title: '', price: '', desc: '', image: '' }],
+      projects: [{ title: '', desc: '', image: '' }],
+      menus: [{ title: '', price: '', desc: '', image: '' }],
+      vehicles: [{ title: '', price: '', desc: '', image: '' }],
+      properties: [{ title: '', price: '', desc: '', image: '' }],
+      products: [{ title: '', price: '', image: '' }]
     }
   });
 
@@ -70,6 +72,13 @@ const Builder = () => {
     setFormData(prev => ({
       ...prev,
       content: { ...prev.content, [name]: value }
+    }));
+  };
+
+  const handleHeroImageUpload = (url) => {
+    setFormData(prev => ({
+      ...prev,
+      content: { ...prev.content, heroImage: url }
     }));
   };
 
@@ -144,23 +153,34 @@ const Builder = () => {
 
   const renderDynamicList = (arrayName, title, color, fields) => {
     const list = formData.content[arrayName] || [];
-    const defaultItem = fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {});
+    const defaultItem = fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), { image: '' });
 
     return (
       <div className="space-y-4">
         <h4 className={`text-[${color}] font-bold uppercase text-sm tracking-widest mt-4`}>{title}</h4>
         {list.map((item, i) => (
-          <div key={i} className="bg-white/5 p-3 rounded-lg border border-white/5 relative group">
-            <button type="button" onClick={() => handleRemoveArrayItem(arrayName, i)} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div key={i} className="bg-white/5 p-3 rounded-lg border border-white/5 relative group flex flex-col md:flex-row gap-4">
+            <button type="button" onClick={() => handleRemoveArrayItem(arrayName, i)} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity z-20 bg-[#0a0a10] rounded-full p-1">
               <Trash2 className="w-4 h-4" />
             </button>
-            {fields.map((field, idx) => (
-              field.type === 'textarea' ? (
-                <textarea key={idx} placeholder={field.placeholder} rows={field.rows || 2} value={item[field.name] || ''} onChange={(e) => handleArrayChange(arrayName, i, field.name, e.target.value)} className="w-full bg-transparent text-sm text-gray-300 px-2 py-1 focus:outline-none focus:border-b focus:border-white/20 mb-2"></textarea>
-              ) : (
-                <input key={idx} type="text" placeholder={field.placeholder} value={item[field.name] || ''} onChange={(e) => handleArrayChange(arrayName, i, field.name, e.target.value)} className={`w-full bg-transparent border-b border-white/10 px-2 py-1 text-white mb-2 focus:outline-none focus:border-[${color}] ${field.bold ? 'font-bold' : ''}`} />
-              )
-            ))}
+            
+            <div className="w-full md:w-1/3">
+              <ImageUpload 
+                currentImage={item.image} 
+                onUpload={(url) => handleArrayChange(arrayName, i, 'image', url)} 
+                label="Photo (Optionnel)"
+              />
+            </div>
+            
+            <div className="flex-1 flex flex-col justify-center">
+              {fields.map((field, idx) => (
+                field.type === 'textarea' ? (
+                  <textarea key={idx} placeholder={field.placeholder} rows={field.rows || 2} value={item[field.name] || ''} onChange={(e) => handleArrayChange(arrayName, i, field.name, e.target.value)} className="w-full bg-transparent text-sm text-gray-300 px-2 py-1 focus:outline-none focus:border-b focus:border-white/20 mb-2"></textarea>
+                ) : (
+                  <input key={idx} type="text" placeholder={field.placeholder} value={item[field.name] || ''} onChange={(e) => handleArrayChange(arrayName, i, field.name, e.target.value)} className={`w-full bg-transparent border-b border-white/10 px-2 py-1 text-white mb-2 focus:outline-none focus:border-[${color}] ${field.bold ? 'font-bold' : ''}`} />
+                )
+              ))}
+            </div>
           </div>
         ))}
         <button type="button" onClick={() => handleAddArrayItem(arrayName, defaultItem)} className={`w-full py-2 bg-[${color}]/10 hover:bg-[${color}]/20 text-[${color}] rounded-lg flex justify-center items-center text-sm font-bold transition-colors`}>
@@ -170,7 +190,6 @@ const Builder = () => {
     );
   };
 
-  // STEP 0: THEME SELECTION (FULL SCREEN)
   if (currentStep === 0) {
     return (
       <div className="min-h-screen bg-[#020205] text-white font-['Rajdhani'] flex flex-col">
@@ -221,7 +240,6 @@ const Builder = () => {
     );
   }
 
-  // STEP 1 & 2: SPLIT SCREEN (FORM + PREVIEW)
   return (
     <div className="min-h-screen bg-[#020205] text-white font-['Rajdhani'] flex flex-col overflow-hidden">
       <Navbar />
@@ -277,6 +295,11 @@ const Builder = () => {
                 <h3 className="text-xl font-bold text-[var(--color-neon-blue)] border-b border-white/10 pb-2 uppercase tracking-widest flex justify-between items-center">
                   <span>2. Votre Contenu</span>
                 </h3>
+                
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Image Principale (Bannière)</label>
+                  <ImageUpload currentImage={formData.content.heroImage} onUpload={handleHeroImageUpload} label="Image de fond" />
+                </div>
 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Phrase d'accroche (Slogan)</label>
@@ -345,12 +368,12 @@ const Builder = () => {
         </div>
 
         {/* RIGHT PANE: Live Preview */}
-        <div className="flex-1 bg-white h-full overflow-y-auto relative hidden lg:block custom-scrollbar shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-10">
+        <div className="flex-1 bg-white h-full overflow-y-auto relative hidden lg:block custom-scrollbar shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-10" id="preview-container">
           <div className="sticky top-0 w-full bg-[#1a1a24] text-white text-xs text-center py-2 z-50 shadow-md font-bold tracking-widest uppercase flex justify-center items-center">
             <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
             Prévisualisation en direct
           </div>
-          <div className="w-full pointer-events-none">
+          <div className="w-full">
              <ThemeRenderer data={formData} />
           </div>
         </div>
