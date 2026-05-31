@@ -51,36 +51,36 @@ const courseData = {
         title: "Plan de Drone (Animalier)",
         badPrompt: "un aigle qui vole dans le ciel",
         badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", 
-        goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, slow motion at the end, cinematic lighting, 4k, 60fps.",
-        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", 
-        explanation: "Pour la vidéo IA, le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE (slow motion)."
+        goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, cinematic lighting, 4k, 60fps.",
+        goodResultVideo: "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/18/Eagle_flight.webm/Eagle_flight.webm.480p.vp9.webm", 
+        explanation: "Pour la vidéo IA, le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE."
       },
       {
         id: 2,
-        title: "Morphing Cinématographique",
-        badPrompt: "une voiture qui se transforme en robot",
+        title: "Timelapse Macro",
+        badPrompt: "une fleur qui s'ouvre",
         badResultVideo: "https://media.w3.org/2010/05/video/movie_300.mp4", 
-        goodPrompt: "Continuous single take. A red sports car driving fast on a highway smoothly transforming into a metallic robotic cheetah running on the street. Seamless morphing, cinematic lighting.",
-        goodResultVideo: "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4", 
-        explanation: "Les IA vidéos comme Runway ou Haiper ont besoin des mots 'Continuous single take' et 'Seamless morphing' pour éviter les coupures."
+        goodPrompt: "Macro photography timelapse. A beautiful red amaryllis flower slowly blooming and opening its petals. 4k resolution, national geographic style, continuous shot.",
+        goodResultVideo: "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/07/Amaryllis_blooming.webm/Amaryllis_blooming.webm.480p.vp9.webm", 
+        explanation: "Les IA vidéos ont besoin des mots 'Timelapse' et 'Macro photography' pour bien détailler l'éclosion d'une plante de manière continue."
       },
       {
         id: 3,
         title: "Action Rapide (Slow Motion)",
-        badPrompt: "quelqu'un verse du café",
+        badPrompt: "une goutte d'eau qui tombe",
         badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", 
-        goodPrompt: "Slow motion, high-speed camera. A cup of coffee splashing in reverse, liquid reforming into a perfect sphere. Hyper-realistic lighting, macro photography lens, stable physics.",
-        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", 
-        explanation: "Sur des vidéos physiques, préciser 'stable physics' et 'high-speed camera' force l'IA à analyser la gravité correctement."
+        goodPrompt: "Slow motion, high-speed camera. A perfect drop of water impacting a still liquid surface, creating a beautiful crown splash. Macro lens, hyper-realistic physics.",
+        goodResultVideo: "https://upload.wikimedia.org/wikipedia/commons/transcoded/9/9f/Water_drop_impact_on_a_water-surface_-_%281%29.webm/Water_drop_impact_on_a_water-surface_-_%281%29.webm.480p.vp9.webm", 
+        explanation: "Préciser 'stable physics' et 'high-speed camera' force l'IA à analyser la gravité et les fluides correctement."
       },
       {
         id: 4,
         title: "Animation 3D Pixar",
-        badPrompt: "un petit garcon qui sourit 3d",
+        badPrompt: "une fille avec un dragon",
         badResultVideo: "https://media.w3.org/2010/05/video/movie_300.mp4", 
-        goodPrompt: "A cute 3D character, young boy with curly brown hair, wearing a yellow hoodie, big expressive eyes, looking surprised with mouth open, Pixar animation style, octane render, soft studio lighting.",
-        goodResultVideo: "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4", 
-        explanation: "Demander le 'Pixar animation style' couplé à 'octane render' donne ce look de film d'animation à plusieurs millions de dollars."
+        goodPrompt: "A cute 3D character, young female warrior with short hair looking at a tiny flying dragon, Pixar animation style, octane render, soft studio lighting, cinematic trailer.",
+        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", 
+        explanation: "Demander le 'Pixar animation style' couplé à 'octane render' donne ce look de film d'animation 3D professionnel."
       }
     ]
   },
@@ -102,7 +102,7 @@ const courseData = {
         badPrompt: "fais moi un tableau de bord",
         badResultImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop", 
         goodPrompt: "Crée un composant React complet pour un Dashboard SaaS B2B. Utilise TailwindCSS, Recharts pour les graphiques, et Lucide-React pour les icônes. Ajoute un mode sombre, des cartes statistiques avec KPI en hausse, et un design Glassmorphism.",
-        goodResultImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop", 
+        goodResultImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop", 
         explanation: "Il faut imposer les bibliothèques exactes (Tailwind, Recharts, Lucide) pour que Claude génère un rendu magnifique."
       },
       {
@@ -111,7 +111,7 @@ const courseData = {
         badPrompt: "un site web en 3d",
         badResultImage: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format&fit=crop", 
         goodPrompt: "Génère une scène Three.js intégrée dans une page HTML. Affiche un globe terrestre interactif avec des points lumineux pour chaque ville majeure. Ajoute des contrôles OrbitControls et un fond étoilé dynamique.",
-        goodResultImage: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format&fit=crop", 
+        goodResultImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop", 
         explanation: "Claude connaît Three.js par cœur, mais il faut lui préciser quels objets 3D (globe) et contrôles (OrbitControls) inclure."
       },
       {
@@ -120,7 +120,7 @@ const courseData = {
         badPrompt: "une page de vente pour mon ebook",
         badResultImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000&auto=format&fit=crop", 
         goodPrompt: "Code une Landing Page HTML/Tailwind pour un Ebook sur l'IA. Structure : 1. Hero Section avec un gros titre. 2. Preuve Sociale (3 logos). 3. Section Bénéfices. 4. Appel à l'action. Utilise un design épuré inspiré de Stripe avec des dégradés subtils.",
-        goodResultImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop", 
+        goodResultImage: "https://images.unsplash.com/photo-1507238692062-5a042e9e18c4?q=80&w=1000&auto=format&fit=crop", 
         explanation: "Toujours donner la structure exacte des sections (Hero, Preuve sociale, etc.) et une inspiration design (Stripe)."
       }
     ]
@@ -281,7 +281,7 @@ const Courses = () => {
                 {step >= 2 && step < 3 && (
                   <button 
                     onClick={() => setStep(3)} 
-                    className="w-full h-full flex items-center justify-center bg-white text-black font-black uppercase tracking-widest hover:bg-[var(--color-neon-blue)] rounded-lg transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.4)] animate-pulse text-lg"
+                    className="w-full h-full flex items-center justify-center bg-white text-black font-black uppercase tracking-widest hover:bg-[var(--color-neon-blue)] rounded-lg transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.4)] text-xl"
                   >
                     <Play className="w-8 h-8 mr-3" fill="currentColor" /> INJECTER LE PROMPT PREMIUM
                   </button>
