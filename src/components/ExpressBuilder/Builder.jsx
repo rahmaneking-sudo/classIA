@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { CheckCircle2, ArrowRight, Plus, Trash2 } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Plus, Trash2, ArrowLeft } from 'lucide-react';
 import Navbar from '../Navbar';
 import API_BASE_URL from '../../config/api';
 import ThemeRenderer from './ThemeRenderer';
@@ -21,14 +21,14 @@ const THEMES = [
 const Builder = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0); // 0: Theme Selection (Full screen), 1: Info (Split), 2: Content (Split)
 
   const [formData, setFormData] = useState({
     businessName: '',
     slug: '',
     ownerEmail: '',
     whatsapp: '',
-    themeId: 'restaurant',
+    themeId: null,
     content: {
       description: '',
       services: [{ title: '', description: '' }],
@@ -170,6 +170,58 @@ const Builder = () => {
     );
   };
 
+  // STEP 0: THEME SELECTION (FULL SCREEN)
+  if (currentStep === 0) {
+    return (
+      <div className="min-h-screen bg-[#020205] text-white font-['Rajdhani'] flex flex-col">
+        <Navbar />
+        <div className="flex-1 pt-24 px-6 md:px-16 max-w-7xl mx-auto w-full pb-20">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] uppercase tracking-widest">
+              Choisissez votre modèle
+            </h1>
+            <p className="text-gray-400 text-lg">Sélectionnez le secteur d'activité qui correspond à votre entreprise pour commencer la personnalisation.</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {THEMES.map(theme => (
+              <div 
+                key={theme.id}
+                onClick={() => setFormData(prev => ({ ...prev, themeId: theme.id }))}
+                className={`relative cursor-pointer rounded-2xl overflow-hidden border-2 transition-all duration-300 group ${formData.themeId === theme.id ? 'border-[var(--color-neon-blue)] shadow-[0_0_20px_rgba(0,212,255,0.4)] scale-105 z-10' : 'border-white/10 hover:border-white/30 hover:scale-105'}`}
+              >
+                <div className="h-48 relative">
+                  <img src={theme.image} alt={theme.name} className={`w-full h-full object-cover transition-transform duration-700 ${formData.themeId === theme.id ? 'scale-110' : 'group-hover:scale-110'}`} />
+                  <div className={`absolute inset-0 transition-opacity ${formData.themeId === theme.id ? 'bg-black/20' : 'bg-black/50 group-hover:bg-black/30'}`}></div>
+                </div>
+                
+                <div className="absolute bottom-0 w-full bg-gradient-to-t from-black via-black/80 to-transparent p-4 flex items-end justify-between">
+                  <span className="text-white font-bold tracking-wider text-lg">{theme.name}</span>
+                  {formData.themeId === theme.id && (
+                    <div className="bg-[var(--color-neon-blue)] rounded-full text-black p-1 shadow-lg">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 text-center flex justify-center">
+             <button 
+                disabled={!formData.themeId}
+                onClick={() => setCurrentStep(1)} 
+                className="px-12 py-4 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white font-bold text-lg tracking-widest uppercase rounded-full hover:shadow-[0_0_30px_rgba(186,85,211,0.6)] transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Continuer avec ce modèle <ArrowRight className="w-5 h-5 ml-2" />
+              </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 1 & 2: SPLIT SCREEN (FORM + PREVIEW)
   return (
     <div className="min-h-screen bg-[#020205] text-white font-['Rajdhani'] flex flex-col overflow-hidden">
       <Navbar />
@@ -179,8 +231,13 @@ const Builder = () => {
         {/* LEFT PANE: Form */}
         <div className="w-full lg:w-[450px] xl:w-[500px] flex-shrink-0 bg-[#0a0a10] border-r border-white/10 flex flex-col h-full overflow-y-auto custom-scrollbar">
           <div className="p-6 pb-32">
+            
+            <button onClick={() => setCurrentStep(0)} className="flex items-center text-gray-400 hover:text-white mb-6 text-sm uppercase tracking-wider transition-colors">
+              <ArrowLeft className="w-4 h-4 mr-2" /> Changer de modèle
+            </button>
+
             <h1 className="text-3xl font-bold tracking-widest uppercase mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
-              Créer mon site
+              Personnalisation
             </h1>
             <p className="text-gray-400 text-sm mb-8">Remplissez les informations, prévisualisez en direct à droite.</p>
 
@@ -188,7 +245,7 @@ const Builder = () => {
               
               {/* STEP 1: Basic Info */}
               <div className={`space-y-4 ${currentStep !== 1 && 'hidden'}`}>
-                <h3 className="text-xl font-bold text-[var(--color-neon-blue)] border-b border-white/10 pb-2 uppercase tracking-widest">Étape 1 : Informations</h3>
+                <h3 className="text-xl font-bold text-[var(--color-neon-blue)] border-b border-white/10 pb-2 uppercase tracking-widest">1. Informations Générales</h3>
                 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Nom de l'entreprise</label>
@@ -202,60 +259,28 @@ const Builder = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Votre Email</label>
+                  <label className="block text-sm text-gray-400 mb-1">Votre Email Administratif</label>
                   <input type="email" name="ownerEmail" value={formData.ownerEmail} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="contact@email.com" />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Numéro WhatsApp</label>
-                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="77..." />
+                  <label className="block text-sm text-gray-400 mb-1">Numéro WhatsApp (Visible par les clients)</label>
+                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: 22177..." />
                 </div>
 
-                <button type="button" onClick={() => setCurrentStep(2)} className="w-full py-3 mt-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-colors flex justify-center items-center">
-                  Suivant <ArrowRight className="w-4 h-4 ml-2" />
+                <button type="button" onClick={() => setCurrentStep(2)} className="w-full py-4 mt-6 bg-white/10 hover:bg-white/20 text-white font-bold tracking-widest uppercase rounded-lg transition-colors flex justify-center items-center">
+                  Étape Suivante : Le Contenu <ArrowRight className="w-4 h-4 ml-2" />
                 </button>
               </div>
 
-              {/* STEP 2: Theme Selection */}
-              <div className={`space-y-4 ${currentStep !== 2 && 'hidden'}`}>
-                <h3 className="text-xl font-bold text-[var(--color-neon-blue)] border-b border-white/10 pb-2 uppercase tracking-widest">Étape 2 : Secteur d'activité</h3>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  {THEMES.map(theme => (
-                    <div 
-                      key={theme.id}
-                      onClick={() => setFormData(prev => ({ ...prev, themeId: theme.id }))}
-                      className={`relative cursor-pointer rounded-xl overflow-hidden border-2 transition-all duration-300 group ${formData.themeId === theme.id ? 'border-[var(--color-neon-blue)] shadow-[0_0_15px_rgba(0,212,255,0.3)]' : 'border-transparent hover:border-white/20'}`}
-                    >
-                      <img src={theme.image} alt={theme.name} className="w-full h-24 object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex items-end p-2">
-                        <span className="text-white font-bold text-sm tracking-wider leading-tight">{theme.name}</span>
-                      </div>
-                      {formData.themeId === theme.id && (
-                        <div className="absolute top-2 right-2 bg-[var(--color-neon-blue)] rounded-full text-black p-0.5 shadow-lg">
-                          <CheckCircle2 className="w-4 h-4" />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex space-x-2 pt-4">
-                  <button type="button" onClick={() => setCurrentStep(1)} className="w-1/3 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors">Retour</button>
-                  <button type="button" onClick={() => setCurrentStep(3)} className="w-2/3 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-colors flex justify-center items-center">
-                    Personnaliser <ArrowRight className="w-4 h-4 ml-2" />
-                  </button>
-                </div>
-              </div>
-
-              {/* STEP 3: Content Customization */}
-              <div className={`space-y-6 ${currentStep !== 3 && 'hidden'}`}>
+              {/* STEP 2: Content Customization */}
+              <div className={`space-y-6 ${currentStep !== 2 && 'hidden'}`}>
                 <h3 className="text-xl font-bold text-[var(--color-neon-blue)] border-b border-white/10 pb-2 uppercase tracking-widest flex justify-between items-center">
-                  <span>Étape 3 : Contenu</span>
+                  <span>2. Votre Contenu</span>
                 </h3>
 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Phrase d'accroche (Slogan)</label>
-                  <textarea name="description" value={formData.content.description} onChange={handleContentChange} rows="2" className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Entrez votre slogan..."></textarea>
+                  <textarea name="description" value={formData.content.description} onChange={handleContentChange} rows="2" className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Les meilleures saveurs de Dakar..."></textarea>
                 </div>
 
                 {/* DYNAMIC FIELDS BASED ON THEME */}
@@ -303,14 +328,14 @@ const Builder = () => {
                   { name: 'desc', type: 'textarea', placeholder: 'Description du travail réalisé...' }
                 ])}
 
-                <div className="flex space-x-2 pt-4">
-                  <button type="button" onClick={() => setCurrentStep(2)} className="w-1/3 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors">Retour</button>
+                <div className="flex space-x-2 pt-6 border-t border-white/10">
+                  <button type="button" onClick={() => setCurrentStep(1)} className="w-1/3 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors font-bold uppercase text-sm tracking-wider">Retour</button>
                   <button 
                     type="submit" 
                     disabled={loading}
                     className="w-2/3 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white font-bold tracking-widest uppercase rounded-lg hover:shadow-[0_0_20px_rgba(186,85,211,0.5)] transition-all flex items-center justify-center disabled:opacity-50"
                   >
-                    {loading ? 'Génération...' : 'Terminer & Générer'}
+                    {loading ? 'Génération...' : 'Créer mon site'}
                   </button>
                 </div>
               </div>
