@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { Plus, Trash2, Edit2, Play, Image as ImageIcon, MonitorPlay, Video } from 'lucide-react';
+import { Plus, Trash2, Play, Image as ImageIcon, MonitorPlay, Video } from 'lucide-react';
 
 const AdminSimulations = () => {
   const [simulations, setSimulations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
 
   const Toast = Swal.mixin({
     background: '#0a0a10',
@@ -21,25 +22,23 @@ const AdminSimulations = () => {
   });
 
   const initialFormState = {
-    category: 'gemini',
+    category: 'Omni',
     title: '',
-    badPrompt: '',
-    badMediaUrl: '',
-    badMediaType: 'image',
-    goodPrompt: '',
-    goodMediaUrl: '',
-    goodMediaType: 'youtube',
+    prompt: '',
+    mediaUrl: '',
+    mediaType: 'youtube',
     explanation: ''
   };
 
   const [formData, setFormData] = useState(initialFormState);
+  const [customCategory, setCustomCategory] = useState('');
 
   const fetchSimulations = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/simulations`);
       setSimulations(response.data);
     } catch (err) {
-      Toast.fire('Erreur', 'Impossible de charger les simulations', 'error');
+      Toast.fire('Erreur', 'Impossible de charger les cours', 'error');
     } finally {
       setLoading(false);
     }
@@ -52,7 +51,6 @@ const AdminSimulations = () => {
     init();
   }, []);
 
-  // Ouvre le formulaire automatiquement s'il n'y a pas de vidéos
   useEffect(() => {
     if (!loading && simulations.length === 0) {
       setShowForm(true);
@@ -61,6 +59,22 @@ const AdminSimulations = () => {
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCategoryChange = (e) => {
+    const val = e.target.value;
+    if (val === 'custom') {
+      setIsCustomCategory(true);
+      setFormData({ ...formData, category: '' });
+    } else {
+      setIsCustomCategory(false);
+      setFormData({ ...formData, category: val });
+    }
+  };
+
+  const handleCustomCategoryChange = (e) => {
+    setCustomCategory(e.target.value);
+    setFormData({ ...formData, category: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -72,6 +86,8 @@ const AdminSimulations = () => {
       });
       Toast.fire('Succès', 'Cours ajouté avec succès !', 'success');
       setFormData(initialFormState);
+      setCustomCategory('');
+      setIsCustomCategory(false);
       setShowForm(false);
       fetchSimulations();
     } catch (err) {
@@ -103,6 +119,11 @@ const AdminSimulations = () => {
     }
   };
 
+  // Extraire les catégories uniques pour les suggestions
+  const uniqueCategories = [...new Set(simulations.map(s => s.category))];
+  const defaultCategories = ['Omni', 'Omni menda de Gemini', 'Flow', 'cleanmotion', 'cleanmotion control', 'siddance 2.0'];
+  const allCategories = [...new Set([...defaultCategories, ...uniqueCategories])];
+
   if (loading) return <div className="text-center p-12 text-[var(--color-neon-blue)] animate-pulse">Chargement de vos vidéos...</div>;
 
   return (
@@ -113,7 +134,7 @@ const AdminSimulations = () => {
           onClick={() => setShowForm(!showForm)}
           className={`${showForm ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-[var(--color-neon-blue)] text-black hover:shadow-[0_0_15px_rgba(0,212,255,0.4)]'} px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all uppercase tracking-widest text-sm`}
         >
-          {showForm ? 'Annuler' : <><Plus className="w-5 h-5" /> Ajouter une Vidéo / Cours</>}
+          {showForm ? 'Annuler' : <><Plus className="w-5 h-5" /> Ajouter un Cours</>}
         </button>
       </div>
 
@@ -122,71 +143,66 @@ const AdminSimulations = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Catégorie</label>
-                <select name="category" value={formData.category} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white">
-                  <option value="gemini">Gemini / Midjourney (Images)</option>
-                  <option value="kling">Kling AI / Haiper (Vidéos)</option>
-                  <option value="claude">Claude 3.5 (Jeux/Code)</option>
-                </select>
+                <label className="block text-sm text-gray-400 mb-2 font-bold">Catégorie du Cours</label>
+                {!isCustomCategory ? (
+                  <select 
+                    value={formData.category} 
+                    onChange={handleCategoryChange} 
+                    className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-[var(--color-neon-blue)] focus:outline-none"
+                  >
+                    {allCategories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                    <option value="custom" className="text-[var(--color-neon-blue)] font-bold">+ Écrire ma propre catégorie...</option>
+                  </select>
+                ) : (
+                  <div className="flex gap-2">
+                    <input 
+                      autoFocus
+                      required 
+                      type="text" 
+                      value={customCategory} 
+                      onChange={handleCustomCategoryChange} 
+                      className="flex-1 bg-black/50 border border-[var(--color-neon-blue)]/50 rounded-lg p-3 text-white focus:border-[var(--color-neon-blue)] focus:outline-none" 
+                      placeholder="ex: Design 3D..." 
+                    />
+                    <button type="button" onClick={() => setIsCustomCategory(false)} className="px-4 bg-white/10 rounded-lg text-sm hover:bg-white/20">Annuler</button>
+                  </div>
+                )}
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2 font-bold">Titre du Cours / Vidéo</label>
-                <input required type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/30 rounded-lg p-3 text-white focus:border-[var(--color-neon-blue)] focus:outline-none transition-colors" placeholder="ex: Comment faire voler un Dragon" />
+                <label className="block text-sm text-gray-400 mb-2 font-bold">Titre de la Vidéo</label>
+                <input required type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/30 rounded-lg p-3 text-white focus:border-[var(--color-neon-blue)] focus:outline-none transition-colors" placeholder="ex: Comment animer une image" />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-white/10 pt-6">
-              <div className="space-y-4">
-                <h3 className="text-[var(--color-neon-purple)] font-bold uppercase tracking-widest border-b border-[var(--color-neon-purple)]/30 pb-2">Mauvais Résultat</h3>
-                <div>
-                  <label className="block text-xs text-gray-400 mb-1">Mauvais Prompt</label>
-                  <textarea required name="badPrompt" value={formData.badPrompt} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" rows="3" />
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image</label>
-                    <input required type="text" name="badMediaUrl" value={formData.badMediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" placeholder="https://youtube.com/watch?v=..." />
-                  </div>
-                  <div className="w-1/3">
-                    <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
-                    <select name="badMediaType" value={formData.badMediaType} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm">
-                      <option value="image">Image (JPG/PNG)</option>
-                      <option value="video">Vidéo MP4 directe</option>
-                      <option value="youtube">Lien YouTube</option>
-                    </select>
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 font-bold">Prompt Utilisé (Optionnel mais recommandé)</label>
+                <textarea name="prompt" value={formData.prompt} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" rows="3" placeholder="Écris le prompt ici pour que l'étudiant puisse le copier..." />
               </div>
-
-              <div className="space-y-4">
-                <h3 className="text-[var(--color-neon-blue)] font-bold uppercase tracking-widest border-b border-[var(--color-neon-blue)]/30 pb-2">Bon Résultat (Premium)</h3>
-                <div>
-                  <label className="block text-xs text-gray-400 mb-1">Prompt Premium</label>
-                  <textarea required name="goodPrompt" value={formData.goodPrompt} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" rows="3" />
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image (Ton Rendu HQ)</label>
-                    <input required type="text" name="goodMediaUrl" value={formData.goodMediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/50 rounded-lg p-3 text-white text-sm focus:border-[var(--color-neon-blue)] focus:outline-none" placeholder="https://youtube.com/watch?v=..." />
-                  </div>
-                  <div className="w-1/3">
-                    <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
-                    <select name="goodMediaType" value={formData.goodMediaType} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm">
-                      <option value="image">Image (JPG/PNG)</option>
-                      <option value="video">Vidéo MP4 directe</option>
-                      <option value="youtube">Lien YouTube</option>
-                    </select>
-                  </div>
-                </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 font-bold">Explication / Astuce du formateur</label>
+                <textarea required name="explanation" value={formData.explanation} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" rows="3" placeholder="Donne un conseil sur cette technique..." />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">Explication du formateur</label>
-              <textarea required name="explanation" value={formData.explanation} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white" rows="2" placeholder="Pourquoi le prompt premium est-il meilleur ?" />
+            <div className="flex gap-4 p-4 bg-white/5 rounded-xl border border-[var(--color-neon-purple)]/20">
+              <div className="flex-1">
+                <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image</label>
+                <input required type="text" name="mediaUrl" value={formData.mediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/50 rounded-lg p-3 text-white text-sm focus:border-[var(--color-neon-blue)] focus:outline-none" placeholder="https://youtube.com/watch?v=..." />
+              </div>
+              <div className="w-1/3">
+                <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
+                <select name="mediaType" value={formData.mediaType} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm">
+                  <option value="youtube">Lien YouTube</option>
+                  <option value="video">Vidéo MP4 directe</option>
+                  <option value="image">Image (JPG/PNG)</option>
+                </select>
+              </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-4">
               <button type="submit" className="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-10 py-4 rounded-xl font-black tracking-widest uppercase hover:shadow-[0_0_30px_rgba(186,85,211,0.6)] transition-all transform hover:scale-105">
                 ENREGISTRER CE COURS
               </button>
@@ -201,18 +217,17 @@ const AdminSimulations = () => {
             <tr className="bg-white/5 text-gray-400 text-xs uppercase tracking-widest">
               <th className="p-4 border-b border-white/10 font-bold">Catégorie</th>
               <th className="p-4 border-b border-white/10 font-bold">Titre</th>
-              <th className="p-4 border-b border-white/10 font-bold">Médias</th>
+              <th className="p-4 border-b border-white/10 font-bold">Type</th>
               <th className="p-4 border-b border-white/10 font-bold text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {simulations.map((sim) => (
               <tr key={sim._id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="p-4 font-bold text-white uppercase text-xs">{sim.category}</td>
+                <td className="p-4 font-bold text-[var(--color-neon-blue)] uppercase text-xs">{sim.category}</td>
                 <td className="p-4 text-gray-300 font-bold">{sim.title}</td>
-                <td className="p-4 text-gray-400 text-xs">
-                  <div>Bad: {getMediaIcon(sim.badMediaType)} {sim.badMediaType}</div>
-                  <div>Good: {getMediaIcon(sim.goodMediaType)} {sim.goodMediaType}</div>
+                <td className="p-4 text-gray-400 text-xs flex items-center gap-1 mt-1">
+                  {getMediaIcon(sim.mediaType)} <span className="uppercase">{sim.mediaType}</span>
                 </td>
                 <td className="p-4 text-right">
                   <button onClick={() => handleDelete(sim._id)} className="text-red-500 hover:text-red-400 bg-red-500/10 p-2 rounded-lg transition-all">
@@ -227,7 +242,7 @@ const AdminSimulations = () => {
                   <div className="flex flex-col items-center justify-center">
                     <Video className="w-16 h-16 text-gray-600 mb-4" />
                     <h3 className="text-2xl font-bold text-gray-400 mb-2">Aucun cours pour le moment</h3>
-                    <p className="mb-6">C'est vide ! Clique sur le bouton en haut à droite pour ajouter ta première vidéo YouTube.</p>
+                    <p className="mb-6">C'est vide ! Clique sur le bouton en haut à droite pour ajouter ta première vidéo.</p>
                     <button 
                       onClick={() => setShowForm(true)}
                       className="bg-[var(--color-neon-blue)] text-black px-6 py-3 rounded-lg font-bold uppercase tracking-widest hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all"

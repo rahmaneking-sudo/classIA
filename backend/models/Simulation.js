@@ -3,40 +3,25 @@ import mongoose from 'mongoose';
 const simulationSchema = new mongoose.Schema({
   category: {
     type: String,
-    required: true,
-    enum: ['gemini', 'kling', 'claude']
+    required: true
   },
   title: {
     type: String,
     required: true
   },
-  badPrompt: {
+  prompt: {
     type: String,
     required: true
   },
-  badMediaUrl: {
+  mediaUrl: {
     type: String,
     required: true
   },
-  badMediaType: {
+  mediaType: {
     type: String,
     required: true,
     enum: ['image', 'video', 'youtube'],
-    default: 'image'
-  },
-  goodPrompt: {
-    type: String,
-    required: true
-  },
-  goodMediaUrl: {
-    type: String,
-    required: true
-  },
-  goodMediaType: {
-    type: String,
-    required: true,
-    enum: ['image', 'video', 'youtube'],
-    default: 'image'
+    default: 'youtube'
   },
   explanation: {
     type: String,

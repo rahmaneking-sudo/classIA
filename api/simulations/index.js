@@ -3,7 +3,7 @@ import { protectAdmin } from '../../_lib/protect.js';
 import Simulation from '../../backend/models/Simulation.js';
 
 export default async function handler(req, res) {
-  // GET /api/simulations — Liste de toutes les simulations
+  // GET /api/simulations — Liste de tous les cours
   if (req.method === 'GET') {
     try {
       await connectDB();
@@ -11,11 +11,11 @@ export default async function handler(req, res) {
       return res.status(200).json(simulations);
     } catch (error) {
       console.error('Fetch simulations error:', error);
-      return res.status(500).json({ message: 'Erreur lors de la récupération des simulations', error: error.message });
+      return res.status(500).json({ message: 'Erreur lors de la récupération des cours', error: error.message });
     }
   }
 
-  // POST /api/simulations — Ajouter une simulation
+  // POST /api/simulations — Ajouter un cours
   if (req.method === 'POST') {
     const admin = await protectAdmin(req);
     if (!admin) return res.status(401).json({ message: 'Non autorisé' });
@@ -25,24 +25,18 @@ export default async function handler(req, res) {
       const {
         category,
         title,
-        badPrompt,
-        badMediaUrl,
-        badMediaType,
-        goodPrompt,
-        goodMediaUrl,
-        goodMediaType,
+        prompt,
+        mediaUrl,
+        mediaType,
         explanation
       } = req.body;
 
       const simulation = new Simulation({
         category,
         title,
-        badPrompt,
-        badMediaUrl,
-        badMediaType,
-        goodPrompt,
-        goodMediaUrl,
-        goodMediaType,
+        prompt,
+        mediaUrl,
+        mediaType,
         explanation
       });
 
