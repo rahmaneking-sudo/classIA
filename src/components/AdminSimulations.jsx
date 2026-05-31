@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { Plus, Trash2, Edit2, Play, Image as ImageIcon, Youtube, Video } from 'lucide-react';
+import { Plus, Trash2, Edit2, Play, Image as ImageIcon, MonitorPlay, Video } from 'lucide-react';
 
 const AdminSimulations = () => {
   const [simulations, setSimulations] = useState([]);
@@ -76,7 +76,7 @@ const AdminSimulations = () => {
   const getMediaIcon = (type) => {
     switch(type) {
       case 'image': return <ImageIcon className="w-4 h-4 inline mr-1" />;
-      case 'youtube': return <Youtube className="w-4 h-4 inline mr-1 text-red-500" />;
+      case 'youtube': return <MonitorPlay className="w-4 h-4 inline mr-1 text-red-500" />;
       case 'video': return <Video className="w-4 h-4 inline mr-1 text-[var(--color-neon-blue)]" />;
       default: return null;
     }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Play, Sparkles, AlertCircle, CheckCircle2, ChevronRight, ChevronLeft, Video, Image as ImageIcon, Youtube, ArrowLeft, BookOpen } from 'lucide-react';
+import { Play, Sparkles, AlertCircle, CheckCircle2, ChevronRight, ChevronLeft, Video, Image as ImageIcon, MonitorPlay, ArrowLeft, BookOpen } from 'lucide-react';
 import API_BASE_URL from '../config/api';
 
 const Typewriter = ({ text, onComplete, speed = 30 }) => {
