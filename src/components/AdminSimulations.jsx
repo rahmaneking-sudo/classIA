@@ -121,7 +121,7 @@ const AdminSimulations = () => {
 
   // Extraire les catégories uniques pour les suggestions
   const uniqueCategories = [...new Set(simulations.map(s => s.category))];
-  const defaultCategories = ['Omni', 'Omni menda de Gemini', 'Flow', 'cleanmotion', 'cleanmotion control', 'siddance 2.0'];
+  const defaultCategories = ['kling', 'motion kling 03', 'seedance 2.0', 'Omni', 'Gemini', 'ChatGPT', 'Claude', 'FLOW'];
   const allCategories = [...new Set([...defaultCategories, ...uniqueCategories])];
 
   if (loading) return <div className="text-center p-12 text-[var(--color-neon-blue)] animate-pulse">Chargement de vos vidéos...</div>;
