@@ -128,7 +128,7 @@ const Courses = () => {
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-[60000ms] ease-linear scale-110"
         style={{ backgroundImage: 'url("/courses_assets/bright_classroom.png")' }}
       />
-      <div className="fixed inset-0 z-0 bg-gradient-to-b from-[#020205]/70 via-[#0a0a10]/50 to-[#020205]/80 backdrop-blur-sm" />
+      <div className="fixed inset-0 z-0 bg-gradient-to-b from-[#020205]/50 via-[#0a0a10]/30 to-[#020205]/60" />
 
       {/* Main Content */}
       <div className="relative z-10 py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col">
