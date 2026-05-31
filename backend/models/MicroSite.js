@@ -34,25 +34,8 @@ const microSiteSchema = new mongoose.Schema({
     default: false, // Remains false until admin receives payment and activates it
   },
   content: {
-    // We store all dynamic content as a flexible JSON object
-    description: String,
-    heroImage: String,
-    services: [{
-      title: String,
-      description: String,
-      price: String,
-      icon: String
-    }],
-    aboutUs: String,
-    socialLinks: {
-      instagram: String,
-      facebook: String,
-      linkedin: String
-    },
-    customColors: {
-      primary: String,
-      secondary: String
-    }
+    type: mongoose.Schema.Types.Mixed,
+    default: {}
   }
 }, { timestamps: true });
 

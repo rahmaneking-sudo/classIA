@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../../config/api';
-import { Lock, MessageCircle, ChevronRight, LayoutDashboard, Send } from 'lucide-react';
+import { Lock, MessageCircle, LayoutDashboard } from 'lucide-react';
+import ThemeRenderer from './ThemeRenderer';
 
 const SiteViewer = () => {
   const { slug } = useParams();
@@ -52,17 +53,17 @@ const SiteViewer = () => {
     
     return (
       <div className="min-h-screen bg-[#020205] text-white flex items-center justify-center p-6 font-['Rajdhani']">
-        <div className="bg-[#0a0a10]/80 border border-[var(--color-neon-purple)]/50 rounded-2xl p-8 max-w-lg w-full text-center backdrop-blur-md relative overflow-hidden">
+        <div className="bg-[#0a0a10]/80 border border-[var(--color-neon-purple)]/50 rounded-2xl p-8 max-w-lg w-full text-center backdrop-blur-md relative overflow-hidden shadow-[0_0_30px_rgba(186,85,211,0.2)]">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]"></div>
           
           <div className="bg-[var(--color-neon-purple)]/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Lock className="w-10 h-10 text-[var(--color-neon-purple)]" />
           </div>
           
-          <h1 className="text-3xl font-bold mb-4 uppercase tracking-widest">Site en attente d'activation</h1>
+          <h1 className="text-3xl font-bold mb-4 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">Site en attente d'activation</h1>
           <p className="text-gray-400 mb-8">
-            Votre site <strong className="text-white">{siteData.businessName}</strong> a été généré avec succès ! 
-            Pour le rendre visible au public, veuillez procéder au règlement des frais de création.
+            Votre site <strong className="text-white">{siteData.businessName}</strong> a été généré avec succès ! <br/><br/>
+            Il a exactement le même design que ce que vous avez vu dans la prévisualisation en direct. Pour le rendre visible au public, veuillez procéder au règlement des frais de création.
           </p>
           
           <div className="bg-white/5 rounded-xl p-4 mb-8 text-left border border-white/10">
@@ -84,105 +85,22 @@ const SiteViewer = () => {
             <MessageCircle className="w-5 h-5 mr-2" /> Payer & Activer
           </a>
           
-          <p className="text-xs text-gray-500 mt-6">Une fois le paiement effectué, votre site sera activé instantanément par notre équipe.</p>
+          <p className="text-xs text-gray-500 mt-6">Une fois le paiement effectué, votre site sera activé instantanément par notre équipe et le lien <span className="text-[var(--color-neon-blue)]">classia.com/site/{siteData.slug}</span> sera en ligne.</p>
         </div>
       </div>
     );
   }
 
-  // --- RENDU DU SITE ACTIF (THÈMES) ---
-  const { themeId, businessName, content, whatsapp } = siteData;
-
-  // Thème Dark Tech (Par défaut)
-  let themeStyles = {
-    bg: 'bg-[#020205]',
-    cardBg: 'bg-[#0a0a10]',
-    text: 'text-white',
-    accent: 'text-[var(--color-neon-blue)]',
-    border: 'border-[var(--color-neon-blue)]/20',
-    button: 'bg-[var(--color-neon-blue)] hover:bg-[var(--color-neon-purple)]',
-  };
-
-  // Thème Light Minimalist
-  if (themeId === 'light') {
-    themeStyles = {
-      bg: 'bg-gray-50',
-      cardBg: 'bg-white',
-      text: 'text-gray-900',
-      accent: 'text-blue-600',
-      border: 'border-gray-200',
-      button: 'bg-blue-600 hover:bg-blue-700',
-    };
-  }
-
-  // Thème Luxury Gold
-  if (themeId === 'luxury') {
-    themeStyles = {
-      bg: 'bg-[#111]',
-      cardBg: 'bg-[#1a1a1a]',
-      text: 'text-[#f4f4f4]',
-      accent: 'text-[#d4af37]',
-      border: 'border-[#d4af37]/30',
-      button: 'bg-[#d4af37] text-black hover:bg-[#b5952f]',
-    };
-  }
-
-  const handleContact = () => {
-    window.open(`https://wa.me/${whatsapp}`, '_blank');
-  };
-
+  // --- RENDU DU SITE ACTIF VIA LE THEME RENDERER ---
   return (
-    <div className={`min-h-screen ${themeStyles.bg} ${themeStyles.text} font-['Rajdhani']`}>
-      {/* Badge "Créé avec ClassIA" */}
-      <a href="/creation-site" target="_blank" rel="noopener noreferrer" className="fixed bottom-4 right-4 bg-black/80 backdrop-blur border border-white/10 text-white text-xs px-3 py-2 rounded-full flex items-center z-50 hover:bg-black transition-colors">
+    <div className="relative">
+      <ThemeRenderer data={siteData} />
+      
+      {/* Badge "Créé avec ClassIA" (Optionnel) */}
+      <a href="/creation-site" target="_blank" rel="noopener noreferrer" className="fixed bottom-4 right-4 bg-black/80 backdrop-blur border border-white/10 text-white text-xs px-3 py-2 rounded-full flex items-center z-50 hover:bg-black transition-colors font-['Rajdhani']">
         <LayoutDashboard className="w-3 h-3 mr-2 text-[var(--color-neon-purple)]" />
         Créé avec ClassIA
       </a>
-
-      {/* Hero Section */}
-      <header className={`pt-32 pb-20 px-6 text-center border-b ${themeStyles.border}`}>
-        <div className="max-w-4xl mx-auto">
-          <h1 className={`text-5xl md:text-7xl font-bold tracking-widest uppercase mb-6 ${themeId === 'dark' ? 'text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]' : themeStyles.accent}`}>
-            {businessName}
-          </h1>
-          <p className={`text-xl md:text-2xl opacity-80 max-w-2xl mx-auto leading-relaxed mb-10`}>
-            {content.description}
-          </p>
-          <button 
-            onClick={handleContact}
-            className={`px-8 py-4 ${themeStyles.button} text-white font-bold tracking-widest uppercase rounded-xl shadow-lg transition-all flex items-center mx-auto`}
-          >
-            <Send className="w-5 h-5 mr-2" /> Nous contacter
-          </button>
-        </div>
-      </header>
-
-      {/* Services Section */}
-      {content.services && content.services.length > 0 && (
-        <section className="py-20 px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className={`text-3xl font-bold uppercase tracking-widest mb-12 text-center ${themeStyles.accent}`}>
-              Nos Services
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {content.services.map((service, idx) => (
-                <div key={idx} className={`${themeStyles.cardBg} border ${themeStyles.border} p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300`}>
-                  <h3 className="text-2xl font-bold mb-4 flex items-center">
-                    <ChevronRight className={`w-6 h-6 mr-2 ${themeStyles.accent}`} />
-                    {service.title}
-                  </h3>
-                  <p className="opacity-80 leading-relaxed">{service.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Footer */}
-      <footer className={`${themeStyles.cardBg} py-8 border-t ${themeStyles.border} text-center`}>
-        <p className="opacity-60 text-sm">© {new Date().getFullYear()} {businessName}. Tous droits réservés.</p>
-      </footer>
     </div>
   );
 };
