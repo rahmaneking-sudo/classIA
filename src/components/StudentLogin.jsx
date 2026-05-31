@@ -66,7 +66,7 @@ const StudentLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020205] flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[var(--color-neon-blue)]/20 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="relative bg-[#0a0a10]/80 backdrop-blur-xl border border-[var(--color-neon-blue)]/30 p-8 rounded-2xl shadow-[0_0_50px_rgba(0,212,255,0.1)] w-full max-w-md">

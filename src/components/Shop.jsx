@@ -32,7 +32,7 @@ const Shop = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020205] text-white font-['Rajdhani']">
+    <div className="min-h-screen text-white font-['Rajdhani']">
       <Navbar />
 
       <div className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto relative z-10">

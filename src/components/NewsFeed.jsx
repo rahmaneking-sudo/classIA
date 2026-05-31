@@ -57,7 +57,7 @@ const NewsFeed = () => {
   };
 
   return (
-    <div className="py-24 bg-[#0a0a10] min-h-screen relative overflow-hidden">
+    <div className="py-24 min-h-screen relative overflow-hidden">
       
       {/* Background Ambience */}
       <div className="absolute top-0 left-1/4 w-[50%] h-[50%] bg-[var(--color-neon-blue)]/5 blur-[150px] rounded-full pointer-events-none" />

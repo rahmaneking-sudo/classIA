@@ -92,7 +92,7 @@ const Builder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020205] text-white font-['Rajdhani']">
+    <div className="min-h-screen text-white font-['Rajdhani']">
       <Navbar />
       
       <div className="pt-32 pb-20 px-6 max-w-4xl mx-auto relative z-10">
