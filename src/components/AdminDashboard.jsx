@@ -5,6 +5,7 @@ import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
 import AdminSimulations from './AdminSimulations';
 import AdminShop from './AdminShop';
+import AdminMicroSites from './AdminMicroSites';
 
 const AdminDashboard = () => {
   const [leads, setLeads] = useState([]);
@@ -162,9 +163,15 @@ const AdminDashboard = () => {
           </button>
           <button 
             onClick={() => setActiveTab('shop')}
-            className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${activeTab === 'shop' ? 'bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white shadow-[0_0_15px_rgba(186,85,211,0.4)]' : 'bg-[#0a0a10]/80 text-gray-400 border border-white/10 hover:border-white/30'}`}
+            className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${activeTab === 'shop' ? 'bg-[var(--color-neon-blue)] text-white shadow-[0_0_15px_rgba(0,212,255,0.4)]' : 'bg-[#0a0a10]/80 text-gray-400 border border-white/10 hover:border-white/30'}`}
           >
             Boutique
+          </button>
+          <button 
+            onClick={() => setActiveTab('microsites')}
+            className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${activeTab === 'microsites' ? 'bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white shadow-[0_0_15px_rgba(186,85,211,0.4)]' : 'bg-[#0a0a10]/80 text-gray-400 border border-white/10 hover:border-white/30'}`}
+          >
+            Micro-Sites (SaaS)
           </button>
         </div>
 
@@ -238,8 +245,10 @@ const AdminDashboard = () => {
         </div>
         ) : activeTab === 'simulations' ? (
           <AdminSimulations />
-        ) : (
+        ) : activeTab === 'shop' ? (
           <AdminShop />
+        ) : (
+          <AdminMicroSites />
         )}
 
       </div>

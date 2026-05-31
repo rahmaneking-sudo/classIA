@@ -11,6 +11,9 @@ import PromptsLibrary from './components/PromptsLibrary';
 import Courses from './components/Courses';
 import Shop from './components/Shop';
 import NewsFeed from './components/NewsFeed';
+import Landing from './components/ExpressBuilder/Landing';
+import Builder from './components/ExpressBuilder/Builder';
+import SiteViewer from './components/ExpressBuilder/SiteViewer';
 
 function App() {
   return (
@@ -29,6 +32,11 @@ function App() {
           <Route path="/cours" element={<Courses />} />
           <Route path="/boutique" element={<Shop />} />
           <Route path="/actu-ia" element={<NewsFeed />} />
+          
+          {/* Express Builder SaaS Routes */}
+          <Route path="/creation-site" element={<Landing />} />
+          <Route path="/builder" element={<Builder />} />
+          <Route path="/site/:slug" element={<SiteViewer />} />
         </Routes>
       </div>
     </BrowserRouter>

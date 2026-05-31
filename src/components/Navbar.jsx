@@ -11,6 +11,7 @@ const Navbar = () => {
     { name: 'Prompts', href: '/prompts' },
     { name: 'Boutique', href: '/boutique' },
     { name: 'Actu-IA', href: '/actu-ia' },
+    { name: 'Créer mon site', href: '/creation-site' },
   ];
 
   return (
@@ -37,6 +38,7 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+
               <Link
                 to="/login"
                 className="flex items-center gap-2 px-4 py-2 bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 rounded-lg hover:bg-[var(--color-neon-blue)]/20 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all font-bold tracking-widest uppercase text-sm"
