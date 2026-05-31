@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bot, User, Play, Sparkles, AlertCircle, CheckCircle2, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Bot, User, Play, Sparkles, AlertCircle, CheckCircle2, ChevronRight, ChevronLeft, Video } from 'lucide-react';
 
 const courseData = {
   gemini: {
@@ -12,34 +12,18 @@ const courseData = {
         badResultImage: "/courses_assets/bad_cyberpunk.png", 
         goodPrompt: "Cinematic wide angle shot of a cyberpunk metropolis at night, rain pouring down, flying cars leaving neon light trails, photorealistic, 8k resolution, Unreal Engine 5 render, highly detailed, dramatic lighting --ar 16:9",
         goodResultImage: "/courses_assets/cyberpunk.png", 
-        explanation: "Un mauvais prompt donne un résultat basique. Un bon prompt précise le style (Cinematic), la météo (rain), la résolution (8k), et le moteur de rendu (Unreal Engine 5)."
+        explanation: "Un mauvais prompt donne un résultat basique. Un bon prompt précise le style (Cinematic), la météo (rain), la résolution (8k), et le moteur de rendu (Unreal Engine 5).",
+        isVideo: false
       },
       {
         id: 2,
         title: "Portrait Photoréaliste",
         badPrompt: "photo d'un homme en costume de face",
-        badResultImage: "https://images.unsplash.com/photo-1542156822-6924d1a71ace?q=80&w=1000&auto=format&fit=crop", 
+        badResultImage: "/courses_assets/bad_portrait.png", 
         goodPrompt: "Professional headshot photography of a handsome 35-year-old man, tailored navy blue suit, standing in a bright modern glass office, shallow depth of field, natural window lighting, 85mm portrait lens, 8k, ultra-realistic",
-        goodResultImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop", 
-        explanation: "La focale (85mm portrait lens), la lumière (natural window lighting) et la profondeur de champ (shallow depth of field) font toute la différence."
-      },
-      {
-        id: 3,
-        title: "Logo Minimaliste",
-        badPrompt: "logo pour mon entreprise de tech",
-        badResultImage: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=1000&auto=format&fit=crop", 
-        goodPrompt: "A modern minimalist logo for a tech startup, negative space design, flat vector design, clean white background, high contrast, corporate identity, dribbble style, masterpiece --no text --v 6.0",
-        goodResultImage: "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?q=80&w=1000&auto=format&fit=crop", 
-        explanation: "Il faut interdire le texte (--no text) car l'IA ne sait pas bien écrire. Préciser 'flat vector' garantit un logo utilisable."
-      },
-      {
-        id: 4,
-        title: "Design d'Intérieur",
-        badPrompt: "une belle chambre moderne",
-        badResultImage: "https://images.unsplash.com/photo-1522771731478-44bf104a524c?q=80&w=1000&auto=format&fit=crop", 
-        goodPrompt: "Interior design of a luxurious modern bedroom, panoramic floor-to-ceiling windows overlooking a snowy mountain, warm ambient lighting, minimalist furniture, architectural digest style, 8k --ar 16:9",
-        goodResultImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop", 
-        explanation: "Le secret est d'invoquer une référence connue de design (architectural digest style) et de décrire la vue (overlooking a snowy mountain)."
+        goodResultImage: "/courses_assets/good_portrait.png", 
+        explanation: "La focale (85mm portrait lens), la lumière (natural window lighting) et la profondeur de champ (shallow depth of field) font toute la différence.",
+        isVideo: false
       }
     ]
   },
@@ -50,37 +34,21 @@ const courseData = {
         id: 1,
         title: "Plan de Drone (Animalier)",
         badPrompt: "un aigle qui vole dans le ciel",
-        badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", 
+        badResultImage: "/courses_assets/bad_eagle.png", 
         goodPrompt: "FPV Drone tracking shot, extremely fast motion. A majestic golden eagle swooping down through a misty mountain canyon, cinematic lighting, 4k, 60fps.",
-        goodResultVideo: "https://upload.wikimedia.org/wikipedia/commons/transcoded/1/18/Eagle_flight.webm/Eagle_flight.webm.480p.vp9.webm", 
-        explanation: "Pour la vidéo IA, le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE."
+        goodResultImage: "/courses_assets/eagle.png", 
+        explanation: "Pour la vidéo IA, le secret est de définir LE MOUVEMENT DE LA CAMÉRA (FPV Drone, tracking shot) et LA VITESSE.",
+        isVideo: true
       },
       {
         id: 2,
         title: "Timelapse Macro",
         badPrompt: "une fleur qui s'ouvre",
-        badResultVideo: "https://media.w3.org/2010/05/video/movie_300.mp4", 
+        badResultImage: "/courses_assets/bad_flower.png", 
         goodPrompt: "Macro photography timelapse. A beautiful red amaryllis flower slowly blooming and opening its petals. 4k resolution, national geographic style, continuous shot.",
-        goodResultVideo: "https://upload.wikimedia.org/wikipedia/commons/transcoded/0/07/Amaryllis_blooming.webm/Amaryllis_blooming.webm.480p.vp9.webm", 
-        explanation: "Les IA vidéos ont besoin des mots 'Timelapse' et 'Macro photography' pour bien détailler l'éclosion d'une plante de manière continue."
-      },
-      {
-        id: 3,
-        title: "Action Rapide (Slow Motion)",
-        badPrompt: "une goutte d'eau qui tombe",
-        badResultVideo: "https://www.w3schools.com/html/mov_bbb.mp4", 
-        goodPrompt: "Slow motion, high-speed camera. A perfect drop of water impacting a still liquid surface, creating a beautiful crown splash. Macro lens, hyper-realistic physics.",
-        goodResultVideo: "https://upload.wikimedia.org/wikipedia/commons/transcoded/9/9f/Water_drop_impact_on_a_water-surface_-_%281%29.webm/Water_drop_impact_on_a_water-surface_-_%281%29.webm.480p.vp9.webm", 
-        explanation: "Préciser 'stable physics' et 'high-speed camera' force l'IA à analyser la gravité et les fluides correctement."
-      },
-      {
-        id: 4,
-        title: "Animation 3D Pixar",
-        badPrompt: "une fille avec un dragon",
-        badResultVideo: "https://media.w3.org/2010/05/video/movie_300.mp4", 
-        goodPrompt: "A cute 3D character, young female warrior with short hair looking at a tiny flying dragon, Pixar animation style, octane render, soft studio lighting, cinematic trailer.",
-        goodResultVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4", 
-        explanation: "Demander le 'Pixar animation style' couplé à 'octane render' donne ce look de film d'animation 3D professionnel."
+        goodResultImage: "/courses_assets/good_flower.png", 
+        explanation: "Les IA vidéos ont besoin des mots 'Timelapse' et 'Macro photography' pour bien détailler l'éclosion d'une plante de manière continue.",
+        isVideo: true
       }
     ]
   },
@@ -91,37 +59,21 @@ const courseData = {
         id: 1,
         title: "Jeu Rétro (Clone Flappy Bird)",
         badPrompt: "code moi le jeu flappy bird en html stp",
-        badResultImage: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop", 
+        badResultImage: "/courses_assets/bad_code.png", 
         goodPrompt: "Agis comme un développeur senior. Crée un jeu HTML5 Canvas complet (Flappy Bird clone). Ajoute de la gravité fluide, une détection de collision pixel-perfect, un écran de score, et un design Neon Cyberpunk. Utilise un seul fichier.",
         goodResultImage: "/courses_assets/retro.png", 
-        explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable."
+        explanation: "Avec Claude Artifacts, il faut préciser 'HTML5 Canvas', 'physique fluide' et le style visuel voulu pour obtenir un vrai jeu jouable.",
+        isVideo: false
       },
       {
         id: 2,
         title: "Dashboard Data B2B",
         badPrompt: "fais moi un tableau de bord",
-        badResultImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop", 
+        badResultImage: "/courses_assets/bad_dashboard.png", 
         goodPrompt: "Crée un composant React complet pour un Dashboard SaaS B2B. Utilise TailwindCSS, Recharts pour les graphiques, et Lucide-React pour les icônes. Ajoute un mode sombre, des cartes statistiques avec KPI en hausse, et un design Glassmorphism.",
-        goodResultImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop", 
-        explanation: "Il faut imposer les bibliothèques exactes (Tailwind, Recharts, Lucide) pour que Claude génère un rendu magnifique."
-      },
-      {
-        id: 3,
-        title: "Expérience Web 3D",
-        badPrompt: "un site web en 3d",
-        badResultImage: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1000&auto=format&fit=crop", 
-        goodPrompt: "Génère une scène Three.js intégrée dans une page HTML. Affiche un globe terrestre interactif avec des points lumineux pour chaque ville majeure. Ajoute des contrôles OrbitControls et un fond étoilé dynamique.",
-        goodResultImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop", 
-        explanation: "Claude connaît Three.js par cœur, mais il faut lui préciser quels objets 3D (globe) et contrôles (OrbitControls) inclure."
-      },
-      {
-        id: 4,
-        title: "Landing Page Hypnotique",
-        badPrompt: "une page de vente pour mon ebook",
-        badResultImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000&auto=format&fit=crop", 
-        goodPrompt: "Code une Landing Page HTML/Tailwind pour un Ebook sur l'IA. Structure : 1. Hero Section avec un gros titre. 2. Preuve Sociale (3 logos). 3. Section Bénéfices. 4. Appel à l'action. Utilise un design épuré inspiré de Stripe avec des dégradés subtils.",
-        goodResultImage: "https://images.unsplash.com/photo-1507238692062-5a042e9e18c4?q=80&w=1000&auto=format&fit=crop", 
-        explanation: "Toujours donner la structure exacte des sections (Hero, Preuve sociale, etc.) et une inspiration design (Stripe)."
+        goodResultImage: "/courses_assets/good_dashboard.png", 
+        explanation: "Il faut imposer les bibliothèques exactes (Tailwind, Recharts, Lucide) pour que Claude génère un rendu magnifique.",
+        isVideo: false
       }
     ]
   }
@@ -258,10 +210,15 @@ const Courses = () => {
                   <span className="text-gray-600 animate-pulse font-mono">En attente du prompt...</span>
                 ) : (
                   <>
-                    {currentSim.badResultVideo ? (
-                      <video src={currentSim.badResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover opacity-60" />
-                    ) : (
-                      <img src={currentSim.badResultImage} alt="Bad Result" className="w-full h-full object-cover opacity-60" />
+                    <img 
+                      src={currentSim.badResultImage} 
+                      alt="Bad Result" 
+                      className={`w-full h-full object-cover opacity-60 ${currentSim.isVideo ? 'scale-105' : ''}`} 
+                    />
+                    {currentSim.isVideo && (
+                       <div className="absolute top-2 right-2 bg-black/50 text-white/50 px-2 py-1 rounded text-xs flex items-center gap-1 backdrop-blur-sm">
+                         <Video className="w-3 h-3"/> Rendu Vidéo
+                       </div>
                     )}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="bg-red-500/80 text-white px-4 py-1 rounded-full text-sm font-bold uppercase backdrop-blur-md">Résultat Médiocre</span>
@@ -300,10 +257,15 @@ const Courses = () => {
                   <span className="text-[var(--color-neon-blue)]/50 animate-pulse font-mono">Génération en cours...</span>
                 ) : (
                   <>
-                    {currentSim.goodResultVideo ? (
-                      <video src={currentSim.goodResultVideo} autoPlay loop muted playsInline className="w-full h-full object-cover" />
-                    ) : (
-                      <img src={currentSim.goodResultImage} alt="Good Result" className="w-full h-full object-cover" />
+                    <img 
+                      src={currentSim.goodResultImage} 
+                      alt="Good Result" 
+                      className={`w-full h-full object-cover origin-center ${currentSim.isVideo ? 'scale-[1.15] transition-transform duration-[15000ms] ease-out hover:scale-125' : 'transition-transform duration-700 hover:scale-105'}`} 
+                    />
+                    {currentSim.isVideo && (
+                       <div className="absolute top-2 right-2 bg-[var(--color-neon-blue)]/20 text-[var(--color-neon-blue)] px-2 py-1 rounded text-xs flex items-center gap-1 backdrop-blur-md border border-[var(--color-neon-blue)]/30">
+                         <Video className="w-3 h-3"/> HQ Video Render
+                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
                     <div className="absolute bottom-4 left-4 right-4">
