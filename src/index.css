@@ -14,7 +14,7 @@
 }
 
 body {
-  background: radial-gradient(circle at top right, var(--color-nebula) 0%, var(--color-bg) 60%);
+  background-color: var(--color-bg);
   background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-body);
@@ -63,10 +63,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glassmorphism */
 .glass-panel {
-  background: rgba(20, 20, 30, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 10, 15, 0.75); /* Plus sombre pour contraster avec le fond clair */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Button hover animation */
@@ -129,4 +129,14 @@ a, button {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes slow-zoom {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.animate-slow-zoom {
+  animation: slow-zoom 60s ease-in-out infinite;
 }

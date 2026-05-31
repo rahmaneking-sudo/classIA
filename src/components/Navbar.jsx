@@ -15,7 +15,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed w-full z-50 top-0 transition-all duration-300 glass-panel border-b border-[var(--color-neon-blue)]/20">
+    <nav className="fixed w-full z-50 top-0 transition-all duration-300 bg-[#050508] border-b border-[var(--color-neon-blue)]/30 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           

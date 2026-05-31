@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import CustomCursor from './effects/CustomCursor';
 import Navbar from './components/Navbar';
 import CinematicSlideshow from './effects/Scrollytelling';
+import CinematicBackground from './effects/CinematicBackground';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import StudentLogin from './components/StudentLogin';
@@ -18,7 +19,8 @@ import SiteViewer from './components/ExpressBuilder/SiteViewer';
 function App() {
   return (
     <BrowserRouter>
-      <div className="relative w-full bg-[#020205] text-white min-h-screen font-['Inter']">
+      <div className="relative w-full text-white min-h-screen font-['Inter']">
+        <CinematicBackground />
         <CustomCursor />
         <Navbar />
         <Routes>
