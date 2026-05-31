@@ -123,12 +123,12 @@ const AdminDashboard = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12 bg-[#0a0a10]/80 p-6 rounded-2xl border border-[var(--color-neon-blue)]/20 shadow-[0_0_30px_rgba(0,212,255,0.05)] backdrop-blur-md">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12 bg-black/20 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/20 shadow-2xl">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] tracking-wider">
+            <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] tracking-wider drop-shadow-md">
               DASHBOARD CLASSE IA
             </h1>
-            <p className="text-gray-400 mt-2">Gestion des étudiants et prospects</p>
+            <p className="text-gray-200 mt-2 font-medium drop-shadow-md">Gestion des étudiants et prospects</p>
           </div>
           <button 
             onClick={handleLogout}

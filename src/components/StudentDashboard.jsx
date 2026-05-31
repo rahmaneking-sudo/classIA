@@ -106,25 +106,25 @@ const StudentDashboard = () => {
       <div className="max-w-4xl mx-auto relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12 bg-[#0a0a10]/80 p-6 rounded-2xl border border-[var(--color-neon-blue)]/20 shadow-[0_0_30px_rgba(0,212,255,0.05)] backdrop-blur-md">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12 bg-black/20 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/20 shadow-2xl">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] tracking-wider">
-              PORTAIL ÉTUDIANT
+            <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest uppercase mb-2 drop-shadow-md">
+              Mon Espace <span className="text-[var(--color-neon-blue)]">Étudiant</span>
             </h1>
-            <p className="text-gray-400 mt-2">Bienvenue, {studentName}</p>
+            <p className="text-gray-200 font-medium drop-shadow-md">Gérez vos formations, votre abonnement et suivez votre progression.</p>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 mt-6 md:mt-0">
+          <div className="flex gap-4">
             <button 
               onClick={handleChangePassword}
-              className="px-6 py-2 border border-[var(--color-neon-blue)]/50 text-[var(--color-neon-blue)] rounded-lg hover:bg-[var(--color-neon-blue)]/10 hover:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-all font-bold tracking-widest uppercase text-sm"
+              className="mt-6 md:mt-0 px-6 py-3 border border-[var(--color-neon-blue)]/50 text-[var(--color-neon-blue)] rounded-xl hover:bg-[var(--color-neon-blue)]/10 transition-all font-bold tracking-widest uppercase text-sm"
             >
-              Changer Mot de passe
+              Mot de passe
             </button>
-            <button 
+            <button
               onClick={handleLogout}
-              className="px-6 py-2 border border-red-500/50 text-red-500 rounded-lg hover:bg-red-500/10 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all font-bold tracking-widest uppercase text-sm"
+              className="mt-6 md:mt-0 flex items-center gap-2 px-6 py-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500/20 border border-red-500/30 transition-all font-bold uppercase tracking-wider text-sm"
             >
-              Déconnexion
+              <LogOut className="w-4 h-4" /> Déconnexion
             </button>
           </div>
         </div>

@@ -33,7 +33,7 @@ const PromptsLibrary = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center mb-12 relative z-10 glass-panel p-8 rounded-2xl border border-white/10 max-w-4xl mx-auto shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+        <div className="text-center mb-12 relative z-10 bg-black/20 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/20 max-w-4xl mx-auto shadow-2xl">
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest uppercase mb-4 text-glow-blue">
             BIBLIOTHÈQUE DE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">PROMPTS</span>
           </h1>

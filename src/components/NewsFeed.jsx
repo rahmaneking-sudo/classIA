@@ -66,7 +66,7 @@ const NewsFeed = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-white/10 pb-6 glass-panel p-8 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 pb-6 bg-black/20 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/20 shadow-2xl">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Sparkles className="text-[var(--color-neon-blue)] w-6 h-6 animate-pulse" />

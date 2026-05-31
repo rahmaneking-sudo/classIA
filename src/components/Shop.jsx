@@ -38,7 +38,7 @@ const Shop = () => {
       <div className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
         
         {/* Header Boutique */}
-        <div className="text-center mb-16 animate-fade-in glass-panel p-8 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/10 max-w-4xl mx-auto">
+        <div className="text-center mb-16 animate-fade-in bg-black/20 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-white/20 max-w-4xl mx-auto shadow-2xl">
           <h1 className="text-4xl md:text-6xl font-bold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] drop-shadow-md">
             La Boutique ClassIA
           </h1>
