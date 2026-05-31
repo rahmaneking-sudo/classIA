@@ -9,6 +9,17 @@ const AdminSimulations = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
+  const Toast = Swal.mixin({
+    background: '#0a0a10',
+    color: '#ffffff',
+    confirmButtonColor: '#7b2ff7',
+    customClass: {
+      popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+      title: 'text-[var(--color-neon-blue)] font-bold tracking-widest uppercase',
+      confirmButton: 'bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-8 py-3 rounded-lg font-bold tracking-widest uppercase hover:shadow-[0_0_20px_rgba(186,85,211,0.4)] transition-all'
+    }
+  });
+
   const initialFormState = {
     category: 'gemini',
     title: '',
@@ -28,7 +39,7 @@ const AdminSimulations = () => {
       const response = await axios.get(`${API_BASE_URL}/simulations`);
       setSimulations(response.data);
     } catch (err) {
-      Swal.fire('Erreur', 'Impossible de charger les simulations', 'error');
+      Toast.fire('Erreur', 'Impossible de charger les simulations', 'error');
     } finally {
       setLoading(false);
     }
@@ -59,12 +70,12 @@ const AdminSimulations = () => {
       await axios.post(`${API_BASE_URL}/simulations`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      Swal.fire('Succès', 'Cours ajouté avec succès !', 'success');
+      Toast.fire('Succès', 'Cours ajouté avec succès !', 'success');
       setFormData(initialFormState);
       setShowForm(false);
       fetchSimulations();
     } catch (err) {
-      Swal.fire('Erreur', 'Impossible de créer le cours', 'error');
+      Toast.fire('Erreur', 'Impossible de créer le cours', 'error');
     }
   };
 
@@ -75,10 +86,10 @@ const AdminSimulations = () => {
         await axios.delete(`${API_BASE_URL}/simulations/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        Swal.fire('Succès', 'Cours supprimé', 'success');
+        Toast.fire('Succès', 'Cours supprimé', 'success');
         fetchSimulations();
       } catch (err) {
-        Swal.fire('Erreur', 'Impossible de supprimer', 'error');
+        Toast.fire('Erreur', 'Impossible de supprimer', 'error');
       }
     }
   };
