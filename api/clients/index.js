@@ -1,7 +1,6 @@
 import connectDB from '../_lib/db.js';
 import { protectAdmin } from '../_lib/protect.js';
 import AgencyClient from '../../backend/models/AgencyClient.js';
-import bcrypt from 'bcryptjs';
 
 export default async function handler(req, res) {
   await connectDB();

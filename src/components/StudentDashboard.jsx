@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
+import { LogOut } from 'lucide-react';
 
 const StudentDashboard = () => {
   const [studentName, setStudentName] = useState('');

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { Plus, Link as LinkIcon, Trash2, Edit2, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, Edit2, ExternalLink } from 'lucide-react';
 
 const AdminClients = () => {
   const [clients, setClients] = useState([]);
