@@ -33,11 +33,11 @@ const PromptsLibrary = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center mb-12 relative z-10">
+        <div className="text-center mb-12 relative z-10 glass-panel p-8 rounded-2xl border border-white/10 max-w-4xl mx-auto shadow-[0_0_30px_rgba(0,0,0,0.5)]">
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest uppercase mb-4 text-glow-blue">
             BIBLIOTHÈQUE DE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">PROMPTS</span>
           </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-white font-medium drop-shadow-md max-w-2xl mx-auto text-lg">
             Copiez-collez ces instructions de qualité Premium pour obtenir des résultats professionnels avec les meilleures Intelligences Artificielles.
           </p>
         </div>

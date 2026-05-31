@@ -38,12 +38,12 @@ const Shop = () => {
       <div className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
         
         {/* Header Boutique */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
+        <div className="text-center mb-16 animate-fade-in glass-panel p-8 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/10 max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] drop-shadow-md">
             La Boutique ClassIA
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto font-light">
-            Découvrez nos concepts de sites web premium. Vous flashez sur un modèle ? Nous développons <strong className="text-white">sur-mesure</strong> votre site basé sur ce concept avec un panel d'administration complet.
+          <p className="text-xl text-white font-medium max-w-3xl mx-auto drop-shadow-md">
+            Découvrez nos concepts de sites web premium. Vous flashez sur un modèle ? Nous développons <strong className="text-[var(--color-neon-blue)]">sur-mesure</strong> votre site basé sur ce concept avec un panel d'administration complet.
           </p>
         </div>
 
@@ -89,7 +89,7 @@ const Shop = () => {
               {/* Contenu */}
               <div className="p-6 flex-grow flex flex-col relative z-20">
                 <h3 className="text-2xl font-bold text-white mb-2">{product.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">{product.description}</p>
+                <p className="text-gray-200 text-sm leading-relaxed mb-6 flex-grow font-medium drop-shadow-md">{product.description}</p>
                 
                 {/* Features */}
                 <div className="space-y-3 mb-8 bg-white/5 p-4 rounded-xl border border-white/5">

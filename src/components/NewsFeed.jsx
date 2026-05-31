@@ -66,16 +66,16 @@ const NewsFeed = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-white/10 pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-white/10 pb-6 glass-panel p-8 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)]">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <Sparkles className="text-[var(--color-neon-blue)] w-6 h-6 animate-pulse" />
-              <h2 className="text-[var(--color-neon-blue)] tracking-widest font-bold uppercase text-sm">Temps Réel</h2>
+              <h2 className="text-[var(--color-neon-blue)] tracking-widest font-bold uppercase text-sm drop-shadow-md">Temps Réel</h2>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest uppercase text-glow-blue">
               ACTU-<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[#bd00ff]">IA</span>
             </h1>
-            <p className="text-gray-400 mt-4 max-w-2xl text-lg">
+            <p className="text-white font-medium drop-shadow-md mt-4 max-w-2xl text-lg">
               Le monde de l'Intelligence Artificielle évolue chaque seconde. Suivez ici les dernières découvertes mondiales (ChatGPT, Robots, Apple, Android).
             </p>
           </div>
@@ -147,7 +147,7 @@ const NewsFeed = () => {
                     {item.title}
                   </h3>
                   
-                  <p className="text-gray-400 text-sm mb-6 line-clamp-3 flex-1">
+                  <p className="text-gray-200 text-sm mb-6 line-clamp-3 flex-1 font-medium drop-shadow-md">
                     {stripHtml(item.description)}
                   </p>
                   

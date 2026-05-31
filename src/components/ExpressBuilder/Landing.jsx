@@ -16,12 +16,12 @@ const Landing = () => {
       <Navbar />
 
       <div className="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
+        <div className="text-center mb-16 animate-fade-in glass-panel p-8 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/10 max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-widest uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] drop-shadow-md">
             Créez votre Site Web Pro
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto font-light">
-            Démarquez-vous sur internet avec un site web moderne, rapide et adapté à votre budget. Choisissez votre forfait ci-dessous.
+          <p className="text-xl text-white font-medium max-w-3xl mx-auto drop-shadow-md">
+            Démarque-vous sur internet avec un site web moderne, rapide et adapté à votre budget. Choisissez votre forfait ci-dessous.
           </p>
         </div>
 
@@ -34,7 +34,7 @@ const Landing = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">Basique</h3>
             <div className="text-3xl font-bold text-[var(--color-neon-blue)] mb-6">50 000 <span className="text-lg text-gray-500">FCFA</span></div>
-            <p className="text-gray-400 text-sm mb-6 flex-grow">Idéal pour démarrer. Un site vitrine d'une page élégant et rapide, généré instantanément.</p>
+            <p className="text-gray-200 text-sm mb-6 flex-grow font-medium drop-shadow-md">Idéal pour démarrer. Un site vitrine d'une page élégant et rapide, généré instantanément.</p>
             
             <ul className="space-y-3 mb-8">
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Site 1 page (Landing Page)</li>
@@ -61,7 +61,7 @@ const Landing = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-2 mt-4">Standard</h3>
             <div className="text-3xl font-bold text-[var(--color-neon-purple)] mb-6">100 000 <span className="text-lg text-gray-500">FCFA</span></div>
-            <p className="text-gray-400 text-sm mb-6 flex-grow">Un site multi-pages complet avec un design personnalisé par notre agence digitale.</p>
+            <p className="text-gray-200 text-sm mb-6 flex-grow font-medium drop-shadow-md">Un site multi-pages complet avec un design personnalisé par notre agence digitale.</p>
             
             <ul className="space-y-3 mb-8">
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Site 3 à 5 pages</li>
@@ -85,7 +85,7 @@ const Landing = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">Premium</h3>
             <div className="text-3xl font-bold text-white mb-6">200 000 <span className="text-lg text-gray-500">FCFA</span></div>
-            <p className="text-gray-400 text-sm mb-6 flex-grow">Le summum de la présence en ligne avec animations et fonctionnalités poussées.</p>
+            <p className="text-gray-200 text-sm mb-6 flex-grow font-medium drop-shadow-md">Le summum de la présence en ligne avec animations et fonctionnalités poussées.</p>
             
             <ul className="space-y-3 mb-8">
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Site 5 à 10 pages</li>
@@ -109,7 +109,7 @@ const Landing = () => {
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">Sur-mesure</h3>
             <div className="text-3xl font-bold text-gray-400 mb-6">400 000+ <span className="text-lg text-gray-600">FCFA</span></div>
-            <p className="text-gray-400 text-sm mb-6 flex-grow">Vous avez un projet de grande envergure (E-commerce géant, SaaS, Portail web) ?</p>
+            <p className="text-gray-200 text-sm mb-6 flex-grow font-medium drop-shadow-md">Vous avez un projet de grande envergure (E-commerce géant, SaaS, Portail web) ?</p>
             
             <ul className="space-y-3 mb-8">
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Pages illimitées</li>
