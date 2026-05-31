@@ -37,10 +37,12 @@ const MediaRender = ({ url, type, isPremium }) => {
     if (videoId) {
       return (
         <iframe 
-          className={`w-full h-full object-cover pointer-events-none scale-[1.3] ${isPremium ? 'opacity-100' : 'opacity-80'}`}
+          className={`w-full h-full object-cover pointer-events-none scale-[1.3] select-none ${isPremium ? 'opacity-100' : 'opacity-80'}`}
           src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${videoId}&modestbranding=1&playsinline=1`}
           allow="autoplay; encrypted-media"
           frameBorder="0"
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
         />
       );
     }
@@ -50,8 +52,10 @@ const MediaRender = ({ url, type, isPremium }) => {
     return (
       <video 
         autoPlay loop muted playsInline
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover select-none pointer-events-none"
         src={url}
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
       />
     );
   }
@@ -61,7 +65,9 @@ const MediaRender = ({ url, type, isPremium }) => {
     <img 
       src={url} 
       alt="Render" 
-      className={`w-full h-full object-cover origin-center ${isPremium ? 'transition-transform duration-[15000ms] ease-out scale-[1.15] hover:scale-125' : 'opacity-60'}`} 
+      className={`w-full h-full object-cover origin-center select-none pointer-events-none ${isPremium ? 'transition-transform duration-[15000ms] ease-out scale-[1.15] hover:scale-125' : 'opacity-60'}`} 
+      onContextMenu={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
     />
   );
 };
