@@ -157,7 +157,7 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab('simulations')}
             className={`px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${activeTab === 'simulations' ? 'bg-[var(--color-neon-purple)] text-white shadow-[0_0_15px_rgba(186,85,211,0.4)]' : 'bg-[#0a0a10]/80 text-gray-400 border border-white/10 hover:border-white/30'}`}
           >
-            Simulations / Cours
+            Vidéos / Cours
           </button>
         </div>
 

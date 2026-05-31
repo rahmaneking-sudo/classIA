@@ -35,8 +35,18 @@ const AdminSimulations = () => {
   };
 
   useEffect(() => {
-    fetchSimulations();
+    const init = async () => {
+      await fetchSimulations();
+    };
+    init();
   }, []);
+
+  // Ouvre le formulaire automatiquement s'il n'y a pas de vidéos
+  useEffect(() => {
+    if (!loading && simulations.length === 0) {
+      setShowForm(true);
+    }
+  }, [loading, simulations.length]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,23 +59,23 @@ const AdminSimulations = () => {
       await axios.post(`${API_BASE_URL}/simulations`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      Swal.fire('Succès', 'Simulation ajoutée !', 'success');
+      Swal.fire('Succès', 'Cours ajouté avec succès !', 'success');
       setFormData(initialFormState);
       setShowForm(false);
       fetchSimulations();
     } catch (err) {
-      Swal.fire('Erreur', 'Impossible de créer la simulation', 'error');
+      Swal.fire('Erreur', 'Impossible de créer le cours', 'error');
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette simulation ?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce cours ?")) {
       try {
         const token = localStorage.getItem('adminToken');
         await axios.delete(`${API_BASE_URL}/simulations/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        Swal.fire('Succès', 'Simulation supprimée', 'success');
+        Swal.fire('Succès', 'Cours supprimé', 'success');
         fetchSimulations();
       } catch (err) {
         Swal.fire('Erreur', 'Impossible de supprimer', 'error');
@@ -82,17 +92,17 @@ const AdminSimulations = () => {
     }
   };
 
-  if (loading) return <div className="text-center p-12 text-[var(--color-neon-blue)] animate-pulse">Chargement des simulations...</div>;
+  if (loading) return <div className="text-center p-12 text-[var(--color-neon-blue)] animate-pulse">Chargement de vos vidéos...</div>;
 
   return (
     <div className="bg-[#0a0a10]/80 rounded-2xl border border-white/10 backdrop-blur-md overflow-hidden">
       <div className="p-6 border-b border-white/10 flex justify-between items-center">
-        <h2 className="text-xl font-bold tracking-widest uppercase">Gestion des Cours / Simulations</h2>
+        <h2 className="text-xl font-bold tracking-widest uppercase text-white">Gestion des Cours / Vidéos</h2>
         <button 
           onClick={() => setShowForm(!showForm)}
-          className="bg-[var(--color-neon-blue)] text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all"
+          className={`${showForm ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-[var(--color-neon-blue)] text-black hover:shadow-[0_0_15px_rgba(0,212,255,0.4)]'} px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all uppercase tracking-widest text-sm`}
         >
-          {showForm ? 'Annuler' : <><Plus className="w-5 h-5" /> Ajouter une Simulation</>}
+          {showForm ? 'Annuler' : <><Plus className="w-5 h-5" /> Ajouter une Vidéo / Cours</>}
         </button>
       </div>
 
@@ -109,8 +119,8 @@ const AdminSimulations = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-2">Titre de la Simulation</label>
-                <input required type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white" placeholder="ex: Le Dragon 3D" />
+                <label className="block text-sm text-gray-400 mb-2 font-bold">Titre du Cours / Vidéo</label>
+                <input required type="text" name="title" value={formData.title} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/30 rounded-lg p-3 text-white focus:border-[var(--color-neon-blue)] focus:outline-none transition-colors" placeholder="ex: Comment faire voler un Dragon" />
               </div>
             </div>
 
@@ -123,8 +133,8 @@ const AdminSimulations = () => {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
-                    <label className="block text-xs text-gray-400 mb-1">Lien Média</label>
-                    <input required type="text" name="badMediaUrl" value={formData.badMediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" placeholder="https://..." />
+                    <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image</label>
+                    <input required type="text" name="badMediaUrl" value={formData.badMediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" placeholder="https://youtube.com/watch?v=..." />
                   </div>
                   <div className="w-1/3">
                     <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
@@ -145,8 +155,8 @@ const AdminSimulations = () => {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
-                    <label className="block text-xs text-gray-400 mb-1">Lien Média</label>
-                    <input required type="text" name="goodMediaUrl" value={formData.goodMediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm" placeholder="https://..." />
+                    <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image (Ton Rendu HQ)</label>
+                    <input required type="text" name="goodMediaUrl" value={formData.goodMediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/50 rounded-lg p-3 text-white text-sm focus:border-[var(--color-neon-blue)] focus:outline-none" placeholder="https://youtube.com/watch?v=..." />
                   </div>
                   <div className="w-1/3">
                     <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
@@ -166,8 +176,8 @@ const AdminSimulations = () => {
             </div>
 
             <div className="flex justify-end">
-              <button type="submit" className="bg-[var(--color-neon-purple)] text-white px-8 py-3 rounded-lg font-bold tracking-widest uppercase hover:shadow-[0_0_20px_rgba(186,85,211,0.4)] transition-all">
-                Enregistrer la Simulation
+              <button type="submit" className="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-10 py-4 rounded-xl font-black tracking-widest uppercase hover:shadow-[0_0_30px_rgba(186,85,211,0.6)] transition-all transform hover:scale-105">
+                ENREGISTRER CE COURS
               </button>
             </div>
           </form>
@@ -200,8 +210,22 @@ const AdminSimulations = () => {
                 </td>
               </tr>
             ))}
-            {simulations.length === 0 && (
-              <tr><td colSpan="4" className="p-8 text-center text-gray-500">Aucune simulation configurée.</td></tr>
+            {simulations.length === 0 && !showForm && (
+              <tr>
+                <td colSpan="4" className="p-16 text-center text-gray-500">
+                  <div className="flex flex-col items-center justify-center">
+                    <Video className="w-16 h-16 text-gray-600 mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-400 mb-2">Aucun cours pour le moment</h3>
+                    <p className="mb-6">C'est vide ! Clique sur le bouton en haut à droite pour ajouter ta première vidéo YouTube.</p>
+                    <button 
+                      onClick={() => setShowForm(true)}
+                      className="bg-[var(--color-neon-blue)] text-black px-6 py-3 rounded-lg font-bold uppercase tracking-widest hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all"
+                    >
+                      Ajouter une vidéo maintenant
+                    </button>
+                  </div>
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
