@@ -6,6 +6,9 @@ const CinematicBackground = () => {
 
   const getBackgroundImage = (pathname) => {
     if (pathname.includes('/cours')) return '/flying_car_rapide.png';
+    if (pathname.includes('/prompts')) return '/bg_prompts.png';
+    if (pathname.includes('/boutique')) return '/bg_boutique.png';
+    if (pathname.includes('/actu-ia')) return '/bg_actu.png';
     // No image background for other pages (to avoid pixelation)
     return null;
   };
