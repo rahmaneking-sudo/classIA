@@ -335,27 +335,27 @@ const Builder = () => {
                 <h3 className="text-xl font-bold text-[var(--color-neon-blue)] border-b border-white/10 pb-2 uppercase tracking-widest">1. Informations Générales</h3>
                 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Nom de l'entreprise</label>
-                  <input type="text" name="businessName" value={formData.businessName} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Restaurant Le Teranga" />
+                  <label className="block text-sm text-gray-400 mb-1">Nom de l'entreprise <span className="text-red-500">*</span></label>
+                  <input type="text" name="businessName" value={formData.businessName} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Restaurant Le Teranga" />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Lien du site (Slug)</label>
+                  <label className="block text-sm text-gray-400 mb-1">Lien du site (Slug) <span className="text-red-500">*</span></label>
                   <div className="flex">
                     <span className="bg-[#1a1a24] border border-[#2a2a35] border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
-                    <input type="text" name="slug" value={formData.slug} onChange={handleBasicChange} disabled={isEditMode} className={`w-full bg-[#11111a] border border-[#2a2a35] rounded-r-lg px-3 py-3 text-[var(--color-neon-purple)] font-bold focus:outline-none ${isEditMode ? 'opacity-50 cursor-not-allowed' : 'focus:border-[var(--color-neon-blue)]'}`} placeholder="le-teranga" />
+                    <input type="text" name="slug" value={formData.slug} onChange={handleBasicChange} required disabled={isEditMode} className={`w-full bg-[#11111a] border border-[#2a2a35] rounded-r-lg px-3 py-3 text-[var(--color-neon-purple)] font-bold focus:outline-none ${isEditMode ? 'opacity-50 cursor-not-allowed' : 'focus:border-[var(--color-neon-blue)]'}`} placeholder="le-teranga" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Votre Email Administratif</label>
-                  <input type="email" name="ownerEmail" value={formData.ownerEmail} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="contact@email.com" />
+                  <label className="block text-sm text-gray-400 mb-1">Votre Email Administratif <span className="text-red-500">*</span></label>
+                  <input type="email" name="ownerEmail" value={formData.ownerEmail} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="contact@email.com" />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Numéro WhatsApp (Visible par les clients)</label>
-                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: 22177..." />
+                  <label className="block text-sm text-gray-400 mb-1">Numéro WhatsApp (Visible par les clients) <span className="text-red-500">*</span></label>
+                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: 22177..." />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Adresse Complète</label>
-                  <input type="text" name="address" value={formData.address} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Almadies, Dakar, Sénégal" />
+                  <label className="block text-sm text-gray-400 mb-1">Adresse Complète <span className="text-red-500">*</span></label>
+                  <input type="text" name="address" value={formData.address} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Almadies, Dakar, Sénégal" />
                 </div>
 
                 <button type="button" onClick={() => setCurrentStep(2)} className="w-full py-4 mt-6 bg-white/10 hover:bg-white/20 text-white font-bold tracking-widest uppercase rounded-lg transition-colors flex justify-center items-center">
