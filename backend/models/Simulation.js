@@ -11,7 +11,7 @@ const simulationSchema = new mongoose.Schema({
   },
   prompt: {
     type: String,
-    required: true
+    default: ''
   },
   mediaUrl: {
     type: String,
