@@ -113,17 +113,17 @@ const Landing = () => {
                 Nom de votre entreprise / projet
               </label>
               
-              <div className="flex flex-col sm:flex-row gap-3 relative z-10">
+              <div className="flex flex-col gap-3 relative z-10">
                 <input 
                   type="text" 
                   value={siteName}
                   onChange={(e) => setSiteName(e.target.value)}
                   placeholder="Ex: Restaurant Le Teranga..."
-                  className="flex-1 bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all shadow-inner"
+                  className="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all shadow-inner"
                 />
                 <button 
                   onClick={() => navigate(siteName ? `/builder?name=${encodeURIComponent(siteName)}` : '/builder')}
-                  className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center"
+                  className="w-full px-6 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center"
                 >
                   <Zap className="w-5 h-5 mr-2" />
                   Créer mon site
@@ -189,7 +189,7 @@ const Landing = () => {
 
             <button 
               onClick={() => handleWhatsApp('Premium')}
-              className="w-full py-3 bg-white/10 text-white border border-white/20 rounded-xl font-bold uppercase tracking-widest hover:bg-white/20 transition-all"
+              className="w-full py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest hover:shadow-[0_0_20px_rgba(186,85,211,0.5)] transition-all"
             >
               Demander un devis
             </button>
@@ -213,9 +213,9 @@ const Landing = () => {
 
             <button 
               onClick={() => handleWhatsApp('Sur-Mesure')}
-              className="w-full py-3 bg-transparent text-gray-400 border border-gray-600 rounded-xl font-bold uppercase tracking-widest hover:text-white hover:border-white transition-all"
+              className="w-full py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest hover:shadow-[0_0_20px_rgba(186,85,211,0.5)] transition-all"
             >
-              Contactez-nous
+              Demander un devis
             </button>
           </div>
 
