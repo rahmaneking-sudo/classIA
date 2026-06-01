@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   // POST /api/microsites - User creates a new microsite
   if (req.method === 'POST') {
     try {
-      const { slug, businessName, ownerEmail, whatsapp, themeId, tier, content } = req.body;
+      const { slug, businessName, ownerEmail, whatsapp, address, themeId, tier, content } = req.body;
 
       // Check if slug already exists
       const existing = await MicroSite.findOne({ slug });
@@ -39,6 +39,7 @@ export default async function handler(req, res) {
         businessName,
         ownerEmail,
         whatsapp,
+        address,
         themeId,
         tier,
         content,
