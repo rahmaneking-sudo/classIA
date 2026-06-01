@@ -24,7 +24,7 @@ const Typewriter = ({ text, onComplete, speed = 15 }) => {
   return <span>{displayedText}<span className="animate-pulse">_</span></span>;
 };
 
-const MediaRender = ({ url, type }) => {
+const MediaRender = ({ url, type, isThumbnail = true }) => {
   if (type === 'youtube') {
     let videoId = '';
     try {
@@ -36,12 +36,13 @@ const MediaRender = ({ url, type }) => {
     if (videoId) {
       return (
         <iframe 
-          className="w-full h-full object-cover pointer-events-none scale-[1.3] select-none"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${videoId}&modestbranding=1&playsinline=1`}
-          allow="autoplay; encrypted-media"
+          className={`w-full h-full object-cover select-none ${isThumbnail ? 'pointer-events-none scale-[1.3]' : ''}`}
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=${isThumbnail ? 1 : 0}&mute=${isThumbnail ? 1 : 0}&controls=${isThumbnail ? 0 : 1}&showinfo=0&rel=0&loop=${isThumbnail ? 1 : 0}${isThumbnail ? `&playlist=${videoId}` : ''}&modestbranding=1&playsinline=1`}
+          allow={isThumbnail ? "autoplay; encrypted-media" : "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"}
+          allowFullScreen={!isThumbnail}
           frameBorder="0"
-          onContextMenu={(e) => e.preventDefault()}
-          onDragStart={(e) => e.preventDefault()}
+          onContextMenu={(e) => isThumbnail && e.preventDefault()}
+          onDragStart={(e) => isThumbnail && e.preventDefault()}
         />
       );
     }
@@ -50,11 +51,15 @@ const MediaRender = ({ url, type }) => {
   if (type === 'video') {
     return (
       <video 
-        autoPlay loop muted playsInline
-        className="w-full h-full object-cover select-none pointer-events-none"
+        autoPlay={isThumbnail}
+        loop={isThumbnail}
+        muted={isThumbnail}
+        controls={!isThumbnail}
+        playsInline
+        className={`w-full h-full object-cover select-none ${isThumbnail ? 'pointer-events-none' : 'focus:outline-none'}`}
         src={url}
-        onContextMenu={(e) => e.preventDefault()}
-        onDragStart={(e) => e.preventDefault()}
+        onContextMenu={(e) => isThumbnail && e.preventDefault()}
+        onDragStart={(e) => isThumbnail && e.preventDefault()}
       />
     );
   }
@@ -63,9 +68,9 @@ const MediaRender = ({ url, type }) => {
     <img 
       src={url} 
       alt="Render" 
-      className="w-full h-full object-cover origin-center select-none pointer-events-none transition-transform duration-[15000ms] ease-out hover:scale-110" 
-      onContextMenu={(e) => e.preventDefault()}
-      onDragStart={(e) => e.preventDefault()}
+      className={`w-full h-full object-cover origin-center select-none ${isThumbnail ? 'pointer-events-none transition-transform duration-[15000ms] ease-out hover:scale-110' : ''}`} 
+      onContextMenu={(e) => isThumbnail && e.preventDefault()}
+      onDragStart={(e) => isThumbnail && e.preventDefault()}
     />
   );
 };
@@ -174,7 +179,7 @@ const Courses = () => {
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="h-56 relative overflow-hidden bg-black">
-                      <MediaRender url={sim.mediaUrl} type={sim.mediaType} />
+                      <MediaRender url={sim.mediaUrl} type={sim.mediaType} isThumbnail={true} />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a10] via-black/20 to-transparent" />
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
                         <div className="w-16 h-16 rounded-full bg-[var(--color-neon-blue)]/30 border-2 border-[var(--color-neon-blue)] flex items-center justify-center shadow-[0_0_20px_rgba(0,212,255,0.6)] backdrop-blur-md">
@@ -217,7 +222,7 @@ const Courses = () => {
               {/* Left Side: Video Player (Takes 2 columns on large screens) */}
               <div className="lg:col-span-2 flex flex-col">
                 <div className="bg-black/80 border border-white/10 rounded-3xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.6)] backdrop-blur-xl flex-1 min-h-[400px] lg:min-h-[600px] group">
-                  <MediaRender url={selectedSim.mediaUrl} type={selectedSim.mediaType} />
+                  <MediaRender url={selectedSim.mediaUrl} type={selectedSim.mediaType} isThumbnail={false} />
                   <div className="absolute top-6 left-6 pointer-events-none">
                     <span className="bg-[var(--color-neon-blue)] text-black px-4 py-1.5 rounded-full text-xs font-black uppercase shadow-[0_0_20px_rgba(0,212,255,0.5)] tracking-widest">
                       Rendu Final HQ
