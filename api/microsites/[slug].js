@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ message: 'Les Codes PIN ont été envoyés à votre adresse.' });
     } catch (error) {
-      return res.status(500).json({ message: 'Erreur email', error: error.message });
+      return res.status(500).json({ message: 'Erreur détaillée: ' + error.message });
     }
   }
 
