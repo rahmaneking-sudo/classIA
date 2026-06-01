@@ -109,38 +109,24 @@ const Landing = () => {
             <div className="w-full mt-8 p-5 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl relative overflow-hidden group/cta">
               <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-neon-blue)]/10 to-[var(--color-neon-purple)]/10 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500"></div>
               
-              <label className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-3 text-left">
-                Nom de votre entreprise / projet
-              </label>
-              
-              <div className="flex flex-col gap-3 relative z-10">
-                <input 
-                  type="text" 
-                  value={siteName}
-                  onChange={(e) => setSiteName(e.target.value)}
-                  placeholder="Ex: Restaurant Le Teranga..."
-                  className="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all shadow-inner"
-                />
+              <div className="flex flex-col sm:flex-row gap-3 relative z-10 mt-6">
                 <button 
-                  onClick={() => navigate(siteName ? `/builder?name=${encodeURIComponent(siteName)}` : '/builder')}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center"
+                  onClick={() => navigate('/builder')}
+                  className="w-full sm:w-1/2 px-4 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center text-sm"
                 >
-                  <Zap className="w-5 h-5 mr-2" />
-                  Créer mon site
+                  <Zap className="w-4 h-4 mr-2" />
+                  Créer un site
+                </button>
+                <button 
+                  onClick={() => setShowEditModal(true)}
+                  className="w-full sm:w-1/2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:border-[var(--color-neon-blue)]/50 flex items-center justify-center text-sm"
+                >
+                  <Settings className="w-4 h-4 mr-2 text-[var(--color-neon-blue)]" />
+                  Modifier
                 </button>
               </div>
 
-              <div className="mt-5 pt-4 border-t border-white/10 text-center relative z-10">
-                <button 
-                  onClick={() => setShowEditModal(true)}
-                  className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors flex items-center justify-center w-full py-2 rounded-lg hover:bg-white/5"
-                >
-                  <Settings className="w-4 h-4 mr-2 text-[var(--color-neon-blue)]" />
-                  <span className="border-b border-transparent hover:border-white/50 pb-0.5 transition-colors">
-                    J'ai déjà un site (Modifier)
-                  </span>
-                </button>
-              </div>
+
             </div>
           </div>
 
