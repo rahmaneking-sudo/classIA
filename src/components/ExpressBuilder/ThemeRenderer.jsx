@@ -1,9 +1,17 @@
-import React from 'react';
-import { Send, ChevronRight, MapPin, Phone, Star, Coffee, Wifi, Car, Calendar, Hammer, Shield, Utensils, Scissors, ShoppingBag, Home, Key, MessageCircle, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { Send, ChevronRight, MapPin, Phone, Star, Coffee, Wifi, Car, Calendar, Hammer, Shield, Utensils, Scissors, ShoppingBag, Home, Key, MessageCircle, Mail, X, Loader2 } from 'lucide-react';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const ThemeRenderer = ({ data }) => {
   const { themeId, businessName, content, whatsapp, address, ownerEmail, slug } = data;
-  const [activePage, setActivePage] = React.useState('accueil');
+  const [activePage, setActivePage] = useState('accueil');
+  
+  // Réservation Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalItemName, setModalItemName] = useState('');
+  const [reserveForm, setReserveForm] = useState({ clientName: '', clientPhone: '', details: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigateTo = (e, pageId) => {
     e.preventDefault();
@@ -18,20 +26,75 @@ const ThemeRenderer = ({ data }) => {
   };
 
   const handleOrder = (itemName) => {
-    if (whatsapp) {
-      const message = encodeURIComponent(`Bonjour, je souhaite commander / réserver : ${itemName}`);
-      window.open(`https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
-    }
+    setModalItemName(itemName || 'Demande Générale');
+    setIsModalOpen(true);
   };
 
   const handleTableReservation = () => {
-    if (whatsapp) {
-      const guests = window.prompt("Pour combien de personnes souhaitez-vous réserver une table ? (ex: 2)");
-      if (guests) {
-        const message = encodeURIComponent(`Bonjour, je souhaite réserver une table pour ${guests} personne(s). Avez-vous de la disponibilité ?`);
-        window.open(`https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
-      }
+    setModalItemName('Réservation de table');
+    setIsModalOpen(true);
+  };
+
+  const handleReserveSubmit = async (e) => {
+    e.preventDefault();
+    if (!reserveForm.clientName || !reserveForm.clientPhone) {
+      Swal.fire({ icon: 'warning', title: 'Attention', text: 'Veuillez remplir votre nom et votre numéro de téléphone.', background: '#fff', color: '#000' });
+      return;
     }
+    setIsSubmitting(true);
+    try {
+      const res = await axios.post('/api/microsites/reserve', {
+        slug,
+        clientName: reserveForm.clientName,
+        clientPhone: reserveForm.clientPhone,
+        details: reserveForm.details,
+        itemName: modalItemName
+      });
+      Swal.fire({ icon: 'success', title: 'Demande envoyée !', text: res.data.message || 'Le propriétaire a bien reçu votre demande.', background: '#fff', color: '#000' });
+      setIsModalOpen(false);
+      setReserveForm({ clientName: '', clientPhone: '', details: '' });
+    } catch (error) {
+      Swal.fire({ icon: 'error', title: 'Erreur', text: error.response?.data?.message || 'Erreur lors de l\'envoi de la demande.', background: '#fff', color: '#000' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const renderReservationModal = () => {
+    if (!isModalOpen) return null;
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 font-sans text-left">
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
+        <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white flex justify-between items-center">
+            <h3 className="text-xl font-bold">{modalItemName}</h3>
+            <button type="button" onClick={() => setIsModalOpen(false)} className="text-white/80 hover:text-white transition-colors bg-white/20 p-2 rounded-full">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <form onSubmit={handleReserveSubmit} className="p-6 space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Votre Nom complet *</label>
+              <input type="text" value={reserveForm.clientName} onChange={(e) => setReserveForm({...reserveForm, clientName: e.target.value})} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow text-gray-900" placeholder="Ex: Jean Dupont" required />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Numéro de téléphone *</label>
+              <input type="tel" value={reserveForm.clientPhone} onChange={(e) => setReserveForm({...reserveForm, clientPhone: e.target.value})} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow text-gray-900" placeholder="Ex: 77 123 45 67" required />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Détails ou Demande spéciale (Optionnel)</label>
+              <textarea value={reserveForm.details} onChange={(e) => setReserveForm({...reserveForm, details: e.target.value})} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow text-gray-900 resize-none" rows="3" placeholder="Heure souhaitée, quantité, message particulier..."></textarea>
+            </div>
+            <div className="pt-4">
+              <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center disabled:opacity-70">
+                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Send className="w-5 h-5 mr-2" />}
+                {isSubmitting ? 'Envoi en cours...' : 'Envoyer la demande'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
   };
 
   const renderNavbar = (links, bgColor, textColor, logoColor) => (
@@ -220,6 +283,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-black', 'text-stone-500')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -296,6 +360,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-[#2c2320]', 'text-[#f2e6d9]/50')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -365,6 +430,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-gray-900', 'text-gray-400')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -436,6 +502,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-black', 'text-gray-400')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -504,6 +571,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-gray-900', 'text-pink-100')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -575,6 +643,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-slate-800', 'text-slate-400')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -646,6 +715,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-black', 'text-gray-400')}
+        {renderReservationModal()}
       </div>
     );
   }
@@ -712,6 +782,7 @@ const ThemeRenderer = ({ data }) => {
         </div>
         
         {renderFooter('bg-[#111]', 'text-neutral-500')}
+        {renderReservationModal()}
       </div>
     );
   }

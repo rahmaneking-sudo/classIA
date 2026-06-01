@@ -66,6 +66,59 @@ export default async function handler(req, res) {
     }
   }
 
+  if (slug === 'reserve' && req.method === 'POST') {
+    try {
+      const { slug: siteSlug, clientName, clientPhone, details, itemName } = req.body;
+      if (!siteSlug || !clientName || !clientPhone) {
+        return res.status(400).json({ message: 'Veuillez remplir tous les champs obligatoires.' });
+      }
+
+      const site = await MicroSite.findOne({ slug: siteSlug });
+      if (!site) return res.status(404).json({ message: 'Ce site n\'existe pas.' });
+      
+      if (!site.ownerEmail) return res.status(400).json({ message: 'Le propriétaire n\'a pas configuré d\'email de réception.' });
+
+      if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        return res.status(500).json({ message: 'Service email non configuré côté serveur.' });
+      }
+
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+
+      const emailHtml = `
+        <div style="font-family: sans-serif; padding: 20px; background-color: #f4f4f5; color: #18181b;">
+          <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2 style="color: #7b2ff7; margin-top: 0; border-bottom: 2px solid #7b2ff7; padding-bottom: 10px;">Nouvelle demande : ${itemName || 'Réservation / Contact'}</h2>
+            <p>Bonjour <strong>${site.businessName}</strong>,</p>
+            <p>Vous avez reçu une nouvelle demande depuis votre site CLASSIA.</p>
+            <div style="background-color: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #e4e4e7; margin: 20px 0;">
+              <p style="margin: 0 0 10px 0;"><strong>Client :</strong> ${clientName}</p>
+              <p style="margin: 0 0 10px 0;"><strong>Téléphone :</strong> ${clientPhone}</p>
+              <p style="margin: 0;"><strong>Détails :</strong> ${details || 'Aucun détail supplémentaire.'}</p>
+            </div>
+            <p style="font-size: 14px; color: #71717a;">Pour répondre, veuillez contacter le client directement via son numéro de téléphone.</p>
+          </div>
+        </div>
+      `;
+
+      await transporter.sendMail({
+        from: `"CLASSIA Réservations" <${process.env.SMTP_USER}>`,
+        to: site.ownerEmail,
+        replyTo: site.ownerEmail,
+        subject: `Nouvelle demande de ${clientName} - ${site.businessName}`,
+        html: emailHtml
+      });
+
+      return res.status(200).json({ message: 'Votre demande a été envoyée avec succès au propriétaire !' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Erreur lors de l\'envoi de la réservation', error: error.message });
+    }
+  }
+
   // GET /api/microsites/:slug - Public view or Owner edit fetch
   if (req.method === 'GET') {
     try {
