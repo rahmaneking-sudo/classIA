@@ -18,34 +18,13 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  const { action } = req.query; // array of path segments
-  let path = Array.isArray(action) ? action.join('/') : action;
-  
-  if (!path && req.url) {
-    path = req.url.split('?')[0].replace('/api/auth/', '');
-  }
+  const url = req.url || '';
 
   try {
     await connectDB();
 
-    // POST /api/auth/login
-    if (req.method === 'POST' && path === 'login') {
-      const { username, password } = req.body;
-      const admin = await Admin.findOne({ username });
-
-      if (admin && (await admin.matchPassword(password))) {
-        return res.status(200).json({
-          _id: admin._id,
-          username: admin.username,
-          token: generateToken(admin._id),
-        });
-      } else {
-        return res.status(401).json({ message: 'Identifiants invalides' });
-      }
-    }
-
     // POST /api/auth/student-login
-    if (req.method === 'POST' && path === 'student-login') {
+    if (req.method === 'POST' && url.includes('student-login')) {
       const { email, password } = req.body;
       const student = await Lead.findOne({ email });
 
@@ -69,8 +48,24 @@ export default async function handler(req, res) {
       });
     }
 
+    // POST /api/auth/login
+    if (req.method === 'POST' && url.includes('login')) {
+      const { username, password } = req.body;
+      const admin = await Admin.findOne({ username });
+
+      if (admin && (await admin.matchPassword(password))) {
+        return res.status(200).json({
+          _id: admin._id,
+          username: admin.username,
+          token: generateToken(admin._id),
+        });
+      } else {
+        return res.status(401).json({ message: 'Identifiants invalides' });
+      }
+    }
+
     // PUT /api/auth/student/change-password
-    if (req.method === 'PUT' && path === 'student/change-password') {
+    if (req.method === 'PUT' && url.includes('change-password')) {
       const user = await protectStudent(req);
       if (!user) {
         return res.status(401).json({ message: 'Non autorisé' });
