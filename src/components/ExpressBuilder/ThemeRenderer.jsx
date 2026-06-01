@@ -323,12 +323,207 @@ const ThemeRenderer = ({ data }) => {
               <header className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
                   <img src={content?.heroImage || "/salon.png"} alt="Salon" className="w-full h-full object-cover" />
+             <Phone className="w-4 h-4 mr-1 hidden md:block" /> Contact
+          </a>
+        </div>
+      </div>
+    </nav>
+  );
+
+  const renderContactSection = (bgColor, textColor, accentColor) => (
+    <section id="contact" className={`py-20 px-4 md:px-8 w-full ${bgColor} ${textColor}`}>
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 uppercase tracking-wider">Contact & Accès</h2>
+          <div className={`w-16 h-1 mx-auto ${accentColor}`}></div>
+        </div>
+        
+        <div className="flex flex-col lg:flex-row gap-12 bg-white/5 p-8 rounded-2xl border border-white/10 shadow-lg">
+          <div className="w-full lg:w-1/3 space-y-8">
+            <div>
+              <h3 className="text-xl font-bold mb-6">Nos Coordonnées</h3>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <MapPin className="w-5 h-5 mr-3 mt-1 flex-shrink-0 opacity-80" />
+                  <p>{address || 'Dakar, Sénégal'}</p>
+                </div>
+                <div className="flex items-center">
+                  <Phone className="w-5 h-5 mr-3 opacity-80" />
+                  <a href={whatsapp ? `tel:+${String(whatsapp).replace(/[^0-9]/g, '')}` : 'tel:+221770000000'} className="hover:underline">
+                    {whatsapp || '+221 77 000 00 00'}
+                  </a>
+                </div>
+                {ownerEmail && (
+                  <div className="flex items-center">
+                    <Mail className="w-5 h-5 mr-3 opacity-80" />
+                    <p>{ownerEmail}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <button onClick={handleContact} className={`w-full py-4 rounded-lg font-bold uppercase tracking-widest transition-transform hover:scale-105 flex justify-center items-center ${accentColor.replace('bg-', 'bg-').replace('text-', 'bg-')} text-white`}>
+              <MessageCircle className="w-5 h-5 mr-2" /> Discuter sur WhatsApp
+            </button>
+          </div>
+          
+          <div className="w-full lg:w-2/3 h-80 rounded-xl overflow-hidden shadow-inner bg-gray-200">
+            <iframe 
+              width="100%" 
+              height="100%" 
+              frameBorder="0" 
+              scrolling="no" 
+              src={`https://maps.google.com/maps?width=100%25&height=400&hl=en&q=${encodeURIComponent(address || 'Dakar, Senegal')}&t=&z=14&ie=UTF8&iwloc=B&output=embed`}
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+
+  const renderSectionBackground = (children) => {
+    if (!content?.sectionImage) return children;
+    
+    return (
+      <div className="relative">
+        <div 
+          className="absolute inset-0 bg-fixed bg-center bg-cover z-0" 
+          style={{ backgroundImage: `url(${content.sectionImage})` }}
+        >
+          <div className="absolute inset-0 bg-black/70"></div>
+        </div>
+        <div className="relative z-10">
+          {children}
+        </div>
+      </div>
+    );
+  };
+
+  const renderFooter = (defaultBgClass, defaultTextClass) => {
+    const customFooter = content?.footer || {};
+    const footerStyle = {};
+    let footerClass = `py-8 text-center w-full ${defaultTextClass}`;
+    
+    if (customFooter.type === 'color' && customFooter.color) {
+      footerStyle.backgroundColor = customFooter.color;
+    } else if (customFooter.type === 'gradient' && customFooter.gradient) {
+      footerStyle.backgroundImage = customFooter.gradient;
+    } else if (customFooter.type === 'image' && customFooter.image) {
+      footerStyle.backgroundImage = `url(${customFooter.image})`;
+      footerStyle.backgroundSize = 'cover';
+      footerStyle.backgroundPosition = 'center';
+      footerClass += ' relative'; // For overlay
+    } else {
+      footerClass += ` ${defaultBgClass}`;
+    }
+
+    return (
+      <footer className={footerClass} style={footerStyle}>
+        {customFooter.type === 'image' && <div className="absolute inset-0 bg-black/80 z-0"></div>}
+        <div className="relative z-10">
+          <p className="font-bold mb-2">© {new Date().getFullYear()} {businessName || 'Mon Site'}</p>
+          <p className="text-xs opacity-70">Créé avec CLASSIA</p>
+        </div>
+      </footer>
+    );
+  };
+
+  // ----- THEME 1: RESTAURANT -----
+  if (themeId === 'restaurant') {
+    return (
+      <div className="min-h-screen bg-stone-50 text-stone-900 font-sans w-full scroll-smooth flex flex-col">
+        {renderNavbar([
+          { id: 'accueil', label: 'Accueil' },
+          { id: 'menu', label: 'Menu' }
+        ], 'bg-white/95', 'text-stone-900', 'text-orange-600')}
+        
+        <div className="flex-1">
+          {activePage === 'accueil' && (
+            <>
+              <header className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                  <img src={content?.heroImage || "/restaurant.png"} alt="Restaurant" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/50"></div>
+                </div>
+                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
+                  <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight drop-shadow-lg">{businessName || 'Le Teranga'}</h1>
+                  <p className="text-xl text-stone-200 mb-8 max-w-2xl mx-auto font-medium">{content?.description || 'Des saveurs authentiques, un cadre chaleureux.'}</p>
+                  <button onClick={handleTableReservation} className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-transform hover:scale-105 flex items-center mx-auto">
+                    <Utensils className="w-5 h-5 mr-2" /> Réserver une table
+                  </button>
+                </div>
+              </header>
+              {content?.welcomeMessage && (
+                <section className="py-16 px-4 md:px-8 max-w-4xl mx-auto text-center">
+                  <h2 className="text-3xl font-bold mb-6 text-stone-800">Bienvenue</h2>
+                  <p className="text-lg text-stone-600 leading-relaxed whitespace-pre-wrap">{content.welcomeMessage}</p>
+                </section>
+              )}
+            </>
+          )}
+
+          {activePage === 'menu' && renderSectionBackground(
+            <section className={`py-20 px-4 md:px-8 max-w-5xl mx-auto w-full ${content?.sectionImage ? 'text-white' : ''}`}>
+            <div className="text-center mb-16">
+              <h2 className={`text-4xl font-bold mb-4 ${content?.sectionImage ? 'text-white' : 'text-stone-800'}`}>Notre Menu</h2>
+              <div className="w-24 h-1 bg-orange-500 mx-auto rounded-full"></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {(content?.menus?.length > 0 ? content.menus : [
+                { title: 'Thiéboudienne', price: '2500 FCFA', desc: 'Riz au poisson classique, légumes frais.' },
+                { title: 'Yassa Poulet', price: '3000 FCFA', desc: 'Poulet mariné au citron et oignons.' }
+              ]).map((item, idx) => (
+                <div key={idx} className={`flex gap-4 items-start border-b ${content?.sectionImage ? 'border-white/20' : 'border-stone-200'} pb-6 group`}>
+                  {item.image && (
+                    <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 shadow-lg">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <h3 className={`text-xl font-bold ${content?.sectionImage ? 'text-white' : 'text-stone-800'}`}>{item.title || 'Plat'}</h3>
+                      <div className="text-orange-500 font-bold text-lg whitespace-nowrap ml-4">{item.price || 'Prix'}</div>
+                    </div>
+                    <p className={`${content?.sectionImage ? 'text-gray-300' : 'text-stone-500'} mt-1 mb-3`}>{item.desc || 'Description...'}</p>
+                    <button onClick={() => handleOrder(item.title)} className="text-sm font-bold text-white bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded flex items-center w-fit shadow-md">
+                      <MessageCircle className="w-4 h-4 mr-2" /> Commander
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            </section>
+          )}
+
+          {activePage === 'contact' && renderContactSection('bg-stone-900', 'text-white', 'bg-orange-500')}
+        </div>
+        
+        {renderFooter('bg-black', 'text-stone-500')}
+        {renderReservationModal()}
+      </div>
+    );
+  }
+
+  // ----- THEME 2: SALON DE COIFFURE -----
+  if (themeId === 'salon') {
+    return (
+      <div className="min-h-screen bg-[#faf8f5] text-[#2c2c2c] font-serif w-full scroll-smooth flex flex-col">
+        {renderNavbar([
+          { id: 'accueil', label: 'Accueil' },
+          { id: 'services', label: 'Prestations' }
+        ], 'bg-[#3a2e2a]/95', 'text-[#f2e6d9]', 'text-[#d4af37]')}
+
+        <div className="flex-1">
+          {activePage === 'accueil' && (
+            <>
+              <header className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                  <img src={content?.heroImage || "/salon.png"} alt="Salon" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-[#3a2e2a]/60"></div>
                 </div>
                 <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
                   <h1 className="text-5xl md:text-7xl font-bold text-[#f2e6d9] mb-4 tracking-wider">{businessName || 'Espace Beauté'}</h1>
                   <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto italic">{content?.description || 'Révélez votre beauté naturelle.'}</p>
-                  <button onClick={handleContact} className="bg-transparent border border-[#f2e6d9] text-[#f2e6d9] hover:bg-[#f2e6d9] hover:text-[#3a2e2a] px-10 py-3 uppercase tracking-widest text-sm transition-colors flex items-center mx-auto font-bold backdrop-blur-sm">
+                  <button onClick={() => handleReservation('Demande de Rendez-vous')} className="bg-transparent border border-[#f2e6d9] text-[#f2e6d9] hover:bg-[#f2e6d9] hover:text-[#3a2e2a] px-10 py-3 uppercase tracking-widest text-sm transition-colors flex items-center mx-auto font-bold backdrop-blur-sm">
                     <Scissors className="w-4 h-4 mr-2" /> Prendre Rendez-vous
                   </button>
                 </div>
@@ -478,9 +673,9 @@ const ThemeRenderer = ({ data }) => {
                   </div>
                   <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">{businessName || 'Immo Prestige'}</h1>
                   <p className="text-2xl text-white/90 font-light mb-8 max-w-2xl mx-auto drop-shadow">{content?.description || 'Trouvez la maison de vos rêves.'}</p>
-                  <a href="#contact" onClick={(e) => navigateTo(e, 'contact')} className="inline-flex bg-teal-700 hover:bg-teal-800 text-white px-8 py-4 font-bold text-lg rounded shadow-xl transition-all items-center mx-auto">
+                  <button onClick={() => handleReservation('Demande de Rendez-vous')} className="inline-flex bg-teal-700 hover:bg-teal-800 text-white px-8 py-4 font-bold text-lg rounded shadow-xl transition-all items-center mx-auto">
                     <Phone className="w-5 h-5 mr-2" /> Prendre Rendez-vous
-                  </a>
+                  </button>
                 </div>
               </header>
               {content?.welcomeMessage && (
@@ -510,120 +705,6 @@ const ThemeRenderer = ({ data }) => {
                     <p className="text-gray-600 mb-8 line-clamp-3">{item.desc || 'Description...'}</p>
                     <button onClick={() => handleReservation(item.title)} className="text-sm font-bold text-white bg-green-600 px-6 py-3 rounded flex items-center justify-center hover:bg-green-700 w-full mt-auto transition-colors shadow-md">
                       <MessageCircle className="w-5 h-5 mr-2" /> Être recontacté pour ce bien
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            </section>
-          )}
-
-          {activePage === 'contact' && renderContactSection('bg-gray-900', 'text-white', 'bg-teal-500')}
-        </div>
-        
-        {renderFooter('bg-black', 'text-gray-400')}
-        {renderReservationModal()}
-      </div>
-    );
-  }
-
-  // ----- THEME 5: BOUTIQUE -----
-  if (themeId === 'shop') {
-    return (
-      <div className="min-h-screen bg-white text-gray-900 font-sans w-full scroll-smooth flex flex-col">
-        {renderNavbar([
-          { id: 'accueil', label: 'Accueil' },
-          { id: 'produits', label: 'Produits' }
-        ], 'bg-pink-50/95', 'text-gray-900', 'text-pink-600')}
-
-        <div className="flex-1">
-          {activePage === 'accueil' && (
-            <>
-              <header className="relative h-[50vh] min-h-[400px] flex items-center bg-pink-50 overflow-hidden">
-                <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden md:block">
-                  <img src={content?.heroImage || "/shop.png"} alt="Shop" className="w-full h-full object-cover" />
-                </div>
-                <div className="relative z-10 px-6 md:px-16 w-full md:w-1/2">
-                  <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">{businessName || 'Ma Boutique'}</h1>
-                  <p className="text-lg text-gray-600 mb-8 max-w-md">{content?.description || 'La mode au meilleur prix. Découvrez notre nouvelle collection.'}</p>
-                  <a href="#contact" onClick={(e) => navigateTo(e, 'contact')} className="inline-flex bg-black text-white hover:bg-gray-800 px-8 py-4 font-bold items-center rounded-none shadow-xl transition-transform hover:-translate-y-1">
-                    <MapPin className="w-4 h-4 mr-2" /> Nous trouver
-                  </a>
-                </div>
-              </header>
-              {content?.welcomeMessage && (
-                <section className="py-16 px-6 md:px-16 max-w-4xl mx-auto">
-                  <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-pink-200 inline-block pb-2">Bienvenue</h2>
-                  <p className="text-lg text-gray-600 leading-relaxed whitespace-pre-wrap">{content.welcomeMessage}</p>
-                </section>
-              )}
-            </>
-          )}
-
-          {activePage === 'produits' && renderSectionBackground(
-            <section className={`py-24 px-6 max-w-7xl mx-auto w-full ${content?.sectionImage ? 'text-white' : 'bg-white'}`}>
-            <h2 className="text-3xl font-bold text-center mb-16 uppercase tracking-widest">Produits Phares</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {(content?.products?.length > 0 ? content.products : [
-                { title: 'Robe d\'été', price: '12.000 FCFA' },
-                { title: 'Ensemble Tailleur', price: '25.000 FCFA' },
-                { title: 'Sac en Cuir', price: '15.000 FCFA' },
-                { title: 'Chaussures à talons', price: '18.000 FCFA' }
-              ]).map((item, idx) => (
-                <div key={idx} className="group cursor-pointer">
-                  <div className="bg-gray-100 aspect-[3/4] mb-4 overflow-hidden relative shadow-lg">
-                    <img src={item.image || "/shop.png"} alt="Produit" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
-                      <button onClick={() => handleOrder(item.title)} className="bg-green-500 hover:bg-green-600 text-white w-full py-3 text-sm font-bold flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-all">
-                        <ShoppingBag className="w-4 h-4 mr-2" /> Acheter
-                      </button>
-                    </div>
-                  </div>
-                  <h3 className={`font-bold text-lg transition-colors ${content?.sectionImage ? 'text-white group-hover:text-pink-400' : 'text-gray-900 group-hover:text-pink-600'}`}>{item.title || 'Produit'}</h3>
-                  <p className={content?.sectionImage ? 'text-pink-300 font-medium' : 'text-gray-500 font-medium'}>{item.price || 'Prix'}</p>
-                </div>
-              ))}
-            </div>
-            </section>
-          )}
-
-          {activePage === 'contact' && renderContactSection('bg-pink-100', 'text-gray-900', 'bg-pink-500')}
-        </div>
-        
-        {renderFooter('bg-gray-900', 'text-pink-100')}
-        {renderReservationModal()}
-      </div>
-    );
-  }
-
-  // ----- THEME DENTISTE -----
-  if (themeId === 'dentist') {
-    return (
-      <div className="min-h-screen bg-slate-50 text-slate-800 font-sans w-full scroll-smooth flex flex-col">
-        {renderNavbar([
-          { id: 'accueil', label: 'Accueil' },
-          { id: 'soins', label: 'Soins' }
-        ], 'bg-white/95', 'text-slate-800', 'text-blue-600')}
-
-        <div className="flex-1">
-          {activePage === 'accueil' && (
-            <>
-              <header className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                  <img src={content?.heroImage || "/dentist.png"} alt="Cabinet Dentaire" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-blue-900/60 mix-blend-multiply"></div>
-                </div>
-                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
-                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-md">{businessName || 'Cabinet Dentaire'}</h1>
-                  <p className="text-xl text-blue-50 mb-8 max-w-2xl mx-auto">{content?.description || 'Prenez soin de votre sourire.'}</p>
-                  <a href="#contact" onClick={(e) => navigateTo(e, 'contact')} className="inline-flex bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-transform hover:scale-105 items-center mx-auto">
-                    <Calendar className="w-5 h-5 mr-2" /> Prendre Rendez-vous
-                  </a>
-                </div>
-              </header>
-              {content?.welcomeMessage && (
-                <section className="py-16 px-4 md:px-8 max-w-4xl mx-auto text-center">
-                  <h2 className="text-3xl font-bold mb-6 text-slate-800">Bienvenue au Cabinet</h2>
                   <p className="text-lg text-slate-600 leading-relaxed whitespace-pre-wrap">{content.welcomeMessage}</p>
                 </section>
               )}
