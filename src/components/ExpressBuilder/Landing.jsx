@@ -112,17 +112,17 @@ const Landing = () => {
               <div className="flex flex-col sm:flex-row gap-3 relative z-10 mt-6">
                 <button 
                   onClick={() => navigate('/builder')}
-                  className="w-full sm:w-1/2 px-4 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center text-sm"
+                  className="w-full sm:w-1/2 px-2 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center text-[11px] lg:text-xs whitespace-nowrap"
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Créer un site
+                  <Zap className="w-4 h-4 mr-1.5 shrink-0" />
+                  <span>Créer un site</span>
                 </button>
                 <button 
                   onClick={() => setShowEditModal(true)}
-                  className="w-full sm:w-1/2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:border-[var(--color-neon-blue)]/50 flex items-center justify-center text-sm"
+                  className="w-full sm:w-1/2 px-2 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:border-[var(--color-neon-blue)]/50 flex items-center justify-center text-[11px] lg:text-xs whitespace-nowrap"
                 >
-                  <Settings className="w-4 h-4 mr-2 text-[var(--color-neon-blue)]" />
-                  Modifier
+                  <Settings className="w-4 h-4 mr-1.5 text-[var(--color-neon-blue)] shrink-0" />
+                  <span>Modifier mon site</span>
                 </button>
               </div>
 
