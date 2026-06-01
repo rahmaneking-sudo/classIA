@@ -29,9 +29,11 @@ const Builder = () => {
     slug: '',
     ownerEmail: '',
     whatsapp: '',
+    address: '',
     themeId: null,
     content: {
       heroImage: '',
+      sectionImage: '',
       description: '',
       services: [{ title: '', description: '', image: '' }],
       rooms: [{ title: '', price: '', desc: '', image: '' }],
@@ -125,6 +127,7 @@ const Builder = () => {
         businessName: formData.businessName,
         ownerEmail: formData.ownerEmail,
         whatsapp: formData.whatsapp,
+        address: formData.address,
         themeId: formData.themeId,
         tier: 'Basique',
         content: formData.content
@@ -284,6 +287,10 @@ const Builder = () => {
                   <label className="block text-sm text-gray-400 mb-1">Numéro WhatsApp (Visible par les clients)</label>
                   <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: 22177..." />
                 </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Adresse Complète</label>
+                  <input type="text" name="address" value={formData.address} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Almadies, Dakar, Sénégal" />
+                </div>
 
                 <button type="button" onClick={() => setCurrentStep(2)} className="w-full py-4 mt-6 bg-white/10 hover:bg-white/20 text-white font-bold tracking-widest uppercase rounded-lg transition-colors flex justify-center items-center">
                   Étape Suivante : Le Contenu <ArrowRight className="w-4 h-4 ml-2" />
@@ -299,6 +306,11 @@ const Builder = () => {
                 <div>
                   <label className="block text-sm text-gray-400 mb-2">Image Principale (Bannière)</label>
                   <ImageUpload currentImage={formData.content.heroImage} onUpload={handleHeroImageUpload} label="Image de fond" />
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Image de fond du Menu / Services (Effet Parallaxe)</label>
+                  <ImageUpload currentImage={formData.content.sectionImage} onUpload={(url) => handleContentChange({target: {name: 'sectionImage', value: url}})} label="Fond Parallaxe (Optionnel)" />
                 </div>
 
                 <div>
