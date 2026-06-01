@@ -26,7 +26,30 @@ const ThemeRenderer = ({ data }) => {
   };
 
   const handleOrder = (itemName) => {
-    setModalItemName(itemName || 'Demande Générale');
+    if (!whatsapp) return;
+    const rawNumber = whatsapp.replace(/[^0-9]/g, '');
+    Swal.fire({
+      title: 'Commander',
+      text: `Que souhaitez-vous faire pour : ${itemName} ?`,
+      showCancelButton: true,
+      showDenyButton: true,
+      confirmButtonText: '📱 WhatsApp',
+      confirmButtonColor: '#25D366',
+      denyButtonText: '📞 Appeler',
+      denyButtonColor: '#3B82F6',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const message = encodeURIComponent(`Bonjour, je souhaite commander : ${itemName}`);
+        window.open(`https://wa.me/${rawNumber}?text=${message}`, '_blank');
+      } else if (result.isDenied) {
+        window.location.href = `tel:+${rawNumber}`;
+      }
+    });
+  };
+
+  const handleReservation = (itemName) => {
+    setModalItemName(itemName || 'Demande de Réservation');
     setIsModalOpen(true);
   };
 
@@ -346,7 +369,7 @@ const ThemeRenderer = ({ data }) => {
                   
                   <div className="flex items-center gap-6 mt-4 md:mt-0 w-full md:w-auto justify-between md:justify-end">
                     <div className="font-bold text-lg text-[#d4af37]">{item.price || 'Prix'}</div>
-                    <button onClick={() => handleOrder(item.title)} className="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition-colors flex items-center text-sm font-bold shadow-md">
+                    <button onClick={() => handleReservation(item.title)} className="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition-colors flex items-center text-sm font-bold shadow-md">
                       <MessageCircle className="w-4 h-4 mr-2" /> Réserver
                     </button>
                   </div>
@@ -416,8 +439,8 @@ const ThemeRenderer = ({ data }) => {
                   <div className="p-6 flex-1 flex flex-col">
                     <h3 className="text-xl font-black text-gray-900 mb-2 uppercase">{item.title || 'Véhicule'}</h3>
                     <p className="text-gray-500 text-sm mb-6 flex-1">{item.desc || 'Options...'}</p>
-                    <button onClick={() => handleOrder(item.title)} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold uppercase text-sm py-4 rounded-lg flex items-center justify-center transition-colors shadow-md">
-                      <MessageCircle className="w-5 h-5 mr-2" /> Réserver sur WhatsApp
+                    <button onClick={() => handleReservation(item.title)} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold uppercase text-sm py-4 rounded-lg flex items-center justify-center transition-colors shadow-md">
+                      <MessageCircle className="w-5 h-5 mr-2" /> Réserver le véhicule
                     </button>
                   </div>
                 </div>
@@ -488,7 +511,7 @@ const ThemeRenderer = ({ data }) => {
                     <div className="inline-block bg-teal-100 text-teal-800 px-3 py-1 rounded text-sm font-bold mb-4 w-fit">{item.price || 'Prix'}</div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">{item.title || 'Titre du bien'}</h3>
                     <p className="text-gray-600 mb-8 line-clamp-3">{item.desc || 'Description...'}</p>
-                    <button onClick={() => handleOrder(item.title)} className="text-sm font-bold text-white bg-green-600 px-6 py-3 rounded flex items-center justify-center hover:bg-green-700 w-full mt-auto transition-colors shadow-md">
+                    <button onClick={() => handleReservation(item.title)} className="text-sm font-bold text-white bg-green-600 px-6 py-3 rounded flex items-center justify-center hover:bg-green-700 w-full mt-auto transition-colors shadow-md">
                       <MessageCircle className="w-5 h-5 mr-2" /> Être recontacté pour ce bien
                     </button>
                   </div>
@@ -630,8 +653,8 @@ const ThemeRenderer = ({ data }) => {
                   )}
                   <h3 className="text-xl font-bold mb-4 text-slate-800">{service.title || 'Service'}</h3>
                   <p className="text-slate-600 leading-relaxed mb-8 flex-1">{service.desc || 'Description...'}</p>
-                  <button onClick={() => handleOrder(service.title)} className="w-full bg-green-50 text-green-700 hover:bg-green-100 py-3 rounded-xl font-bold flex justify-center items-center transition-colors">
-                    <MessageCircle className="w-5 h-5 mr-2" /> Prendre RDV via WhatsApp
+                  <button onClick={() => handleReservation(service.title)} className="w-full bg-green-50 text-green-700 hover:bg-green-100 py-3 rounded-xl font-bold flex justify-center items-center transition-colors">
+                    <MessageCircle className="w-5 h-5 mr-2" /> Prendre Rendez-vous
                   </button>
                 </div>
               ))}
@@ -701,7 +724,7 @@ const ThemeRenderer = ({ data }) => {
                     <h3 className="text-2xl font-serif font-bold mb-2">{room.title || 'Chambre'}</h3>
                     <p className="text-[#c2a679] font-bold mb-6 text-lg tracking-wider">{room.price || 'Tarif'}</p>
                     <p className="text-gray-600 mb-8 leading-relaxed">{room.desc || 'Description...'}</p>
-                    <button onClick={() => handleOrder(room.title)} className="flex items-center justify-center w-full bg-green-700 text-white py-4 font-bold tracking-widest uppercase hover:bg-green-800 transition-colors mt-auto shadow-md">
+                    <button onClick={() => handleReservation(room.title)} className="flex items-center justify-center w-full bg-green-700 text-white py-4 font-bold tracking-widest uppercase hover:bg-green-800 transition-colors mt-auto shadow-md">
                       <MessageCircle className="w-5 h-5 mr-2" /> Réserver
                     </button>
                   </div>
@@ -768,7 +791,7 @@ const ThemeRenderer = ({ data }) => {
                   <div className="p-8 bg-neutral-900 border-t border-neutral-800 flex-1 flex flex-col">
                     <h3 className="text-2xl font-bold text-white mb-4">{proj.title || 'Projet'}</h3>
                     <p className="text-neutral-400 text-sm mb-8 flex-1">{proj.desc || 'Description...'}</p>
-                    <button onClick={() => handleOrder(proj.title)} className="w-full bg-green-700 hover:bg-green-600 text-white py-3 font-bold flex items-center justify-center transition-colors shadow-md">
+                    <button onClick={() => handleReservation(proj.title)} className="w-full bg-green-700 hover:bg-green-600 text-white py-3 font-bold flex items-center justify-center transition-colors shadow-md">
                        <MessageCircle className="w-5 h-5 mr-2" /> Demander un devis
                     </button>
                   </div>
