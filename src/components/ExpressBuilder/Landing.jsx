@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Rocket, Star, Diamond, Zap, Settings, X } from 'lucide-react';
+import { CheckCircle2, Rocket, Star, Diamond, Zap, Settings, X, ArrowRight, Paintbrush } from 'lucide-react';
 import Navbar from '../Navbar';
 import axios from 'axios';
 import API_BASE_URL from '../../config/api';
@@ -105,18 +105,26 @@ const Landing = () => {
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Lien classia.com/site/...</li>
             </ul>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 w-full mt-8">
               <button 
                 onClick={() => navigate('/builder')}
-                className="w-full sm:w-auto px-8 py-3 bg-[var(--color-neon-blue)]/20 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-blue)] hover:text-white transition-all"
+                className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all overflow-hidden flex items-center justify-center hover:shadow-[0_0_30px_rgba(186,85,211,0.5)] hover:-translate-y-1"
               >
-                Créer mon site
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                <span className="relative z-10 flex items-center">
+                  <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Créer mon site
+                </span>
               </button>
+              
               <button 
                 onClick={() => setShowEditModal(true)}
-                className="w-full sm:w-auto px-8 py-3 bg-white/5 text-gray-300 border border-white/10 rounded-xl font-bold uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all"
+                className="group relative w-full sm:w-auto px-8 py-4 bg-[#0a0a10] text-gray-300 rounded-xl font-bold uppercase tracking-widest transition-all overflow-hidden flex items-center justify-center border border-white/10 hover:border-white/30 hover:bg-white/5 hover:-translate-y-1"
               >
-                Modifier mon site
+                <span className="relative z-10 flex items-center">
+                  <Settings className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-500" />
+                  Modifier mon site
+                </span>
               </button>
             </div>
           </div>
