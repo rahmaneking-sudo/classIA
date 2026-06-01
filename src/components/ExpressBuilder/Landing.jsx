@@ -109,19 +109,19 @@ const Landing = () => {
             <div className="w-full mt-8 p-5 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl relative overflow-hidden group/cta">
               <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-neon-blue)]/10 to-[var(--color-neon-purple)]/10 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500"></div>
               
-              <div className="flex flex-col sm:flex-row gap-3 relative z-10 mt-6">
+              <div className="flex flex-col gap-3 relative z-10 mt-4">
                 <button 
                   onClick={() => navigate('/builder')}
-                  className="w-full sm:w-1/2 px-2 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center text-[11px] lg:text-xs whitespace-nowrap"
+                  className="w-full px-4 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center text-sm"
                 >
-                  <Zap className="w-4 h-4 mr-1.5 shrink-0" />
+                  <Zap className="w-4 h-4 mr-2 shrink-0" />
                   <span>Créer un site</span>
                 </button>
                 <button 
                   onClick={() => setShowEditModal(true)}
-                  className="w-full sm:w-1/2 px-2 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:border-[var(--color-neon-blue)]/50 flex items-center justify-center text-[11px] lg:text-xs whitespace-nowrap"
+                  className="w-full px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-bold uppercase tracking-wider transition-all hover:border-[var(--color-neon-blue)]/50 flex items-center justify-center text-sm"
                 >
-                  <Settings className="w-4 h-4 mr-1.5 text-[var(--color-neon-blue)] shrink-0" />
+                  <Settings className="w-4 h-4 mr-2 text-[var(--color-neon-blue)] shrink-0" />
                   <span>Modifier mon site</span>
                 </button>
               </div>
