@@ -117,8 +117,17 @@ const Builder = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // Manual Validation
+    if (!formData.businessName || !formData.slug || !formData.ownerEmail || !formData.whatsapp || !formData.address) {
+      Toast.fire({
+        title: 'Champs manquants',
+        text: 'Veuillez retourner à l\'Étape 1 et remplir toutes les informations générales.',
+        icon: 'warning'
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -262,7 +271,7 @@ const Builder = () => {
             </h1>
             <p className="text-gray-400 text-sm mb-8">Remplissez les informations, prévisualisez en direct à droite.</p>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="space-y-8">
               
               {/* STEP 1: Basic Info */}
               <div className={`space-y-4 ${currentStep !== 1 && 'hidden'}`}>
@@ -270,26 +279,26 @@ const Builder = () => {
                 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Nom de l'entreprise</label>
-                  <input type="text" name="businessName" value={formData.businessName} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Restaurant Le Teranga" />
+                  <input type="text" name="businessName" value={formData.businessName} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Restaurant Le Teranga" />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Lien du site (Slug)</label>
                   <div className="flex">
                     <span className="bg-[#1a1a24] border border-[#2a2a35] border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
-                    <input type="text" name="slug" value={formData.slug} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-r-lg px-3 py-3 text-[var(--color-neon-purple)] font-bold focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="le-teranga" />
+                    <input type="text" name="slug" value={formData.slug} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-r-lg px-3 py-3 text-[var(--color-neon-purple)] font-bold focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="le-teranga" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Votre Email Administratif</label>
-                  <input type="email" name="ownerEmail" value={formData.ownerEmail} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="contact@email.com" />
+                  <input type="email" name="ownerEmail" value={formData.ownerEmail} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="contact@email.com" />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Numéro WhatsApp (Visible par les clients)</label>
-                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: 22177..." />
+                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: 22177..." />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Adresse Complète</label>
-                  <input type="text" name="address" value={formData.address} onChange={handleBasicChange} required className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Almadies, Dakar, Sénégal" />
+                  <input type="text" name="address" value={formData.address} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Almadies, Dakar, Sénégal" />
                 </div>
 
                 <button type="button" onClick={() => setCurrentStep(2)} className="w-full py-4 mt-6 bg-white/10 hover:bg-white/20 text-white font-bold tracking-widest uppercase rounded-lg transition-colors flex justify-center items-center">
@@ -366,7 +375,8 @@ const Builder = () => {
                 <div className="flex space-x-2 pt-6 border-t border-white/10">
                   <button type="button" onClick={() => setCurrentStep(1)} className="w-1/3 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors font-bold uppercase text-sm tracking-wider">Retour</button>
                   <button 
-                    type="submit" 
+                    type="button" 
+                    onClick={handleSubmit}
                     disabled={loading}
                     className="w-2/3 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white font-bold tracking-widest uppercase rounded-lg hover:shadow-[0_0_20px_rgba(186,85,211,0.5)] transition-all flex items-center justify-center disabled:opacity-50"
                   >
@@ -375,7 +385,7 @@ const Builder = () => {
                 </div>
               </div>
 
-            </form>
+            </div>
           </div>
         </div>
 
