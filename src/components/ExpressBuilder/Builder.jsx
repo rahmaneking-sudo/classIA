@@ -27,6 +27,29 @@ const Builder = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [pinCode, setPinCode] = useState('');
 
+  const [formData, setFormData] = useState({
+    businessName: '',
+    slug: '',
+    ownerEmail: '',
+    whatsapp: '',
+    address: '',
+    themeId: null,
+    content: {
+      heroImage: '',
+      sectionImage: '',
+      description: '',
+      welcomeMessage: '',
+      footer: { type: 'color', color: '#000000', gradient: '', image: '' },
+      services: [{ title: '', description: '', image: '' }],
+      rooms: [{ title: '', price: '', desc: '', image: '' }],
+      projects: [{ title: '', desc: '', image: '' }],
+      menus: [{ title: '', price: '', desc: '', image: '' }],
+      vehicles: [{ title: '', price: '', desc: '', image: '' }],
+      properties: [{ title: '', price: '', desc: '', image: '' }],
+      products: [{ title: '', price: '', image: '' }]
+    }
+  });
+
   React.useEffect(() => {
     const query = new URLSearchParams(location.search);
     if (query.get('edit') === 'true') {
@@ -51,26 +74,6 @@ const Builder = () => {
     }
   }, [location, navigate]);
 
-  const [formData, setFormData] = useState({
-    businessName: '',
-    slug: '',
-    ownerEmail: '',
-    whatsapp: '',
-    address: '',
-    themeId: null,
-    content: {
-      heroImage: '',
-      sectionImage: '',
-      description: '',
-      services: [{ title: '', description: '', image: '' }],
-      rooms: [{ title: '', price: '', desc: '', image: '' }],
-      projects: [{ title: '', desc: '', image: '' }],
-      menus: [{ title: '', price: '', desc: '', image: '' }],
-      vehicles: [{ title: '', price: '', desc: '', image: '' }],
-      properties: [{ title: '', price: '', desc: '', image: '' }],
-      products: [{ title: '', price: '', image: '' }]
-    }
-  });
 
   const Toast = Swal.mixin({
     background: '#0a0a10',
@@ -108,6 +111,16 @@ const Builder = () => {
     setFormData(prev => ({
       ...prev,
       content: { ...prev.content, heroImage: url }
+    }));
+  };
+
+  const handleFooterChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        footer: { ...(prev.content.footer || { type: 'color', color: '#000000', gradient: '', image: '' }), [field]: value }
+      }
     }));
   };
 
@@ -384,6 +397,11 @@ const Builder = () => {
                   <textarea name="description" value={formData.content.description} onChange={handleContentChange} rows="2" className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Les meilleures saveurs de Dakar..."></textarea>
                 </div>
 
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Mot de bienvenue (Affiché sur la page d'accueil)</label>
+                  <textarea name="welcomeMessage" value={formData.content.welcomeMessage || ''} onChange={handleContentChange} rows="3" className="w-full bg-[#11111a] border border-[#2a2a35] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="Ex: Bienvenue sur notre site officiel. Découvrez nos services et notre expertise..."></textarea>
+                </div>
+
                 {/* DYNAMIC FIELDS BASED ON THEME */}
                 {formData.themeId === 'restaurant' && renderDynamicList('menus', 'Notre Menu', 'var(--color-neon-purple)', [
                   { name: 'title', placeholder: 'Nom du plat (ex: Thiéboudienne)', bold: true },
@@ -428,6 +446,51 @@ const Builder = () => {
                   { name: 'title', placeholder: 'Projet (ex: Porte en Bois Massif)', bold: true },
                   { name: 'desc', type: 'textarea', placeholder: 'Description du travail réalisé...' }
                 ])}
+
+                <div className="pt-8 border-t border-white/10">
+                  <h3 className="text-xl font-bold text-[var(--color-neon-blue)] mb-4 uppercase tracking-widest">3. Personnalisation du Pied de Page</h3>
+                  
+                  <div className="flex gap-4 mb-4">
+                    <button type="button" onClick={() => handleFooterChange('type', 'color')} className={`px-4 py-2 rounded text-sm uppercase tracking-wider ${(!formData.content.footer?.type || formData.content.footer?.type === 'color') ? 'bg-[var(--color-neon-blue)] text-black font-bold' : 'bg-white/10 text-white hover:bg-white/20'}`}>Couleur Unie</button>
+                    <button type="button" onClick={() => handleFooterChange('type', 'gradient')} className={`px-4 py-2 rounded text-sm uppercase tracking-wider ${formData.content.footer?.type === 'gradient' ? 'bg-[var(--color-neon-blue)] text-black font-bold' : 'bg-white/10 text-white hover:bg-white/20'}`}>Dégradé</button>
+                    <button type="button" onClick={() => handleFooterChange('type', 'image')} className={`px-4 py-2 rounded text-sm uppercase tracking-wider ${formData.content.footer?.type === 'image' ? 'bg-[var(--color-neon-blue)] text-black font-bold' : 'bg-white/10 text-white hover:bg-white/20'}`}>Image</button>
+                  </div>
+
+                  {(!formData.content.footer?.type || formData.content.footer?.type === 'color') && (
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Couleur de fond</label>
+                      <input type="color" value={formData.content.footer?.color || '#000000'} onChange={(e) => handleFooterChange('color', e.target.value)} className="w-16 h-10 bg-transparent border-none cursor-pointer" />
+                    </div>
+                  )}
+
+                  {formData.content.footer?.type === 'gradient' && (
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Choisissez un dégradé</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          'linear-gradient(to right, #141E30, #243B55)',
+                          'linear-gradient(to right, #000000, #434343)',
+                          'linear-gradient(to right, #ff416c, #ff4b2b)',
+                          'linear-gradient(to right, #0f2027, #203a43, #2c5364)'
+                        ].map((grad, idx) => (
+                          <div 
+                            key={idx} 
+                            onClick={() => handleFooterChange('gradient', grad)}
+                            className={`h-12 rounded cursor-pointer border-2 ${formData.content.footer?.gradient === grad ? 'border-[var(--color-neon-blue)]' : 'border-transparent'}`}
+                            style={{ backgroundImage: grad }}
+                          ></div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.content.footer?.type === 'image' && (
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-2">Image de fond du footer</label>
+                      <ImageUpload currentImage={formData.content.footer?.image} onUpload={(url) => handleFooterChange('image', url)} label="Fond du footer" />
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex space-x-2 pt-6 border-t border-white/10">
                   <button type="button" onClick={() => setCurrentStep(1)} className="w-1/3 py-3 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors font-bold uppercase text-sm tracking-wider">Retour</button>
