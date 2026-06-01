@@ -461,7 +461,7 @@ const ThemeRenderer = ({ data }) => {
       <div className="min-h-screen bg-gray-100 text-gray-800 font-sans w-full scroll-smooth flex flex-col">
         {renderNavbar([
           { id: 'accueil', label: 'Accueil' },
-          { id: 'biens', label: 'Nos Biens' }
+          { id: 'biens', label: 'Nos Propriétés' }
         ], 'bg-teal-900/95', 'text-white', 'text-white')}
 
         <div className="flex-1">
@@ -494,7 +494,7 @@ const ThemeRenderer = ({ data }) => {
 
           {activePage === 'biens' && renderSectionBackground(
             <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto w-full">
-             <h2 className={`text-3xl font-bold mb-12 border-l-4 pl-4 ${content?.sectionImage ? 'text-white border-white' : 'text-gray-900 border-teal-700'}`}>Derniers Biens</h2>
+             <h2 className={`text-3xl font-bold mb-12 border-l-4 pl-4 ${content?.sectionImage ? 'text-white border-white' : 'text-gray-900 border-teal-700'}`}>Propriétés Exclusives</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {(content?.properties?.length > 0 ? content.properties : [
                 { title: 'Villa R+1 Almadies', price: 'A vendre: 250 Millions', desc: '4 chambres, piscine, jardin.' },
