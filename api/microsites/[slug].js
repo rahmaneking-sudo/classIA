@@ -68,8 +68,8 @@ export default async function handler(req, res) {
 
   if (slug === 'reserve' && req.method === 'POST') {
     try {
-      const { slug: siteSlug, clientName, clientPhone, details, itemName } = req.body;
-      if (!siteSlug || !clientName || !clientPhone) {
+      const { slug: siteSlug, clientName, clientEmail, clientPhone, details, itemName } = req.body;
+      if (!siteSlug || !clientName || !clientPhone || !clientEmail) {
         return res.status(400).json({ message: 'Veuillez remplir tous les champs obligatoires.' });
       }
 
@@ -97,6 +97,7 @@ export default async function handler(req, res) {
             <p>Vous avez reçu une nouvelle demande depuis votre site CLASSIA.</p>
             <div style="background-color: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #e4e4e7; margin: 20px 0;">
               <p style="margin: 0 0 10px 0;"><strong>Client :</strong> ${clientName}</p>
+              <p style="margin: 0 0 10px 0;"><strong>E-mail :</strong> <a href="mailto:${clientEmail}">${clientEmail}</a></p>
               <p style="margin: 0 0 10px 0;"><strong>Téléphone :</strong> ${clientPhone}</p>
               <p style="margin: 0;"><strong>Détails :</strong> ${details || 'Aucun détail supplémentaire.'}</p>
             </div>

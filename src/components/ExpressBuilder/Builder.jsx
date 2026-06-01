@@ -339,11 +339,9 @@ const Builder = () => {
         <div className="w-full lg:w-[450px] xl:w-[500px] flex-shrink-0 bg-[#0a0a10] border-r border-white/10 flex flex-col h-full overflow-y-auto custom-scrollbar">
           <div className="p-6 pb-32">
             
-            {!isEditMode && (
-              <button onClick={() => setCurrentStep(0)} className="flex items-center text-gray-400 hover:text-white mb-6 text-sm uppercase tracking-wider transition-colors">
-                <ArrowLeft className="w-4 h-4 mr-2" /> Changer de modèle
-              </button>
-            )}
+            <button onClick={() => setCurrentStep(0)} className="flex items-center text-gray-400 hover:text-white mb-6 text-sm uppercase tracking-wider transition-colors">
+              <ArrowLeft className="w-4 h-4 mr-2" /> Changer de modèle
+            </button>
 
             <h1 className="text-3xl font-bold tracking-widest uppercase mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
               {isEditMode ? 'Modifier votre site' : 'Personnalisation'}

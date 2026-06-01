@@ -123,23 +123,20 @@ const Landing = () => {
                 />
                 <button 
                   onClick={() => navigate(siteName ? `/builder?name=${encodeURIComponent(siteName)}` : '/builder')}
-                  className="group/btn relative w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all overflow-hidden flex items-center justify-center hover:shadow-[0_0_40px_rgba(186,85,211,0.6)] hover:-translate-y-1"
+                  className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all hover:shadow-[0_0_20px_rgba(186,85,211,0.6)] hover:-translate-y-1 flex items-center justify-center"
                 >
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out"></div>
-                  <span className="relative z-10 flex items-center whitespace-nowrap text-sm sm:text-base">
-                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover/btn:scale-110 group-hover/btn:text-yellow-300 transition-all" />
-                    Créer mon site
-                  </span>
+                  <Zap className="w-5 h-5 mr-2" />
+                  Créer mon site
                 </button>
               </div>
 
               <div className="mt-5 pt-4 border-t border-white/10 text-center relative z-10">
                 <button 
                   onClick={() => setShowEditModal(true)}
-                  className="group/edit text-xs sm:text-sm text-gray-400 hover:text-white transition-colors flex items-center justify-center w-full py-2 rounded-lg hover:bg-white/5"
+                  className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors flex items-center justify-center w-full py-2 rounded-lg hover:bg-white/5"
                 >
-                  <Settings className="w-4 h-4 mr-2 group-hover/edit:rotate-90 transition-transform duration-500 text-[var(--color-neon-blue)]" />
-                  <span className="border-b border-transparent group-hover/edit:border-white/50 pb-0.5 transition-colors">
+                  <Settings className="w-4 h-4 mr-2 text-[var(--color-neon-blue)]" />
+                  <span className="border-b border-transparent hover:border-white/50 pb-0.5 transition-colors">
                     J'ai déjà un site (Modifier)
                   </span>
                 </button>

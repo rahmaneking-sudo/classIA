@@ -10,7 +10,7 @@ const ThemeRenderer = ({ data }) => {
   // Réservation Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalItemName, setModalItemName] = useState('');
-  const [reserveForm, setReserveForm] = useState({ clientName: '', clientPhone: '', details: '' });
+  const [reserveForm, setReserveForm] = useState({ clientName: '', clientEmail: '', clientPhone: '', details: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigateTo = (e, pageId) => {
@@ -55,8 +55,8 @@ const ThemeRenderer = ({ data }) => {
 
   const handleReserveSubmit = async (e) => {
     e.preventDefault();
-    if (!reserveForm.clientName || !reserveForm.clientPhone) {
-      Swal.fire({ icon: 'warning', title: 'Attention', text: 'Veuillez remplir votre nom et votre numéro de téléphone.', background: '#fff', color: '#000' });
+    if (!reserveForm.clientName || !reserveForm.clientPhone || !reserveForm.clientEmail) {
+      Swal.fire({ icon: 'warning', title: 'Attention', text: 'Veuillez remplir votre nom, email et téléphone.', background: '#fff', color: '#000' });
       return;
     }
     setIsSubmitting(true);
@@ -64,13 +64,14 @@ const ThemeRenderer = ({ data }) => {
       const res = await axios.post('/api/microsites/reserve', {
         slug,
         clientName: reserveForm.clientName,
+        clientEmail: reserveForm.clientEmail,
         clientPhone: reserveForm.clientPhone,
         details: reserveForm.details,
         itemName: modalItemName
       });
       Swal.fire({ icon: 'success', title: 'Demande envoyée !', text: res.data.message || 'Le propriétaire a bien reçu votre demande.', background: '#fff', color: '#000' });
       setIsModalOpen(false);
-      setReserveForm({ clientName: '', clientPhone: '', details: '' });
+      setReserveForm({ clientName: '', clientEmail: '', clientPhone: '', details: '' });
     } catch (error) {
       Swal.fire({ icon: 'error', title: 'Erreur', text: error.response?.data?.message || 'Erreur lors de l\'envoi de la demande.', background: '#fff', color: '#000' });
     } finally {
@@ -94,6 +95,10 @@ const ThemeRenderer = ({ data }) => {
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Votre Nom complet *</label>
               <input type="text" value={reserveForm.clientName} onChange={(e) => setReserveForm({...reserveForm, clientName: e.target.value})} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow text-gray-900" placeholder="Ex: Jean Dupont" required />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Adresse E-mail *</label>
+              <input type="email" value={reserveForm.clientEmail} onChange={(e) => setReserveForm({...reserveForm, clientEmail: e.target.value})} className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow text-gray-900" placeholder="Ex: contact@email.com" required />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Numéro de téléphone *</label>
