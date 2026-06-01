@@ -28,7 +28,8 @@ export default async function handler(req, res) {
       const { ownerEmail } = req.body;
       if (!ownerEmail) return res.status(400).json({ message: 'Email requis.' });
       
-      const sites = await MicroSite.find({ ownerEmail: new RegExp(`^${ownerEmail}$`, 'i') });
+      const cleanEmail = ownerEmail.trim();
+      const sites = await MicroSite.find({ ownerEmail: new RegExp(`^${cleanEmail}$`, 'i') });
       
       if (!sites || sites.length === 0) {
         return res.status(404).json({ message: 'Aucun site trouvé avec cette adresse email.' });
