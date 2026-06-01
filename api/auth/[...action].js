@@ -95,7 +95,15 @@ export default async function handler(req, res) {
       return res.status(200).json({ message: 'Mot de passe modifié avec succès' });
     }
 
-    return res.status(405).json({ message: 'Méthode non autorisée ou chemin introuvable' });
+    return res.status(405).json({ 
+      message: 'Méthode non autorisée ou chemin introuvable',
+      debug: {
+        method: req.method,
+        url: req.url,
+        query: req.query,
+        pathParsed: path
+      }
+    });
 
   } catch (error) {
     console.error('Auth API error:', error);
