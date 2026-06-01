@@ -111,7 +111,10 @@ const AdminMicroSites = () => {
                   </td>
                   <td className="p-4">
                     <div className="text-sm text-gray-300">{site.ownerEmail}</div>
-                    <div className="text-xs text-gray-500">{site.whatsapp}</div>
+                    <div className="text-xs text-gray-500 mb-1">{site.whatsapp}</div>
+                    <div className="text-xs font-mono bg-white/10 px-2 py-1 rounded inline-block text-[var(--color-neon-blue)]">
+                      PIN: {site.pinCode || 'N/A'}
+                    </div>
                   </td>
                   <td className="p-4">
                     {site.isActive ? (

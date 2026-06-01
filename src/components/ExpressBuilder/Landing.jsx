@@ -71,12 +71,20 @@ const Landing = () => {
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Lien classia.com/site/...</li>
             </ul>
 
-            <button 
-              onClick={() => navigate('/builder')}
-              className="w-full py-3 bg-[var(--color-neon-blue)]/20 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-blue)] hover:text-white transition-all"
-            >
-              Créer mon site
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button 
+                onClick={() => navigate('/builder')}
+                className="w-full sm:w-auto px-8 py-3 bg-[var(--color-neon-blue)]/20 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-blue)] hover:text-white transition-all"
+              >
+                Créer mon site
+              </button>
+              <button 
+                onClick={() => setShowEditModal(true)}
+                className="w-full sm:w-auto px-8 py-3 bg-white/5 text-gray-300 border border-white/10 rounded-xl font-bold uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all"
+              >
+                Modifier mon site
+              </button>
+            </div>
           </div>
 
           {/* STANDARD */}
@@ -157,16 +165,7 @@ const Landing = () => {
         </div>
       </div>
 
-      {/* Floating Edit Button */}
-      <button
-        onClick={() => setShowEditModal(true)}
-        className="fixed bottom-6 right-6 bg-[#1a1a24] border border-[var(--color-neon-purple)]/50 text-white p-4 rounded-full shadow-[0_0_20px_rgba(186,85,211,0.3)] hover:scale-110 transition-transform z-50 flex items-center justify-center group"
-      >
-        <Settings className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
-        <span className="absolute right-full mr-4 bg-black/90 text-white text-xs px-3 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10">
-          Modifier mon site
-        </span>
-      </button>
+
 
       {/* Edit Modal */}
       {showEditModal && (
@@ -201,7 +200,17 @@ const Landing = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Code PIN Secret</label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Code PIN Secret</label>
+                  <a 
+                    href="https://wa.me/221711696897?text=Bonjour%20Abdou%2C%20j'ai%20oubli%C3%A9%20le%20Code%20PIN%20de%20mon%20site%20Express." 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs text-[var(--color-neon-blue)] hover:underline"
+                  >
+                    Oublié ?
+                  </a>
+                </div>
                 <input 
                   type="password" 
                   value={editPin}
