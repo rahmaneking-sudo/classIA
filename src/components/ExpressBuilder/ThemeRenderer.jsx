@@ -21,31 +21,15 @@ const ThemeRenderer = ({ data }) => {
 
   const handleContact = () => {
     if (whatsapp) {
-      window.location.href = `https://wa.me/${String(whatsapp).replace(/[^0-9]/g, '')}`;
+      window.open(`https://wa.me/${String(whatsapp).replace(/[^0-9]/g, '')}`, '_blank');
     }
   };
 
   const handleOrder = (itemName) => {
-    if (!whatsapp) return;
-    const rawNumber = String(whatsapp).replace(/[^0-9]/g, '');
-    Swal.fire({
-      title: 'Commander',
-      text: `Que souhaitez-vous faire pour : ${itemName} ?`,
-      showCancelButton: true,
-      showDenyButton: true,
-      confirmButtonText: '📱 WhatsApp',
-      confirmButtonColor: '#25D366',
-      denyButtonText: '📞 Appeler',
-      denyButtonColor: '#3B82F6',
-      cancelButtonText: 'Annuler',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const message = encodeURIComponent(`Bonjour, je souhaite commander : ${itemName}`);
-        window.location.href = `https://wa.me/${rawNumber}?text=${message}`;
-      } else if (result.isDenied) {
-        window.location.href = `tel:+${rawNumber}`;
-      }
-    });
+    if (whatsapp) {
+      const message = encodeURIComponent(`Bonjour, je souhaite commander / réserver : ${itemName}`);
+      window.open(`https://wa.me/${String(whatsapp).replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
+    }
   };
 
   const handleReservation = (itemName) => {
@@ -159,7 +143,9 @@ const ThemeRenderer = ({ data }) => {
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 mr-3 opacity-80" />
-                  <p>{whatsapp || '+221 77 000 00 00'}</p>
+                  <a href={whatsapp ? `tel:+${String(whatsapp).replace(/[^0-9]/g, '')}` : 'tel:+221770000000'} className="hover:underline">
+                    {whatsapp || '+221 77 000 00 00'}
+                  </a>
                 </div>
                 {ownerEmail && (
                   <div className="flex items-center">
