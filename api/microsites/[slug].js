@@ -1,8 +1,10 @@
 import connectDB from '../_lib/db.js';
-import { protectAdmin } from '../_lib/protect.js';
 import MicroSite from '../../backend/models/MicroSite.js';
+import { protectAdmin } from '../_lib/protect.js';
+import allowCors from '../_lib/cors.js';
 
 export default async function handler(req, res) {
+  if (allowCors(req, res)) return;
   await connectDB();
   const { slug } = req.query;
 
