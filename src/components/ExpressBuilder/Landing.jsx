@@ -14,6 +14,7 @@ const Landing = () => {
   const [loading, setLoading] = useState(false);
   const [isForgotMode, setIsForgotMode] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
+  const [siteName, setSiteName] = useState('');
 
   const handleForgotPin = async (e) => {
     e.preventDefault();
@@ -105,27 +106,44 @@ const Landing = () => {
               <li className="flex items-start text-sm"><CheckCircle2 className="w-4 h-4 text-green-400 mr-2 mt-0.5" /> Lien classia.com/site/...</li>
             </ul>
 
-            <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 w-full mt-8">
-              <button 
-                onClick={() => navigate('/builder')}
-                className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all overflow-hidden flex items-center justify-center hover:shadow-[0_0_30px_rgba(186,85,211,0.5)] hover:-translate-y-1"
-              >
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-                <span className="relative z-10 flex items-center">
-                  <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                  Créer mon site
-                </span>
-              </button>
+            <div className="w-full mt-8 p-5 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl relative overflow-hidden group/cta">
+              <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-neon-blue)]/10 to-[var(--color-neon-purple)]/10 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500"></div>
               
-              <button 
-                onClick={() => setShowEditModal(true)}
-                className="group relative w-full sm:w-auto px-8 py-4 bg-[#0a0a10] text-gray-300 rounded-xl font-bold uppercase tracking-widest transition-all overflow-hidden flex items-center justify-center border border-white/10 hover:border-white/30 hover:bg-white/5 hover:-translate-y-1"
-              >
-                <span className="relative z-10 flex items-center">
-                  <Settings className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-500" />
-                  Modifier mon site
-                </span>
-              </button>
+              <label className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-3 text-left">
+                Nom de votre entreprise / projet
+              </label>
+              
+              <div className="flex flex-col sm:flex-row gap-3 relative z-10">
+                <input 
+                  type="text" 
+                  value={siteName}
+                  onChange={(e) => setSiteName(e.target.value)}
+                  placeholder="Ex: Restaurant Le Teranga..."
+                  className="flex-1 bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all shadow-inner"
+                />
+                <button 
+                  onClick={() => navigate(siteName ? `/builder?name=${encodeURIComponent(siteName)}` : '/builder')}
+                  className="group/btn relative w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest transition-all overflow-hidden flex items-center justify-center hover:shadow-[0_0_40px_rgba(186,85,211,0.6)] hover:-translate-y-1"
+                >
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out"></div>
+                  <span className="relative z-10 flex items-center whitespace-nowrap text-sm sm:text-base">
+                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover/btn:scale-110 group-hover/btn:text-yellow-300 transition-all" />
+                    Créer mon site
+                  </span>
+                </button>
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-white/10 text-center relative z-10">
+                <button 
+                  onClick={() => setShowEditModal(true)}
+                  className="group/edit text-xs sm:text-sm text-gray-400 hover:text-white transition-colors flex items-center justify-center w-full py-2 rounded-lg hover:bg-white/5"
+                >
+                  <Settings className="w-4 h-4 mr-2 group-hover/edit:rotate-90 transition-transform duration-500 text-[var(--color-neon-blue)]" />
+                  <span className="border-b border-transparent group-hover/edit:border-white/50 pb-0.5 transition-colors">
+                    J'ai déjà un site (Modifier)
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
 

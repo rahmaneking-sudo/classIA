@@ -71,6 +71,15 @@ const Builder = () => {
       } else {
         navigate('/');
       }
+    } else {
+      const initName = query.get('name');
+      if (initName) {
+        setFormData(prev => ({
+          ...prev,
+          businessName: initName,
+          slug: initName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+        }));
+      }
     }
   }, [location, navigate]);
 
