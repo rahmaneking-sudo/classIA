@@ -172,64 +172,115 @@ const Landing = () => {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <div className="bg-[#0a0a10] border border-[var(--color-neon-purple)]/30 rounded-2xl p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(186,85,211,0.1)]">
             <button 
-              onClick={() => setShowEditModal(false)}
+              onClick={closeModals}
               className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
             
             <h2 className="text-2xl font-bold mb-2 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
-              Modifier mon site
+              {isForgotMode ? 'Code PIN Oublié' : 'Modifier mon site'}
             </h2>
-            <p className="text-gray-400 text-sm mb-6">Entrez vos accès pour mettre à jour le contenu de votre site.</p>
+            <p className="text-gray-400 text-sm mb-6">
+              {isForgotMode 
+                ? "Entrez le lien de votre site et votre adresse email. Nous vous enverrons votre Code PIN par email." 
+                : "Entrez vos accès pour mettre à jour le contenu de votre site."}
+            </p>
 
-            <form onSubmit={handleEditLogin} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Lien du site (Slug)</label>
-                <div className="flex">
-                  <span className="bg-[#1a1a24] border border-white/10 border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
+            {isForgotMode ? (
+              <form onSubmit={handleForgotPin} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Lien du site (Slug)</label>
+                  <div className="flex">
+                    <span className="bg-[#1a1a24] border border-white/10 border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
+                    <input 
+                      type="text" 
+                      value={editSlug}
+                      onChange={(e) => setEditSlug(e.target.value)}
+                      required
+                      className="w-full bg-black/50 border border-white/10 rounded-r-lg px-3 py-3 text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
+                      placeholder="le-teranga"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Email du propriétaire</label>
                   <input 
-                    type="text" 
-                    value={editSlug}
-                    onChange={(e) => setEditSlug(e.target.value)}
+                    type="email" 
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
                     required
-                    className="w-full bg-black/50 border border-white/10 rounded-r-lg px-3 py-3 text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
-                    placeholder="le-teranga"
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
+                    placeholder="contact@email.com"
                   />
                 </div>
-              </div>
 
-              <div>
-                <div className="flex justify-between items-center mb-1">
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Code PIN Secret</label>
-                  <a 
-                    href="https://wa.me/221711696897?text=Bonjour%20Abdou%2C%20j'ai%20oubli%C3%A9%20le%20Code%20PIN%20de%20mon%20site%20Express." 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-xs text-[var(--color-neon-blue)] hover:underline"
+                <div className="flex flex-col gap-3 mt-6">
+                  <button 
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3 bg-[var(--color-neon-purple)]/20 text-[var(--color-neon-purple)] border border-[var(--color-neon-purple)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-purple)] hover:text-white transition-all disabled:opacity-50"
                   >
-                    Oublié ?
-                  </a>
+                    {loading ? 'Envoi...' : 'Recevoir mon PIN par Email'}
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setIsForgotMode(false)}
+                    className="w-full py-3 bg-transparent text-gray-400 font-bold uppercase tracking-widest hover:text-white text-sm"
+                  >
+                    Retour à la connexion
+                  </button>
                 </div>
-                <input 
-                  type="password" 
-                  value={editPin}
-                  onChange={(e) => setEditPin(e.target.value)}
-                  required
-                  maxLength={4}
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-center tracking-[1em] text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
-                  placeholder="••••"
-                />
-              </div>
+              </form>
+            ) : (
+              <form onSubmit={handleEditLogin} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Lien du site (Slug)</label>
+                  <div className="flex">
+                    <span className="bg-[#1a1a24] border border-white/10 border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
+                    <input 
+                      type="text" 
+                      value={editSlug}
+                      onChange={(e) => setEditSlug(e.target.value)}
+                      required
+                      className="w-full bg-black/50 border border-white/10 rounded-r-lg px-3 py-3 text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
+                      placeholder="le-teranga"
+                    />
+                  </div>
+                </div>
 
-              <button 
-                type="submit"
-                disabled={loading}
-                className="w-full mt-4 py-3 bg-[var(--color-neon-purple)]/20 text-[var(--color-neon-purple)] border border-[var(--color-neon-purple)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-purple)] hover:text-white transition-all disabled:opacity-50"
-              >
-                {loading ? 'Connexion...' : 'Accéder au Builder'}
-              </button>
-            </form>
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Code PIN Secret</label>
+                    <button 
+                      type="button"
+                      onClick={() => setIsForgotMode(true)}
+                      className="text-xs text-[var(--color-neon-blue)] hover:underline"
+                    >
+                      Oublié ?
+                    </button>
+                  </div>
+                  <input 
+                    type="password" 
+                    value={editPin}
+                    onChange={(e) => setEditPin(e.target.value)}
+                    required
+                    maxLength={4}
+                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-center tracking-[1em] text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
+                    placeholder="••••"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={loading}
+                  className="w-full mt-4 py-3 bg-[var(--color-neon-purple)]/20 text-[var(--color-neon-purple)] border border-[var(--color-neon-purple)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-purple)] hover:text-white transition-all disabled:opacity-50"
+                >
+                  {loading ? 'Connexion...' : 'Accéder au Builder'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
