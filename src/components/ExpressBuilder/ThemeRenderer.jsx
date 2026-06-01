@@ -21,13 +21,13 @@ const ThemeRenderer = ({ data }) => {
 
   const handleContact = () => {
     if (whatsapp) {
-      window.open(`https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}`, '_blank');
+      window.location.href = `https://wa.me/${String(whatsapp).replace(/[^0-9]/g, '')}`;
     }
   };
 
   const handleOrder = (itemName) => {
     if (!whatsapp) return;
-    const rawNumber = whatsapp.replace(/[^0-9]/g, '');
+    const rawNumber = String(whatsapp).replace(/[^0-9]/g, '');
     Swal.fire({
       title: 'Commander',
       text: `Que souhaitez-vous faire pour : ${itemName} ?`,
@@ -41,7 +41,7 @@ const ThemeRenderer = ({ data }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         const message = encodeURIComponent(`Bonjour, je souhaite commander : ${itemName}`);
-        window.open(`https://wa.me/${rawNumber}?text=${message}`, '_blank');
+        window.location.href = `https://wa.me/${rawNumber}?text=${message}`;
       } else if (result.isDenied) {
         window.location.href = `tel:+${rawNumber}`;
       }
