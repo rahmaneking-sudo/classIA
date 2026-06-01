@@ -21,24 +21,26 @@ export default async function handler(req, res) {
     }
   }
 
-  // PUT /api/microsites/:slug - Owner updates their site
+  // PUT /api/microsites/[slug] - Edit site
   if (req.method === 'PUT') {
     try {
-      const { businessName, content, whatsapp, themeId } = req.body;
-      // Ideally, we would protect this with the Owner's token, but for now we trust the client
-      // or we can just find by slug and email if we wanted lightweight auth.
-      // Assuming the frontend passes the correct data.
+      const { pinCode, businessName, whatsapp, ownerEmail, address, content, themeId } = req.body;
+      
+      const site = await MicroSite.findOne({ slug });
+      if (!site) return res.status(404).json({ message: 'Site non trouvé' });
 
-      const updatedSite = await MicroSite.findOneAndUpdate(
-        { slug },
-        { businessName, content, whatsapp, themeId },
-        { new: true }
-      );
-
-      if (!updatedSite) {
-        return res.status(404).json({ message: 'Site non trouvé' });
+      if (site.pinCode !== pinCode) {
+        return res.status(401).json({ message: 'Code PIN incorrect' });
       }
 
+      site.businessName = businessName || site.businessName;
+      site.whatsapp = whatsapp || site.whatsapp;
+      site.ownerEmail = ownerEmail || site.ownerEmail;
+      site.address = address || site.address;
+      site.content = content || site.content;
+      site.themeId = themeId || site.themeId;
+
+      const updatedSite = await site.save();
       return res.status(200).json(updatedSite);
     } catch (error) {
       console.error('Update microsite error:', error);

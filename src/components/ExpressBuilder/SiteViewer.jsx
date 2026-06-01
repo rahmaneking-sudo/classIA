@@ -26,7 +26,19 @@ const SiteViewer = () => {
       }
     };
     fetchSite();
-  }, [slug]);
+    
+    // Auto-refresh polling if site is inactive
+    let interval;
+    if (siteData && !siteData.isActive) {
+      interval = setInterval(() => {
+        fetchSite();
+      }, 10000); // Check every 10 seconds
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [slug, siteData?.isActive]);
 
   if (loading) {
     return (

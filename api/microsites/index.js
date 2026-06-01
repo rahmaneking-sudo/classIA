@@ -31,6 +31,9 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: 'Ce nom de lien (slug) est déjà utilisé. Veuillez en choisir un autre.' });
       }
 
+      // Generate a random 4-digit pin
+      const pinCode = Math.floor(1000 + Math.random() * 9000).toString();
+
       const newSite = new MicroSite({
         slug,
         businessName,
@@ -39,11 +42,12 @@ export default async function handler(req, res) {
         themeId,
         tier,
         content,
+        pinCode,
         isActive: false // By default, pending payment
       });
 
       const savedSite = await newSite.save();
-      return res.status(201).json(savedSite);
+      return res.status(201).json({ ...savedSite.toObject(), pinCode });
     } catch (error) {
       console.error('Create microsite error:', error);
       return res.status(500).json({ message: 'Erreur lors de la création du site', error: error.message });

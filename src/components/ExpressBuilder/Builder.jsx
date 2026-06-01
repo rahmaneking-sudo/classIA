@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { CheckCircle2, ArrowRight, Plus, Trash2, ArrowLeft } from 'lucide-react';
 import Navbar from '../Navbar';
@@ -21,8 +21,35 @@ const THEMES = [
 
 const Builder = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0); 
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [pinCode, setPinCode] = useState('');
+
+  React.useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    if (query.get('edit') === 'true') {
+      const savedData = sessionStorage.getItem('editSiteData');
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        setFormData({
+          businessName: parsed.businessName || '',
+          slug: parsed.slug || '',
+          ownerEmail: parsed.ownerEmail || '',
+          whatsapp: parsed.whatsapp || '',
+          address: parsed.address || '',
+          themeId: parsed.themeId || null,
+          content: parsed.content || {}
+        });
+        setPinCode(parsed.pinCode);
+        setIsEditMode(true);
+        setCurrentStep(1); // Skip theme selection
+      } else {
+        navigate('/');
+      }
+    }
+  }, [location, navigate]);
 
   const [formData, setFormData] = useState({
     businessName: '',
@@ -131,26 +158,54 @@ const Builder = () => {
     setLoading(true);
 
     try {
-      const payload = {
-        slug: formData.slug,
-        businessName: formData.businessName,
-        ownerEmail: formData.ownerEmail,
-        whatsapp: formData.whatsapp,
-        address: formData.address,
-        themeId: formData.themeId,
-        tier: 'Basique',
-        content: formData.content
-      };
+      if (isEditMode) {
+        const payload = {
+          ...formData,
+          pinCode
+        };
+        const res = await axios.put(`${API_BASE_URL}/microsites/${formData.slug}`, payload);
+        Toast.fire({
+          title: 'Mise à jour réussie',
+          text: 'Vos modifications ont été enregistrées.',
+          icon: 'success'
+        }).then(() => {
+          navigate(`/site/${res.data.slug}`);
+        });
+      } else {
+        const payload = {
+          slug: formData.slug,
+          businessName: formData.businessName,
+          ownerEmail: formData.ownerEmail,
+          whatsapp: formData.whatsapp,
+          address: formData.address,
+          themeId: formData.themeId,
+          tier: 'Basique',
+          content: formData.content
+        };
 
-      const res = await axios.post(`${API_BASE_URL}/microsites`, payload);
-      
-      Toast.fire({
-        title: 'Félicitations !',
-        text: 'Votre site a été généré avec succès. Redirection vers votre page de paiement/activation...',
-        icon: 'success'
-      }).then(() => {
-        navigate(`/site/${res.data.slug}`);
-      });
+        const res = await axios.post(`${API_BASE_URL}/microsites`, payload);
+        const newPin = res.data.pinCode;
+        
+        Swal.fire({
+          background: '#0a0a10',
+          color: '#ffffff',
+          icon: 'success',
+          title: 'Félicitations !',
+          html: `Votre site a été généré avec succès.<br/><br/>
+                 <div style="background: rgba(186,85,211,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(186,85,211,0.3);">
+                   <p style="color: #bbb; font-size: 14px; margin-bottom: 5px;">Votre Code PIN de modification :</p>
+                   <h2 style="color: var(--color-neon-blue); font-size: 32px; letter-spacing: 5px; margin: 0;">${newPin}</h2>
+                   <p style="color: #bbb; font-size: 12px; margin-top: 5px;">⚠️ Gardez ce code précieusement !</p>
+                 </div>`,
+          confirmButtonText: 'Voir mon site',
+          confirmButtonColor: '#7b2ff7',
+          customClass: {
+            popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+          }
+        }).then(() => {
+          navigate(`/site/${res.data.slug}`);
+        });
+      }
 
     } catch (err) {
       Toast.fire({
@@ -262,12 +317,14 @@ const Builder = () => {
         <div className="w-full lg:w-[450px] xl:w-[500px] flex-shrink-0 bg-[#0a0a10] border-r border-white/10 flex flex-col h-full overflow-y-auto custom-scrollbar">
           <div className="p-6 pb-32">
             
-            <button onClick={() => setCurrentStep(0)} className="flex items-center text-gray-400 hover:text-white mb-6 text-sm uppercase tracking-wider transition-colors">
-              <ArrowLeft className="w-4 h-4 mr-2" /> Changer de modèle
-            </button>
+            {!isEditMode && (
+              <button onClick={() => setCurrentStep(0)} className="flex items-center text-gray-400 hover:text-white mb-6 text-sm uppercase tracking-wider transition-colors">
+                <ArrowLeft className="w-4 h-4 mr-2" /> Changer de modèle
+              </button>
+            )}
 
             <h1 className="text-3xl font-bold tracking-widest uppercase mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
-              Personnalisation
+              {isEditMode ? 'Modifier votre site' : 'Personnalisation'}
             </h1>
             <p className="text-gray-400 text-sm mb-8">Remplissez les informations, prévisualisez en direct à droite.</p>
 
@@ -285,7 +342,7 @@ const Builder = () => {
                   <label className="block text-sm text-gray-400 mb-1">Lien du site (Slug)</label>
                   <div className="flex">
                     <span className="bg-[#1a1a24] border border-[#2a2a35] border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
-                    <input type="text" name="slug" value={formData.slug} onChange={handleBasicChange} className="w-full bg-[#11111a] border border-[#2a2a35] rounded-r-lg px-3 py-3 text-[var(--color-neon-purple)] font-bold focus:outline-none focus:border-[var(--color-neon-blue)]" placeholder="le-teranga" />
+                    <input type="text" name="slug" value={formData.slug} onChange={handleBasicChange} disabled={isEditMode} className={`w-full bg-[#11111a] border border-[#2a2a35] rounded-r-lg px-3 py-3 text-[var(--color-neon-purple)] font-bold focus:outline-none ${isEditMode ? 'opacity-50 cursor-not-allowed' : 'focus:border-[var(--color-neon-blue)]'}`} placeholder="le-teranga" />
                   </div>
                 </div>
                 <div>
@@ -380,7 +437,7 @@ const Builder = () => {
                     disabled={loading}
                     className="w-2/3 py-3 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white font-bold tracking-widest uppercase rounded-lg hover:shadow-[0_0_20px_rgba(186,85,211,0.5)] transition-all flex items-center justify-center disabled:opacity-50"
                   >
-                    {loading ? 'Génération...' : 'Créer mon site'}
+                    {loading ? 'Traitement...' : (isEditMode ? 'Mettre à jour' : 'Créer mon site')}
                   </button>
                 </div>
               </div>

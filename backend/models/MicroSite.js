@@ -12,6 +12,11 @@ const microSiteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  pinCode: {
+    type: String,
+    required: true,
+    default: '0000'
+  },
   ownerEmail: {
     type: String,
     required: true,

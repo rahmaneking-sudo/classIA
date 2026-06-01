@@ -1,14 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, Rocket, Star, Diamond, Zap } from 'lucide-react';
+import { CheckCircle2, Rocket, Star, Diamond, Zap, Settings, X } from 'lucide-react';
 import Navbar from '../Navbar';
+import axios from 'axios';
+import API_BASE_URL from '../../config/api';
+import Swal from 'sweetalert2';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editSlug, setEditSlug] = useState('');
+  const [editPin, setEditPin] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleWhatsApp = (plan) => {
     const message = `Bonjour Abdou, je suis intéressé par la création d'un site web (Forfait ${plan}). Pouvons-nous en discuter ?`;
     window.open(`https://wa.me/221711696897?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const handleEditLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(`${API_BASE_URL}/microsites/auth`, { slug: editSlug, pinCode: editPin });
+      // If success, save data to sessionStorage and navigate to builder in edit mode
+      sessionStorage.setItem('editSiteData', JSON.stringify(res.data));
+      navigate('/builder?edit=true');
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: err.response?.data?.message || 'Identifiants invalides.',
+        background: '#0a0a10',
+        color: '#fff'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -128,6 +156,74 @@ const Landing = () => {
 
         </div>
       </div>
+
+      {/* Floating Edit Button */}
+      <button
+        onClick={() => setShowEditModal(true)}
+        className="fixed bottom-6 right-6 bg-[#1a1a24] border border-[var(--color-neon-purple)]/50 text-white p-4 rounded-full shadow-[0_0_20px_rgba(186,85,211,0.3)] hover:scale-110 transition-transform z-50 flex items-center justify-center group"
+      >
+        <Settings className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
+        <span className="absolute right-full mr-4 bg-black/90 text-white text-xs px-3 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10">
+          Modifier mon site
+        </span>
+      </button>
+
+      {/* Edit Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <div className="bg-[#0a0a10] border border-[var(--color-neon-purple)]/30 rounded-2xl p-8 max-w-md w-full relative shadow-[0_0_50px_rgba(186,85,211,0.1)]">
+            <button 
+              onClick={() => setShowEditModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            <h2 className="text-2xl font-bold mb-2 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)]">
+              Modifier mon site
+            </h2>
+            <p className="text-gray-400 text-sm mb-6">Entrez vos accès pour mettre à jour le contenu de votre site.</p>
+
+            <form onSubmit={handleEditLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Lien du site (Slug)</label>
+                <div className="flex">
+                  <span className="bg-[#1a1a24] border border-white/10 border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
+                  <input 
+                    type="text" 
+                    value={editSlug}
+                    onChange={(e) => setEditSlug(e.target.value)}
+                    required
+                    className="w-full bg-black/50 border border-white/10 rounded-r-lg px-3 py-3 text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
+                    placeholder="le-teranga"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Code PIN Secret</label>
+                <input 
+                  type="password" 
+                  value={editPin}
+                  onChange={(e) => setEditPin(e.target.value)}
+                  required
+                  maxLength={4}
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-center tracking-[1em] text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
+                  placeholder="••••"
+                />
+              </div>
+
+              <button 
+                type="submit"
+                disabled={loading}
+                className="w-full mt-4 py-3 bg-[var(--color-neon-purple)]/20 text-[var(--color-neon-purple)] border border-[var(--color-neon-purple)] rounded-xl font-bold uppercase tracking-widest hover:bg-[var(--color-neon-purple)] hover:text-white transition-all disabled:opacity-50"
+              >
+                {loading ? 'Connexion...' : 'Accéder au Builder'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Background Decor */}
       <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[var(--color-neon-blue)]/5 blur-[120px] rounded-full pointer-events-none" />
