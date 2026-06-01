@@ -19,7 +19,7 @@ const Landing = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE_URL}/microsites/forgot-pin`, { slug: editSlug, ownerEmail: forgotEmail });
+      const res = await axios.post(`${API_BASE_URL}/microsites/forgot-pin`, { ownerEmail: forgotEmail });
       Swal.fire({
         icon: 'success',
         title: 'Envoyé !',
@@ -223,21 +223,6 @@ const Landing = () => {
 
             {isForgotMode ? (
               <form onSubmit={handleForgotPin} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Lien du site (Slug)</label>
-                  <div className="flex">
-                    <span className="bg-[#1a1a24] border border-white/10 border-r-0 rounded-l-lg px-3 py-3 text-gray-500 text-sm">classia.com/site/</span>
-                    <input 
-                      type="text" 
-                      value={editSlug}
-                      onChange={(e) => setEditSlug(e.target.value)}
-                      required
-                      className="w-full bg-black/50 border border-white/10 rounded-r-lg px-3 py-3 text-white focus:outline-none focus:border-[var(--color-neon-purple)]" 
-                      placeholder="le-teranga"
-                    />
-                  </div>
-                </div>
-
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Email du propriétaire</label>
                   <input 

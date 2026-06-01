@@ -25,11 +25,14 @@ export default async function handler(req, res) {
 
   if (slug === 'forgot-pin' && req.method === 'POST') {
     try {
-      const { slug: siteSlug, ownerEmail } = req.body;
-      if (!siteSlug || !ownerEmail) return res.status(400).json({ message: 'Slug et Email requis.' });
-      const site = await MicroSite.findOne({ slug: siteSlug });
-      if (!site) return res.status(404).json({ message: 'Ce site n\'existe pas.' });
-      if (site.ownerEmail.toLowerCase() !== ownerEmail.toLowerCase()) return res.status(401).json({ message: 'Email invalide.' });
+      const { ownerEmail } = req.body;
+      if (!ownerEmail) return res.status(400).json({ message: 'Email requis.' });
+      
+      const sites = await MicroSite.find({ ownerEmail: new RegExp(`^${ownerEmail}$`, 'i') });
+      
+      if (!sites || sites.length === 0) {
+        return res.status(404).json({ message: 'Aucun site trouvé avec cette adresse email.' });
+      }
 
       if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
         return res.status(500).json({ message: 'Le service email n\'est pas configuré.' });
@@ -42,14 +45,20 @@ export default async function handler(req, res) {
         auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
       });
 
+      let emailHtml = `<p>Bonjour,</p><p>Voici les codes secrets (PIN) pour vos sites web CLASSIA :</p><ul>`;
+      sites.forEach(site => {
+        emailHtml += `<li>Site <strong>${site.businessName}</strong> (classia.com/site/${site.slug}) : <strong>${site.pinCode}</strong></li>`;
+      });
+      emailHtml += `</ul><p>Gardez ces informations précieusement !</p>`;
+
       await transporter.sendMail({
         from: `"CLASSIA Builder" <${process.env.SMTP_USER}>`,
-        to: site.ownerEmail,
-        subject: 'Récupération de votre Code PIN - CLASSIA',
-        html: `<p>Votre site: ${site.businessName}</p><p>Votre Code PIN : <strong>${site.pinCode}</strong></p>`
+        to: ownerEmail,
+        subject: 'Récupération de vos Codes PIN - CLASSIA',
+        html: emailHtml
       });
 
-      return res.status(200).json({ message: 'Le Code PIN a été envoyé.' });
+      return res.status(200).json({ message: 'Les Codes PIN ont été envoyés à votre adresse.' });
     } catch (error) {
       return res.status(500).json({ message: 'Erreur email', error: error.message });
     }
