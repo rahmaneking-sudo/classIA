@@ -19,17 +19,28 @@ const ThemeRenderer = ({ data }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const openWhatsApp = (url) => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const getWhatsAppNumber = () => {
+    // Si le champ whatsapp n'est pas rempli, on met un numéro par défaut pour éviter que le bouton ne fasse rien
+    return String(whatsapp || '221711696897').replace(/[^0-9]/g, '');
+  };
+
   const handleContact = () => {
-    if (whatsapp) {
-      window.open(`https://wa.me/${String(whatsapp).replace(/[^0-9]/g, '')}`, '_blank');
-    }
+    openWhatsApp(`https://wa.me/${getWhatsAppNumber()}`);
   };
 
   const handleOrder = (itemName) => {
-    if (whatsapp) {
-      const message = encodeURIComponent(`Bonjour, je souhaite commander / réserver : ${itemName}`);
-      window.open(`https://wa.me/${String(whatsapp).replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
-    }
+    const message = encodeURIComponent(`Bonjour, je souhaite commander : ${itemName}`);
+    openWhatsApp(`https://wa.me/${getWhatsAppNumber()}?text=${message}`);
   };
 
   const handleReservation = (itemName) => {
