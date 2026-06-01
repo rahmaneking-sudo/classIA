@@ -17,17 +17,31 @@ const ThemeRenderer = ({ data }) => {
     }
   };
 
+  const handleTableReservation = () => {
+    if (whatsapp) {
+      const guests = window.prompt("Pour combien de personnes souhaitez-vous réserver une table ? (ex: 2)");
+      if (guests) {
+        const message = encodeURIComponent(`Bonjour, je souhaite réserver une table pour ${guests} personne(s). Avez-vous de la disponibilité ?`);
+        window.open(`https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
+      }
+    }
+  };
+
   const renderNavbar = (links, bgColor, textColor, logoColor) => (
     <nav className={`sticky top-0 z-50 ${bgColor} ${textColor} shadow-md backdrop-blur-md bg-opacity-90`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
-        <div className={`font-black text-xl tracking-tighter ${logoColor}`}>{businessName || 'Mon Site'}</div>
-        <div className="flex space-x-6 text-sm font-bold tracking-wider uppercase">
+        <a href="#accueil" className={`font-black text-xl tracking-tighter hover:opacity-80 transition-opacity ${logoColor}`}>
+          {businessName || 'Mon Site'}
+        </a>
+        <div className="flex space-x-6 text-sm font-bold tracking-wider uppercase items-center">
           {links.map((link, idx) => (
             <a key={idx} href={link.href} className="hover:opacity-70 transition-opacity hidden md:block">
               {link.label}
             </a>
           ))}
-          <button onClick={handleContact} className="md:hidden">Contact</button>
+          <button onClick={handleContact} className="hover:opacity-70 transition-opacity flex items-center">
+             <Phone className="w-4 h-4 mr-1 hidden md:block" /> Contact
+          </button>
         </div>
       </div>
     </nav>
@@ -40,7 +54,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Menu', href: '#menu' }
-        ], 'bg-white/90', 'text-stone-900', 'text-orange-600')}
+        ], 'bg-white/95', 'text-stone-900', 'text-orange-600')}
         
         <header id="accueil" className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -50,7 +64,7 @@ const ThemeRenderer = ({ data }) => {
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
             <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight drop-shadow-lg">{businessName || 'Le Teranga'}</h1>
             <p className="text-xl text-stone-200 mb-8 max-w-2xl mx-auto font-medium">{content?.description || 'Des saveurs authentiques, un cadre chaleureux.'}</p>
-            <button onClick={handleContact} className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-transform hover:scale-105 flex items-center mx-auto">
+            <button onClick={handleTableReservation} className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-transform hover:scale-105 flex items-center mx-auto">
               <Utensils className="w-5 h-5 mr-2" /> Réserver une table
             </button>
           </div>
@@ -89,6 +103,7 @@ const ThemeRenderer = ({ data }) => {
         
         <footer className="bg-stone-900 text-stone-400 py-12 text-center w-full">
           <p className="mb-2 font-bold text-white">© {new Date().getFullYear()} {businessName || 'Mon Restaurant'}</p>
+          <button onClick={handleContact} className="mt-4 text-orange-500 hover:text-white transition-colors">Nous contacter sur WhatsApp</button>
         </footer>
       </div>
     );
@@ -101,7 +116,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Prestations', href: '#services' }
-        ], 'bg-[#3a2e2a]', 'text-[#f2e6d9]', 'text-[#d4af37]')}
+        ], 'bg-[#3a2e2a]/95', 'text-[#f2e6d9]', 'text-[#d4af37]')}
 
         <header id="accueil" className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -111,7 +126,7 @@ const ThemeRenderer = ({ data }) => {
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
             <h1 className="text-5xl md:text-7xl font-bold text-[#f2e6d9] mb-4 tracking-wider">{businessName || 'Espace Beauté'}</h1>
             <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto italic">{content?.description || 'Révélez votre beauté naturelle.'}</p>
-            <button onClick={handleContact} className="bg-transparent border border-[#f2e6d9] text-[#f2e6d9] hover:bg-[#f2e6d9] hover:text-[#3a2e2a] px-10 py-3 uppercase tracking-widest text-sm transition-colors flex items-center mx-auto">
+            <button onClick={handleContact} className="bg-transparent border border-[#f2e6d9] text-[#f2e6d9] hover:bg-[#f2e6d9] hover:text-[#3a2e2a] px-10 py-3 uppercase tracking-widest text-sm transition-colors flex items-center mx-auto font-bold">
               <Scissors className="w-4 h-4 mr-2" /> Prendre Rendez-vous
             </button>
           </div>
@@ -140,8 +155,8 @@ const ThemeRenderer = ({ data }) => {
                 
                 <div className="flex items-center gap-4 mt-4 md:mt-0 w-full md:w-auto justify-between md:justify-end">
                   <div className="text-gray-600 font-medium">{item.price || 'Prix'}</div>
-                  <button onClick={() => handleOrder(item.title)} className="bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition-colors">
-                    <MessageCircle className="w-4 h-4" />
+                  <button onClick={() => handleOrder(item.title)} className="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition-colors flex items-center text-sm font-bold">
+                    <MessageCircle className="w-4 h-4 mr-2" /> Réserver
                   </button>
                 </div>
               </div>
@@ -150,7 +165,8 @@ const ThemeRenderer = ({ data }) => {
         </section>
 
         <footer className="bg-[#3a2e2a] text-[#f2e6d9] py-10 text-center text-sm tracking-widest uppercase w-full">
-          {businessName || 'Mon Salon'}
+          <p>{businessName || 'Mon Salon'}</p>
+          <button onClick={handleContact} className="mt-2 text-[#d4af37] hover:text-white transition-colors">Contact WhatsApp</button>
         </footer>
       </div>
     );
@@ -163,7 +179,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Notre Flotte', href: '#flotte' }
-        ], 'bg-white', 'text-gray-900', 'text-blue-700')}
+        ], 'bg-white/95', 'text-gray-900', 'text-blue-700')}
 
         <header id="accueil" className="relative h-[65vh] min-h-[450px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -214,7 +230,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Nos Biens', href: '#biens' }
-        ], 'bg-teal-900', 'text-white', 'text-white')}
+        ], 'bg-teal-900/95', 'text-white', 'text-white')}
 
         <header id="accueil" className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -227,8 +243,8 @@ const ThemeRenderer = ({ data }) => {
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">{businessName || 'Immo Prestige'}</h1>
             <p className="text-2xl text-white/90 font-light mb-8 max-w-2xl mx-auto drop-shadow">{content?.description || 'Trouvez la maison de vos rêves.'}</p>
-            <button onClick={handleContact} className="bg-teal-700 hover:bg-teal-800 text-white px-8 py-4 font-bold text-lg rounded shadow-xl transition-all">
-              Contactez-nous
+            <button onClick={handleContact} className="bg-teal-700 hover:bg-teal-800 text-white px-8 py-4 font-bold text-lg rounded shadow-xl transition-all flex items-center mx-auto">
+              <Phone className="w-5 h-5 mr-2" /> Contactez-nous
             </button>
           </div>
         </header>
@@ -267,7 +283,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Produits', href: '#produits' }
-        ], 'bg-pink-50', 'text-gray-900', 'text-pink-600')}
+        ], 'bg-pink-50/95', 'text-gray-900', 'text-pink-600')}
 
         <header id="accueil" className="relative h-[50vh] min-h-[400px] flex items-center bg-pink-50 overflow-hidden">
           <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden md:block">
@@ -277,7 +293,7 @@ const ThemeRenderer = ({ data }) => {
             <h1 className="text-5xl font-black text-gray-900 mb-4">{businessName || 'Ma Boutique'}</h1>
             <p className="text-lg text-gray-600 mb-8 max-w-md">{content?.description || 'La mode au meilleur prix. Découvrez notre nouvelle collection.'}</p>
             <button onClick={handleContact} className="bg-black text-white hover:bg-gray-800 px-8 py-3 font-bold flex items-center">
-               Contacter le service client
+               <Phone className="w-4 h-4 mr-2" /> Contacter le service client
             </button>
           </div>
         </header>
@@ -317,7 +333,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Soins', href: '#soins' }
-        ], 'bg-white', 'text-slate-800', 'text-blue-600')}
+        ], 'bg-white/95', 'text-slate-800', 'text-blue-600')}
 
         <header id="accueil" className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -370,7 +386,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Chambres', href: '#chambres' }
-        ], 'bg-[#222]', 'text-[#c2a679]', 'text-white')}
+        ], 'bg-[#222]/95', 'text-[#c2a679]', 'text-white')}
 
         <header id="accueil" className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -380,8 +396,8 @@ const ThemeRenderer = ({ data }) => {
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto w-full">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg">{businessName || 'Hôtel Teranga'}</h1>
             <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto font-sans tracking-wide">{content?.description || 'L\'élégance au cœur de Dakar.'}</p>
-            <button onClick={handleContact} className="bg-[#c2a679] hover:bg-[#b09568] text-white px-10 py-4 font-sans tracking-widest uppercase text-sm font-bold shadow-2xl transition-all mx-auto">
-              Réception
+            <button onClick={handleContact} className="bg-[#c2a679] hover:bg-[#b09568] text-white px-10 py-4 font-sans tracking-widest uppercase text-sm font-bold shadow-2xl transition-all mx-auto flex items-center">
+              <Phone className="w-4 h-4 mr-2" /> Réception
             </button>
           </div>
         </header>
@@ -422,7 +438,7 @@ const ThemeRenderer = ({ data }) => {
         {renderNavbar([
           { label: 'Accueil', href: '#accueil' },
           { label: 'Réalisations', href: '#projets' }
-        ], 'bg-black', 'text-neutral-400', 'text-white')}
+        ], 'bg-black/95', 'text-neutral-400', 'text-white')}
 
         <header id="accueil" className="relative h-[60vh] min-h-[400px] flex items-center border-b-8 border-amber-600">
           <div className="absolute inset-0 z-0">
@@ -433,7 +449,7 @@ const ThemeRenderer = ({ data }) => {
             <h1 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase leading-tight">{businessName || 'Menuiserie Pro'}</h1>
             <p className="text-xl text-neutral-400 mb-10 max-w-2xl">{content?.description || 'Experts en menuiserie bois et métallique.'}</p>
             <button onClick={handleContact} className="bg-white text-neutral-900 hover:bg-amber-500 hover:text-white px-8 py-4 font-black uppercase tracking-wider transition-colors flex items-center w-fit">
-              <Hammer className="w-5 h-5 mr-3" /> Contact Général
+              <Phone className="w-5 h-5 mr-3" /> Contact Général
             </button>
           </div>
         </header>
