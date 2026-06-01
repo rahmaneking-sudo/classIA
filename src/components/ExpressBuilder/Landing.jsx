@@ -12,10 +12,44 @@ const Landing = () => {
   const [editSlug, setEditSlug] = useState('');
   const [editPin, setEditPin] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isForgotMode, setIsForgotMode] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+
+  const handleForgotPin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(`${API_BASE_URL}/microsites/forgot-pin`, { slug: editSlug, ownerEmail: forgotEmail });
+      Swal.fire({
+        icon: 'success',
+        title: 'Envoyé !',
+        text: res.data.message,
+        background: '#0a0a10',
+        color: '#fff',
+        confirmButtonColor: '#7b2ff7'
+      });
+      setIsForgotMode(false);
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: err.response?.data?.message || 'Impossible d\'envoyer l\'email.',
+        background: '#0a0a10',
+        color: '#fff'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleWhatsApp = (plan) => {
     const message = `Bonjour Abdou, je suis intéressé par la création d'un site web (Forfait ${plan}). Pouvons-nous en discuter ?`;
     window.open(`https://wa.me/221711696897?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const closeModals = () => {
+    setShowEditModal(false);
+    setIsForgotMode(false);
   };
 
   const handleEditLogin = async (e) => {
