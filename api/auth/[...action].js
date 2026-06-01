@@ -9,9 +9,21 @@ const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
 export default async function handler(req, res) {
-  const { action } = req.query; // array of path segments
+  // CORS handling
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-  const path = Array.isArray(action) ? action.join('/') : action;
+  const { action } = req.query; // array of path segments
+  let path = Array.isArray(action) ? action.join('/') : action;
+  
+  if (!path && req.url) {
+    path = req.url.split('?')[0].replace('/api/auth/', '');
+  }
 
   try {
     await connectDB();
