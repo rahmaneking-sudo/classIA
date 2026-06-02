@@ -9,14 +9,12 @@ import ThemeRenderer from './ThemeRenderer';
 import ImageUpload from './ImageUpload';
 
 const THEMES = [
-  { id: 'restaurant', name: 'Restaurant & Fast Food', image: '/restaurant.png' },
-  { id: 'salon', name: 'Beauté & Coiffure', image: '/salon.png' },
-  { id: 'car', name: 'Location Voiture / VTC', image: '/car.png' },
-  { id: 'realestate', name: 'Agence Immobilière', image: '/realestate.png' },
-  { id: 'shop', name: 'Boutique & Vente', image: '/shop.png' },
-  { id: 'dentist', name: 'Santé & Dentaire', image: '/dentist.png' },
-  { id: 'hotel', name: 'Hôtel & Résidence', image: '/hotel.png' },
-  { id: 'carpentry', name: 'Artisanat & Menuiserie', image: '/carpentry.png' }
+  { id: 'restaurant', name: 'Restaurant Gastronomique', image: '/restaurant.png' },
+  { id: 'hotel', name: 'Hôtel 5 Étoiles', image: '/hotel.png' },
+  { id: 'shop', name: 'Boutique Prêt-à-porter', image: '/shop.png' },
+  { id: 'salon', name: 'Institut de Massage & Spa', image: '/salon.png' },
+  { id: 'electronics', name: 'Boutique Matériels Électroniques', image: '/electronics.png' },
+  { id: 'agriculture', name: 'Vente Produits Agricoles', image: '/agriculture.png' }
 ];
 
 const Builder = () => {
