@@ -231,10 +231,7 @@ const CinematicSlideshow = () => {
             onClick={() => setIsModalOpen(true)}
             className="btn-sci-fi px-8 py-4 sm:px-10 sm:py-5 rounded-lg bg-[var(--color-neon-blue)]/15 text-white font-bold tracking-widest text-sm uppercase border-2 border-[var(--color-neon-blue)] hover:bg-[var(--color-neon-blue)]/25 hover:shadow-[0_0_30px_rgba(0,212,255,0.5)] transition-all duration-300"
           >
-            Commencer maintenant
-          </button>
-          <button className="px-8 py-4 sm:px-10 sm:py-5 rounded-lg text-gray-300 font-bold tracking-widest text-sm uppercase border border-white/20 hover:text-[var(--color-neon-purple)] hover:border-[var(--color-neon-purple)]/50 transition-all duration-300 backdrop-blur-sm">
-            Voir le programme
+            Soumettez votre candidature
           </button>
         </div>
       </div>
