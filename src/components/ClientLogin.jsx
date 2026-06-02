@@ -11,6 +11,9 @@ const ClientLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState('');
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -33,6 +36,26 @@ const ClientLogin = () => {
     }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setResetSuccess('');
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/clients/forgot-password`, { email });
+      setResetSuccess(response.data.message || 'Un nouveau mot de passe a été envoyé à votre adresse email.');
+      setTimeout(() => {
+        setIsForgotPassword(false);
+        setResetSuccess('');
+      }, 5000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erreur lors de la réinitialisation du mot de passe');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative font-['Rajdhani']">
       
@@ -50,7 +73,14 @@ const ClientLogin = () => {
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        {resetSuccess && (
+          <div className="bg-green-500/10 border border-green-500/50 text-green-500 p-4 rounded-lg mb-6 text-center text-sm font-bold tracking-widest uppercase">
+            {resetSuccess}
+          </div>
+        )}
+
+        {!isForgotPassword ? (
+          <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label className="block text-sm font-bold text-gray-400 mb-2 uppercase tracking-widest">Email</label>
             <div className="relative">
@@ -89,7 +119,53 @@ const ClientLogin = () => {
             {loading ? 'Connexion...' : 'Accéder à mon espace'}
             {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
           </button>
+          
+          <div className="text-center pt-2">
+            <button 
+              type="button" 
+              onClick={() => setIsForgotPassword(true)}
+              className="text-gray-400 hover:text-[var(--color-neon-blue)] transition-colors text-sm font-bold tracking-widest uppercase"
+            >
+              Mot de passe oublié ?
+            </button>
+          </div>
         </form>
+        ) : (
+          <form onSubmit={handleForgotPassword} className="space-y-6">
+            <div>
+              <label className="block text-sm font-bold text-gray-400 mb-2 uppercase tracking-widest">Email du compte</label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-[var(--color-neon-blue)] focus:shadow-[0_0_15px_rgba(0,212,255,0.2)] transition-all"
+                  placeholder="votre@email.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-4 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold uppercase tracking-widest hover:shadow-[0_0_20px_rgba(186,85,211,0.4)] transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
+            >
+              {loading ? 'Envoi...' : 'Réinitialiser le mot de passe'}
+            </button>
+
+            <div className="text-center pt-2">
+              <button 
+                type="button" 
+                onClick={() => { setIsForgotPassword(false); setError(''); setResetSuccess(''); }}
+                className="text-gray-400 hover:text-[var(--color-neon-purple)] transition-colors text-sm font-bold tracking-widest uppercase"
+              >
+                Retour à la connexion
+              </button>
+            </div>
+          </form>
+        )}
       </div>
 
       <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[var(--color-neon-blue)]/5 blur-[120px] rounded-full pointer-events-none" />
