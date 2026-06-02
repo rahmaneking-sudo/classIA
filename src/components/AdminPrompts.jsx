@@ -103,7 +103,7 @@ const AdminPrompts = () => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce prompt ?")) {
       try {
         const token = localStorage.getItem('adminToken');
-        await axios.delete(`${API_BASE_URL}/prompts/${id}`, {
+        await axios.delete(`${API_BASE_URL}/prompts?id=${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         Toast.fire('Succès', 'Prompt supprimé', 'success');

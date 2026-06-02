@@ -81,13 +81,13 @@ const AdminShop = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Êtes-vous sûr de vouloir retirer ce site de la boutique ?")) {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
       try {
         const token = localStorage.getItem('adminToken');
-        await axios.delete(`${API_BASE_URL}/shop/${id}`, {
+        await axios.delete(`${API_BASE_URL}/shop?id=${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        Toast.fire('Succès', 'Site retiré de la boutique', 'success');
+        Toast.fire('Succès', 'Produit supprimé', 'success');
         fetchProducts();
       } catch (err) {
         Toast.fire('Erreur', 'Erreur lors de la suppression', 'error');

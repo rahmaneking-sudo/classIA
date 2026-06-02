@@ -129,7 +129,7 @@ const AdminSimulations = () => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce cours ?")) {
       try {
         const token = localStorage.getItem('adminToken');
-        await axios.delete(`${API_BASE_URL}/simulations/${id}`, {
+        await axios.delete(`${API_BASE_URL}/simulations?id=${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         Toast.fire('Succès', 'Cours supprimé', 'success');
