@@ -41,16 +41,24 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
 
     if (videoId) {
       return (
-        <iframe 
-          className={`w-full h-full select-none ${isThumbnail ? 'object-cover pointer-events-none scale-[1.3]' : 'object-contain'}`}
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=${isThumbnail ? 1 : 0}&mute=${isThumbnail ? 1 : 0}&controls=${isThumbnail ? 0 : 1}&showinfo=0&rel=0&loop=${isThumbnail ? 1 : 0}${isThumbnail ? `&playlist=${videoId}` : ''}&modestbranding=1&playsinline=1`}
-          allow={isThumbnail ? "autoplay; encrypted-media" : "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"}
-          sandbox="allow-scripts allow-same-origin allow-presentation"
-          allowFullScreen={!isThumbnail}
-          frameBorder="0"
-          onContextMenu={(e) => e.preventDefault()}
-          onDragStart={(e) => e.preventDefault()}
-        />
+        <div className="relative w-full h-full">
+          <iframe 
+            className={`w-full h-full select-none ${isThumbnail ? 'object-cover pointer-events-none scale-[1.3]' : 'object-contain'}`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=${isThumbnail ? 1 : 0}&mute=${isThumbnail ? 1 : 0}&controls=${isThumbnail ? 0 : 1}&showinfo=0&rel=0&loop=${isThumbnail ? 1 : 0}${isThumbnail ? `&playlist=${videoId}` : ''}&modestbranding=1&playsinline=1`}
+            allow={isThumbnail ? "autoplay; encrypted-media" : "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"}
+            allowFullScreen={!isThumbnail}
+            frameBorder="0"
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
+          />
+          {!isThumbnail && (
+            <div 
+              className="absolute top-0 left-0 w-full h-16 bg-transparent z-10" 
+              onContextMenu={e => e.preventDefault()}
+              title="Vidéo sécurisée"
+            />
+          )}
+        </div>
       );
     }
   }
