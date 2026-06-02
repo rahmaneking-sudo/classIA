@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import { Copy, Check, Terminal, Sparkles, Image as ImageIcon, Video, FileText } from 'lucide-react';
-import promptsData from '../data/prompts.json';
 
 const PromptsLibrary = () => {
+  const [prompts, setPrompts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [copiedId, setCopiedId] = useState(null);
   const [activeCategory, setActiveCategory] = useState('Tous');
 
-  const categories = ['Tous', 'ChatGPT / Claude', 'Gemini / Analyse', 'Midjourney / Image', 'Dessin Animé / Animation'];
+  useEffect(() => {
+    const fetchPrompts = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/prompts`);
+        setPrompts(response.data);
+      } catch (err) {
+        console.error('Erreur lors de la récupération des prompts:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrompts();
+  }, []);
+
+  const uniqueCategories = [...new Set(prompts.map(p => p.category).filter(Boolean))];
+  const categories = ['Tous', ...uniqueCategories];
 
   const filteredPrompts = activeCategory === 'Tous' 
-    ? promptsData 
-    : promptsData.filter(p => p.category === activeCategory);
+    ? prompts 
+    : prompts.filter(p => p.category === activeCategory);
 
   const getCategoryIcon = (category) => {
-    switch(category) {
-      case 'ChatGPT / Claude': return <Terminal className="w-5 h-5" />;
-      case 'Gemini / Analyse': return <FileText className="w-5 h-5" />;
-      case 'Midjourney / Image': return <ImageIcon className="w-5 h-5" />;
-      case 'Dessin Animé / Animation': return <Video className="w-5 h-5" />;
-      default: return <Sparkles className="w-5 h-5" />;
-    }
+    const catLower = (category || '').toLowerCase();
+    if (catLower.includes('chatgpt') || catLower.includes('claude')) return <Terminal className="w-5 h-5" />;
+    if (catLower.includes('gemini') || catLower.includes('analyse')) return <FileText className="w-5 h-5" />;
+    if (catLower.includes('midjourney') || catLower.includes('image')) return <ImageIcon className="w-5 h-5" />;
+    if (catLower.includes('video') || catLower.includes('animation')) return <Video className="w-5 h-5" />;
+    return <Sparkles className="w-5 h-5" />;
   };
 
   const handleCopy = (id, text) => {
@@ -58,55 +75,68 @@ const PromptsLibrary = () => {
           ))}
         </div>
 
-        {/* Prompts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-          {filteredPrompts.map((prompt) => (
-            <div key={prompt.id} className="glass-panel border border-[var(--color-neon-blue)]/20 p-6 rounded-2xl relative overflow-hidden group hover:border-[var(--color-neon-blue)]/60 transition-all duration-300">
-              
-              {/* Background Glow */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-neon-blue)]/10 blur-[50px] rounded-full group-hover:bg-[var(--color-neon-blue)]/20 transition-all"></div>
-              
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-[var(--color-neon-blue)]/10 rounded-lg text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/20">
-                  {getCategoryIcon(prompt.category)}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white uppercase tracking-wider">{prompt.title}</h3>
-                  <span className="text-xs text-[var(--color-neon-blue)] uppercase font-bold tracking-widest">{prompt.category}</span>
+        {loading ? (
+          <div className="text-center p-12 text-[var(--color-neon-blue)] animate-pulse font-bold tracking-widest uppercase">
+            Chargement de la bibliothèque...
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+            {filteredPrompts.map((prompt) => (
+              <div key={prompt._id} className="glass-panel border border-[var(--color-neon-blue)]/20 rounded-2xl relative overflow-hidden group hover:border-[var(--color-neon-blue)]/60 transition-all duration-300 flex flex-col">
+                
+                {prompt.imageUrl && (
+                  <div className="w-full h-48 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a10] to-transparent z-10"></div>
+                    <img src={prompt.imageUrl} alt={prompt.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  </div>
+                )}
+                
+                <div className="p-6 flex-1 flex flex-col">
+                  {/* Background Glow */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-neon-blue)]/10 blur-[50px] rounded-full group-hover:bg-[var(--color-neon-blue)]/20 transition-all"></div>
+                  
+                  <div className="flex items-center gap-3 mb-4 relative z-20">
+                    <div className="p-2 bg-[var(--color-neon-blue)]/10 rounded-lg text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/20">
+                      {getCategoryIcon(prompt.category)}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white uppercase tracking-wider">{prompt.title}</h3>
+                      {prompt.category && <span className="text-xs text-[var(--color-neon-blue)] uppercase font-bold tracking-widest">{prompt.category}</span>}
+                    </div>
+                  </div>
+
+                  <div className="relative mb-4 flex-1">
+                    <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-black/80 to-transparent z-10 rounded-t-xl pointer-events-none"></div>
+                    <pre className="bg-black/60 border border-white/5 rounded-xl p-4 text-sm text-gray-300 whitespace-pre-wrap font-mono h-40 overflow-y-auto custom-scrollbar relative">
+                      {prompt.content}
+                    </pre>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mt-6 pt-6 border-t border-white/5 relative z-20">
+                    <div className="flex-1">
+                      {prompt.explanation && (
+                        <>
+                          <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">💡 Astuce de l'expert :</p>
+                          <p className="text-sm text-gray-300 italic">{prompt.explanation}</p>
+                        </>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => handleCopy(prompt._id, prompt.content)}
+                      className={`flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all duration-300
+                        ${copiedId === prompt._id 
+                          ? 'bg-green-500/20 text-green-400 border border-green-500/50' 
+                          : 'bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 hover:bg-[var(--color-neon-blue)]/20 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)]'}`}
+                    >
+                      {copiedId === prompt._id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                      {copiedId === prompt._id ? 'Copié !' : 'Copier'}
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <p className="text-gray-400 mb-6 text-sm">
-                {prompt.description}
-              </p>
-
-              <div className="relative mb-4">
-                <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-black/80 to-transparent z-10 rounded-t-xl pointer-events-none"></div>
-                <pre className="bg-black/60 border border-white/5 rounded-xl p-4 text-sm text-gray-300 whitespace-pre-wrap font-mono h-40 overflow-y-auto custom-scrollbar relative">
-                  {prompt.prompt}
-                </pre>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mt-6 pt-6 border-t border-white/5">
-                <div className="flex-1">
-                  <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">💡 Astuce de l'expert :</p>
-                  <p className="text-sm text-gray-300 italic">{prompt.tips}</p>
-                </div>
-                <button
-                  onClick={() => handleCopy(prompt.id, prompt.prompt)}
-                  className={`flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all duration-300
-                    ${copiedId === prompt.id 
-                      ? 'bg-green-500/20 text-green-400 border border-green-500/50' 
-                      : 'bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 hover:bg-[var(--color-neon-blue)]/20 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)]'}`}
-                >
-                  {copiedId === prompt.id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                  {copiedId === prompt.id ? 'Copié !' : 'Copier'}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

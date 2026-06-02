@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { Plus, Trash2, Image as ImageIcon, MessageSquare } from 'lucide-react';
+import { Plus, Trash2, Image as ImageIcon, MessageSquare, Edit } from 'lucide-react';
 import { uploadFile } from '../utils/cloudinaryUpload';
 
 const AdminPrompts = () => {
   const [prompts, setPrompts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
@@ -87,16 +88,37 @@ const AdminPrompts = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.post(`${API_BASE_URL}/prompts`, formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      Toast.fire('Succès', 'Prompt ajouté avec succès !', 'success');
+      if (editId) {
+        await axios.put(`${API_BASE_URL}/prompts?id=${editId}`, formData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        Toast.fire('Succès', 'Prompt modifié avec succès !', 'success');
+      } else {
+        await axios.post(`${API_BASE_URL}/prompts`, formData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        Toast.fire('Succès', 'Prompt ajouté avec succès !', 'success');
+      }
       setFormData(initialFormState);
       setShowForm(false);
+      setEditId(null);
       fetchPrompts();
     } catch (err) {
-      Toast.fire('Erreur', 'Impossible de créer le prompt', 'error');
+      Toast.fire('Erreur', 'Impossible de sauvegarder le prompt', 'error');
     }
+  };
+
+  const handleEdit = (prompt) => {
+    setEditId(prompt._id);
+    setFormData({
+      title: prompt.title,
+      category: prompt.category || '',
+      content: prompt.content,
+      explanation: prompt.explanation || '',
+      imageUrl: prompt.imageUrl || ''
+    });
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
@@ -180,7 +202,7 @@ const AdminPrompts = () => {
 
             <div className="flex justify-end pt-4">
               <button type="submit" className="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-10 py-4 rounded-xl font-black tracking-widest uppercase hover:shadow-[0_0_30px_rgba(186,85,211,0.6)] transition-all transform hover:scale-105">
-                ENREGISTRER CE PROMPT
+                {editId ? 'MODIFIER CE PROMPT' : 'ENREGISTRER CE PROMPT'}
               </button>
             </div>
           </form>
@@ -218,7 +240,10 @@ const AdminPrompts = () => {
                     {prompt.content}
                   </p>
                 </td>
-                <td className="p-4 text-right">
+                <td className="p-4 text-right flex justify-end gap-2">
+                  <button onClick={() => handleEdit(prompt)} className="text-blue-500 hover:text-blue-400 bg-blue-500/10 p-2 rounded-lg transition-all">
+                    <Edit className="w-4 h-4" />
+                  </button>
                   <button onClick={() => handleDelete(prompt._id)} className="text-red-500 hover:text-red-400 bg-red-500/10 p-2 rounded-lg transition-all">
                     <Trash2 className="w-4 h-4" />
                   </button>

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { Plus, Trash2, Play, Image as ImageIcon, MonitorPlay, Video } from 'lucide-react';
+import { Plus, Trash2, Play, Image as ImageIcon, MonitorPlay, Video, Edit } from 'lucide-react';
 import { uploadFile } from '../utils/cloudinaryUpload';
 
 const AdminSimulations = () => {
   const [simulations, setSimulations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -111,18 +112,52 @@ const AdminSimulations = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.post(`${API_BASE_URL}/simulations`, formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      Toast.fire('Succès', 'Cours ajouté avec succès !', 'success');
+      if (editId) {
+        await axios.put(`${API_BASE_URL}/simulations?id=${editId}`, formData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        Toast.fire('Succès', 'Cours modifié avec succès !', 'success');
+      } else {
+        await axios.post(`${API_BASE_URL}/simulations`, formData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        Toast.fire('Succès', 'Cours ajouté avec succès !', 'success');
+      }
+      
       setFormData(initialFormState);
       setCustomCategory('');
       setIsCustomCategory(false);
       setShowForm(false);
+      setEditId(null);
       fetchSimulations();
     } catch (err) {
-      Toast.fire('Erreur', 'Impossible de créer le cours', 'error');
+      Toast.fire('Erreur', 'Impossible de sauvegarder le cours', 'error');
     }
+  };
+
+  const handleEdit = (simulation) => {
+    setEditId(simulation._id);
+    setFormData({
+      category: simulation.category,
+      title: simulation.title,
+      prompt: simulation.prompt,
+      mediaUrl: simulation.mediaUrl,
+      mediaType: simulation.mediaType,
+      explanation: simulation.explanation
+    });
+    
+    // Manage category type
+    const defaultCategories = ['kling', 'motion kling 03', 'seedance 2.0', 'Omni', 'Gemini'];
+    if (!defaultCategories.includes(simulation.category)) {
+      setIsCustomCategory(true);
+      setCustomCategory(simulation.category);
+    } else {
+      setIsCustomCategory(false);
+      setCustomCategory('');
+    }
+    
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
@@ -254,7 +289,7 @@ const AdminSimulations = () => {
 
             <div className="flex justify-end pt-4">
               <button type="submit" className="bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white px-10 py-4 rounded-xl font-black tracking-widest uppercase hover:shadow-[0_0_30px_rgba(186,85,211,0.6)] transition-all transform hover:scale-105">
-                ENREGISTRER CE COURS
+                {editId ? 'MODIFIER CE COURS' : 'ENREGISTRER CE COURS'}
               </button>
             </div>
           </form>
@@ -279,7 +314,10 @@ const AdminSimulations = () => {
                 <td className="p-4 text-gray-400 text-xs flex items-center gap-1 mt-1">
                   {getMediaIcon(sim.mediaType)} <span className="uppercase">{sim.mediaType}</span>
                 </td>
-                <td className="p-4 text-right">
+                <td className="p-4 text-right flex justify-end gap-2">
+                  <button onClick={() => handleEdit(sim)} className="text-blue-500 hover:text-blue-400 bg-blue-500/10 p-2 rounded-lg transition-all">
+                    <Edit className="w-4 h-4" />
+                  </button>
                   <button onClick={() => handleDelete(sim._id)} className="text-red-500 hover:text-red-400 bg-red-500/10 p-2 rounded-lg transition-all">
                     <Trash2 className="w-4 h-4" />
                   </button>
