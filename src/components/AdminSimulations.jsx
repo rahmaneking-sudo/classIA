@@ -3,12 +3,15 @@ import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
 import { Plus, Trash2, Play, Image as ImageIcon, MonitorPlay, Video } from 'lucide-react';
+import { uploadFile } from '../utils/cloudinaryUpload';
 
 const AdminSimulations = () => {
   const [simulations, setSimulations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const Toast = Swal.mixin({
     background: '#0a0a10',
@@ -75,6 +78,33 @@ const AdminSimulations = () => {
   const handleCustomCategoryChange = (e) => {
     setCustomCategory(e.target.value);
     setFormData({ ...formData, category: e.target.value });
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      const response = await uploadFile(file, {
+        onProgress: (progress) => setUploadProgress(progress)
+      });
+      
+      const isVideo = file.type.startsWith('video/');
+      setFormData({
+        ...formData,
+        mediaUrl: response.secure_url,
+        mediaType: isVideo ? 'video' : 'image'
+      });
+      Toast.fire('Succès', 'Fichier uploadé avec succès !', 'success');
+    } catch (err) {
+      Toast.fire('Erreur', err.message || 'Erreur lors de l\'upload', 'error');
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -187,18 +217,38 @@ const AdminSimulations = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 p-4 bg-white/5 rounded-xl border border-[var(--color-neon-purple)]/20">
-              <div className="flex-1">
-                <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image</label>
-                <input required type="text" name="mediaUrl" value={formData.mediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/50 rounded-lg p-3 text-white text-sm focus:border-[var(--color-neon-blue)] focus:outline-none" placeholder="https://youtube.com/watch?v=..." />
+            <div className="flex flex-col gap-4 p-4 bg-white/5 rounded-xl border border-[var(--color-neon-purple)]/20">
+              <div className="flex flex-col md:flex-row gap-4 md:items-end">
+                <div className="flex-1">
+                  <label className="block text-xs text-[var(--color-neon-blue)] font-bold mb-1">Lien de la Vidéo / Image</label>
+                  <input required type="text" name="mediaUrl" value={formData.mediaUrl} onChange={handleInputChange} className="w-full bg-black/50 border border-[var(--color-neon-blue)]/50 rounded-lg p-3 text-white text-sm focus:border-[var(--color-neon-blue)] focus:outline-none" placeholder="https://youtube.com/watch?v=..." />
+                </div>
+                <div className="w-full md:w-1/3">
+                  <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
+                  <select name="mediaType" value={formData.mediaType} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm">
+                    <option value="youtube">Lien YouTube</option>
+                    <option value="video">Vidéo MP4 directe</option>
+                    <option value="image">Image (JPG/PNG)</option>
+                  </select>
+                </div>
               </div>
-              <div className="w-1/3">
-                <label className="block text-xs text-gray-400 mb-1">Type de Média</label>
-                <select name="mediaType" value={formData.mediaType} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm">
-                  <option value="youtube">Lien YouTube</option>
-                  <option value="video">Vidéo MP4 directe</option>
-                  <option value="image">Image (JPG/PNG)</option>
-                </select>
+              <div className="border-t border-white/10 pt-4">
+                <label className="block text-xs text-gray-400 mb-2 font-bold">Ou uploader un fichier depuis votre PC (Max 20 Mo)</label>
+                <input 
+                  type="file" 
+                  accept="video/mp4,video/webm,image/jpeg,image/png,image/webp"
+                  onChange={handleFileUpload} 
+                  disabled={uploading}
+                  className="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-neon-purple)]/20 file:text-[var(--color-neon-purple)] hover:file:bg-[var(--color-neon-purple)]/30 transition-all cursor-pointer disabled:opacity-50"
+                />
+                {uploading && (
+                  <div className="mt-3 text-xs font-bold text-[var(--color-neon-blue)] uppercase tracking-wider">
+                    Upload en cours... {uploadProgress}%
+                    <div className="w-full bg-black/50 rounded-full h-1.5 mt-2 overflow-hidden">
+                      <div className="bg-[var(--color-neon-blue)] h-full transition-all duration-300" style={{ width: `${uploadProgress}%` }}></div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
