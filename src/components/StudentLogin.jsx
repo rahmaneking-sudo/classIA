@@ -10,6 +10,9 @@ const StudentLogin = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState('');
+  const [errorMsgLocal, setErrorMsgLocal] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -63,6 +66,26 @@ const StudentLogin = () => {
     }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsgLocal('');
+    setResetSuccess('');
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/auth/student-forgot-password`, { email });
+      setResetSuccess(response.data.message || 'Un nouveau mot de passe a été envoyé à votre adresse email.');
+      setTimeout(() => {
+        setIsForgotPassword(false);
+        setResetSuccess('');
+      }, 5000);
+    } catch (err) {
+      setErrorMsgLocal(err.response?.data?.message || 'Erreur lors de la réinitialisation du mot de passe');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[var(--color-neon-blue)]/20 blur-[100px] rounded-full pointer-events-none" />
@@ -73,9 +96,22 @@ const StudentLogin = () => {
         </h2>
         <p className="text-gray-400 text-center mb-8 text-sm">Connecte-toi pour accéder à ta formation CLASSE IA</p>
 
-        <div className="space-y-6 relative z-10" onKeyDown={(e) => {
-          if (e.key === 'Enter') handleLogin(e);
-        }}>
+        {errorMsgLocal && (
+          <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-lg mb-6 text-center text-sm font-bold tracking-widest uppercase">
+            {errorMsgLocal}
+          </div>
+        )}
+
+        {resetSuccess && (
+          <div className="bg-green-500/10 border border-green-500/50 text-green-500 p-4 rounded-lg mb-6 text-center text-sm font-bold tracking-widest uppercase">
+            {resetSuccess}
+          </div>
+        )}
+
+        {!isForgotPassword ? (
+          <div className="space-y-6 relative z-10" onKeyDown={(e) => {
+            if (e.key === 'Enter') handleLogin(e);
+          }}>
           <div>
             <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-widest">
               Email Étudiant
@@ -132,7 +168,62 @@ const StudentLogin = () => {
               'Accéder à ma formation'
             )}
           </button>
+
+          <div className="text-center pt-2">
+            <button 
+              type="button" 
+              onClick={() => setIsForgotPassword(true)}
+              className="text-gray-400 hover:text-[var(--color-neon-blue)] transition-colors text-xs font-bold tracking-widest uppercase"
+            >
+              Mot de passe oublié ?
+            </button>
+          </div>
         </div>
+        ) : (
+          <form onSubmit={handleForgotPassword} className="space-y-6 relative z-10">
+            <div>
+              <label className="block text-gray-400 text-xs font-bold mb-2 uppercase tracking-widest">
+                Email Étudiant
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-neon-blue)]/50" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-blue)] focus:ring-1 focus:ring-[var(--color-neon-blue)] transition-all"
+                  placeholder="votre@email.com"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-[var(--color-neon-blue)] border-t-transparent rounded-full animate-spin" />
+                  Envoi...
+                </div>
+              ) : (
+                'Réinitialiser le mot de passe'
+              )}
+            </button>
+
+            <div className="text-center pt-2">
+              <button 
+                type="button" 
+                onClick={() => { setIsForgotPassword(false); setErrorMsgLocal(''); setResetSuccess(''); }}
+                className="text-gray-400 hover:text-[var(--color-neon-purple)] transition-colors text-xs font-bold tracking-widest uppercase"
+              >
+                Retour à la connexion
+              </button>
+            </div>
+          </form>
+        )}
 
         <div className="mt-6 text-center">
           <Link to="/" className="text-xs text-gray-400 hover:text-[var(--color-neon-blue)] transition-colors">

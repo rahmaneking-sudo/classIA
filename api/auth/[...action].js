@@ -48,6 +48,63 @@ export default async function handler(req, res) {
       });
     }
 
+    // POST /api/auth/student-forgot-password
+    if (req.method === 'POST' && url.includes('student-forgot-password')) {
+      const { email } = req.body;
+      const student = await Lead.findOne({ email });
+
+      if (!student) {
+        return res.status(404).json({ message: 'Aucun compte étudiant trouvé avec cet email.' });
+      }
+
+      if (!student.isActive) {
+        return res.status(401).json({ message: 'Votre compte n\\'est pas encore activé.' });
+      }
+
+      if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        return res.status(500).json({ message: 'Le service email n\\'est pas configuré sur le serveur.' });
+      }
+
+      // Générer un mot de passe temporaire de 8 caractères
+      const tempPassword = Math.random().toString(36).slice(-8);
+
+      // Hasher et sauvegarder
+      const salt = await bcrypt.genSalt(10);
+      student.password = await bcrypt.hash(tempPassword, salt);
+      await student.save();
+
+      // Envoi d'email
+      const nodemailer = (await import('nodemailer')).default;
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        secure: false,
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a10; color: #fff; padding: 20px; border-radius: 10px;">
+          <h2 style="color: #00d4ff;">Réinitialisation de votre mot de passe</h2>
+          <p>Bonjour ${student.name},</p>
+          <p>Vous avez demandé la réinitialisation de votre mot de passe pour la formation CLASSIA.</p>
+          <p>Voici votre nouveau mot de passe temporaire :</p>
+          <div style="background: #1a1a2e; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 2px; border-radius: 5px; margin: 20px 0; border: 1px solid #00d4ff;">
+            <strong>${tempPassword}</strong>
+          </div>
+          <p>Nous vous conseillons de vous connecter dès maintenant et de le modifier dans votre tableau de bord.</p>
+        </div>
+      `;
+
+      await transporter.sendMail({
+        from: \`"Support CLASSIA" <\${process.env.SMTP_USER}>\`,
+        to: email,
+        subject: 'Nouveau mot de passe - Formation CLASSIA',
+        html: emailHtml
+      });
+
+      return res.status(200).json({ message: 'Un nouveau mot de passe a été envoyé à votre adresse email.' });
+    }
+
     // POST /api/auth/login
     if (req.method === 'POST' && url.includes('login')) {
       const { username, password } = req.body;
