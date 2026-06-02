@@ -117,7 +117,18 @@ const Courses = () => {
         setLoading(false);
       }
     };
+
     fetchSimulations();
+  }, []);
+
+  useEffect(() => {
+    const handleNavClick = (e) => {
+      if (e.detail === '/cours') {
+        setSelectedSim(null);
+      }
+    };
+    window.addEventListener('nav-clicked', handleNavClick);
+    return () => window.removeEventListener('nav-clicked', handleNavClick);
   }, []);
 
   const uniqueCategories = [...new Set(simulations.map(sim => sim.category))];
@@ -246,7 +257,7 @@ const Courses = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 items-start">
               {/* Left Side: Video Player (Takes 2 columns on large screens) */}
               <div className="lg:col-span-2 flex flex-col sticky top-24">
-                <div className="bg-black/80 border border-white/10 rounded-3xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.6)] backdrop-blur-xl flex-1 min-h-[400px] lg:min-h-[600px] group">
+                <div className="bg-black/80 border border-white/10 rounded-3xl overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.6)] backdrop-blur-xl w-full aspect-video group">
                   <MediaRender url={selectedSim.mediaUrl} type={selectedSim.mediaType} isThumbnail={false} />
                   <div className="absolute top-6 left-6 pointer-events-none">
                     <span className="bg-[var(--color-neon-blue)] text-black px-4 py-1.5 rounded-full text-xs font-black uppercase shadow-[0_0_20px_rgba(0,212,255,0.5)] tracking-widest">

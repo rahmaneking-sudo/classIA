@@ -33,6 +33,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
+                  onClick={() => window.dispatchEvent(new CustomEvent('nav-clicked', { detail: link.href }))}
                   className="text-gray-300 hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wider"
                 >
                   {link.name}
@@ -69,7 +70,10 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  window.dispatchEvent(new CustomEvent('nav-clicked', { detail: link.href }));
+                }}
                 className="text-gray-300 hover:text-[var(--color-neon-blue)] hover:bg-[var(--color-neon-blue)]/10 block px-3 py-3 rounded-md text-base font-medium tracking-widest uppercase"
               >
                 {link.name}
