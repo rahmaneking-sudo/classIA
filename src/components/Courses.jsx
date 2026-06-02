@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Play, Sparkles, ChevronRight, Video, Image as ImageIcon, MonitorPlay, ArrowLeft, BookOpen, Quote } from 'lucide-react';
+import { Play, Sparkles, ChevronRight, Video, Image as ImageIcon, MonitorPlay, ArrowLeft, BookOpen, Quote, Copy, Check } from 'lucide-react';
 import API_BASE_URL from '../config/api';
 
 const Typewriter = ({ text, onComplete, speed = 15 }) => {
@@ -86,6 +86,15 @@ const Courses = () => {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedSim, setSelectedSim] = useState(null);
+  const [copiedPrompt, setCopiedPrompt] = useState(false);
+
+  const handleCopyPrompt = () => {
+    if (selectedSim?.prompt) {
+      navigator.clipboard.writeText(selectedSim.prompt);
+      setCopiedPrompt(true);
+      setTimeout(() => setCopiedPrompt(false), 2000);
+    }
+  };
 
   useEffect(() => {
     const fetchSimulations = async () => {
@@ -253,9 +262,17 @@ const Courses = () => {
 
                   {selectedSim.prompt && (
                     <div className="mb-8">
-                      <h3 className="text-xs font-black tracking-widest uppercase text-[var(--color-neon-blue)] flex items-center gap-2 mb-3">
-                        <Sparkles className="w-4 h-4" /> Le Prompt Utilisé
-                      </h3>
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xs font-black tracking-widest uppercase text-[var(--color-neon-blue)] flex items-center gap-2">
+                          <Sparkles className="w-4 h-4" /> Le Prompt Utilisé
+                        </h3>
+                        <button
+                          onClick={handleCopyPrompt}
+                          className="flex items-center gap-2 px-3 py-1 bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] hover:bg-[var(--color-neon-blue)]/20 border border-[var(--color-neon-blue)]/30 rounded-lg transition-all text-xs font-bold uppercase tracking-widest"
+                        >
+                          {copiedPrompt ? <><Check className="w-3 h-3" /> Copié</> : <><Copy className="w-3 h-3" /> Copier</>}
+                        </button>
+                      </div>
                       <div className="bg-[var(--color-neon-blue)]/5 p-5 rounded-2xl border border-[var(--color-neon-blue)]/20 shadow-inner relative group max-h-96 overflow-y-auto custom-scrollbar">
                         <pre className="whitespace-pre-wrap font-mono text-sm text-[var(--color-neon-blue)]/90 break-words">
                           {selectedSim.prompt}
