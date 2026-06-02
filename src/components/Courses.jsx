@@ -256,8 +256,10 @@ const Courses = () => {
                       <h3 className="text-xs font-black tracking-widest uppercase text-[var(--color-neon-blue)] flex items-center gap-2 mb-3">
                         <Sparkles className="w-4 h-4" /> Le Prompt Utilisé
                       </h3>
-                      <div className="bg-[var(--color-neon-blue)]/5 p-5 rounded-2xl border border-[var(--color-neon-blue)]/20 font-mono text-sm text-[var(--color-neon-blue)]/90 shadow-inner relative group">
-                        <Typewriter text={selectedSim.prompt} speed={10} />
+                      <div className="bg-[var(--color-neon-blue)]/5 p-5 rounded-2xl border border-[var(--color-neon-blue)]/20 shadow-inner relative group max-h-96 overflow-y-auto custom-scrollbar">
+                        <pre className="whitespace-pre-wrap font-mono text-sm text-[var(--color-neon-blue)]/90 break-words">
+                          {selectedSim.prompt}
+                        </pre>
                       </div>
                     </div>
                   )}
