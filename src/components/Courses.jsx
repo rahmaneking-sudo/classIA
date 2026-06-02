@@ -44,11 +44,12 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
         <iframe 
           className={`w-full h-full select-none ${isThumbnail ? 'object-cover pointer-events-none scale-[1.3]' : 'object-contain'}`}
           src={`https://www.youtube.com/embed/${videoId}?autoplay=${isThumbnail ? 1 : 0}&mute=${isThumbnail ? 1 : 0}&controls=${isThumbnail ? 0 : 1}&showinfo=0&rel=0&loop=${isThumbnail ? 1 : 0}${isThumbnail ? `&playlist=${videoId}` : ''}&modestbranding=1&playsinline=1`}
-          allow={isThumbnail ? "autoplay; encrypted-media" : "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"}
+          allow={isThumbnail ? "autoplay; encrypted-media" : "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"}
+          sandbox="allow-scripts allow-same-origin allow-presentation"
           allowFullScreen={!isThumbnail}
           frameBorder="0"
-          onContextMenu={(e) => isThumbnail && e.preventDefault()}
-          onDragStart={(e) => isThumbnail && e.preventDefault()}
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
         />
       );
     }
@@ -61,11 +62,12 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
         loop={isThumbnail}
         muted={isThumbnail}
         controls={!isThumbnail}
+        controlsList="nodownload"
         playsInline
         className={`w-full h-full select-none ${isThumbnail ? 'object-cover pointer-events-none' : 'object-contain focus:outline-none bg-black'}`}
         src={optimizedUrl}
-        onContextMenu={(e) => isThumbnail && e.preventDefault()}
-        onDragStart={(e) => isThumbnail && e.preventDefault()}
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
       />
     );
   }
