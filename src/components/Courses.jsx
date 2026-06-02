@@ -25,6 +25,12 @@ const Typewriter = ({ text, onComplete, speed = 15 }) => {
 };
 
 const MediaRender = ({ url, type, isThumbnail = true }) => {
+  // Optimize Cloudinary URLs
+  let optimizedUrl = url;
+  if (url && url.includes('cloudinary.com') && url.includes('/upload/')) {
+    optimizedUrl = url.replace('/upload/', '/upload/f_auto,q_auto/');
+  }
+
   if (type === 'youtube') {
     let videoId = '';
     try {
@@ -57,7 +63,7 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
         controls={!isThumbnail}
         playsInline
         className={`w-full h-full object-cover select-none ${isThumbnail ? 'pointer-events-none' : 'focus:outline-none'}`}
-        src={url}
+        src={optimizedUrl}
         onContextMenu={(e) => isThumbnail && e.preventDefault()}
         onDragStart={(e) => isThumbnail && e.preventDefault()}
       />
@@ -66,7 +72,7 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
 
   return (
     <img 
-      src={url} 
+      src={optimizedUrl} 
       alt="Render" 
       className={`w-full h-full object-cover origin-center select-none ${isThumbnail ? 'pointer-events-none transition-transform duration-[15000ms] ease-out hover:scale-110' : ''}`} 
       onContextMenu={(e) => isThumbnail && e.preventDefault()}
