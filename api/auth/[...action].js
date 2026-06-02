@@ -58,11 +58,11 @@ export default async function handler(req, res) {
       }
 
       if (!student.isActive) {
-        return res.status(401).json({ message: 'Votre compte n\\'est pas encore activé.' });
+        return res.status(401).json({ message: "Votre compte n'est pas encore activé." });
       }
 
       if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        return res.status(500).json({ message: 'Le service email n\\'est pas configuré sur le serveur.' });
+        return res.status(500).json({ message: "Le service email n'est pas configuré sur le serveur." });
       }
 
       // Générer un mot de passe temporaire de 8 caractères
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
       `;
 
       await transporter.sendMail({
-        from: \`"Support CLASSIA" <\${process.env.SMTP_USER}>\`,
+        from: `"Support CLASSIA" <${process.env.SMTP_USER}>`,
         to: email,
         subject: 'Nouveau mot de passe - Formation CLASSIA',
         html: emailHtml
