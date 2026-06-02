@@ -52,11 +52,20 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
             onDragStart={(e) => e.preventDefault()}
           />
           {!isThumbnail && (
-            <div 
-              className="absolute top-0 left-0 w-full h-16 bg-transparent z-10" 
-              onContextMenu={e => e.preventDefault()}
-              title="Vidéo sécurisée"
-            />
+            <>
+              {/* Block top bar (Share, Title) */}
+              <div 
+                className="absolute top-0 left-0 w-full h-16 bg-transparent z-10" 
+                onContextMenu={e => e.preventDefault()}
+                title="Vidéo sécurisée"
+              />
+              {/* Block bottom right (YouTube logo) */}
+              <div 
+                className="absolute bottom-0 right-0 w-32 h-16 bg-transparent z-10" 
+                onContextMenu={e => e.preventDefault()}
+                title="Vidéo sécurisée"
+              />
+            </>
           )}
         </div>
       );
@@ -65,18 +74,24 @@ const MediaRender = ({ url, type, isThumbnail = true }) => {
 
   if (type === 'video') {
     return (
-      <video 
-        autoPlay={isThumbnail}
-        loop={isThumbnail}
-        muted={isThumbnail}
-        controls={!isThumbnail}
-        controlsList="nodownload"
-        playsInline
-        className={`w-full h-full select-none ${isThumbnail ? 'object-cover pointer-events-none' : 'object-contain focus:outline-none bg-black'}`}
-        src={optimizedUrl}
-        onContextMenu={(e) => e.preventDefault()}
-        onDragStart={(e) => e.preventDefault()}
-      />
+      <div className="relative w-full h-full group">
+        <video 
+          autoPlay={isThumbnail}
+          loop={isThumbnail}
+          muted={isThumbnail}
+          controls={!isThumbnail}
+          controlsList="nodownload noplaybackrate"
+          disablePictureInPicture
+          playsInline
+          className={`w-full h-full select-none ${isThumbnail ? 'object-cover pointer-events-none' : 'object-contain focus:outline-none bg-black'}`}
+          src={optimizedUrl}
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          style={{ WebkitTouchCallout: 'none', userSelect: 'none' }}
+        />
+        {/* Invisible overlay for extra right-click protection on mobile */}
+        {!isThumbnail && <div className="absolute inset-0 z-0 pointer-events-none" onContextMenu={e => e.preventDefault()} />}
+      </div>
     );
   }
 
