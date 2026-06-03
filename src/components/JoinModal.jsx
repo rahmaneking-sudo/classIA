@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 
@@ -10,7 +10,6 @@ const JoinModal = ({ isOpen, onClose }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   // Polling effect
-  import { useEffect } from 'react';
   useEffect(() => {
     let interval;
     if (status === 'polling') {
