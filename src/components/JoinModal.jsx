@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import API_BASE_URL from '../config/api';
 
 const JoinModal = ({ isOpen, onClose }) => {
@@ -50,7 +51,18 @@ const JoinModal = ({ isOpen, onClose }) => {
 
   const handlePaymentComplete = async () => {
     if (!wavePhone.trim()) {
-      alert("Veuillez saisir le numéro utilisé pour le paiement Wave.");
+      Swal.fire({
+        background: '#0a0a10',
+        color: '#ffffff',
+        icon: 'warning',
+        title: 'Information manquante',
+        text: "Veuillez saisir le numéro de téléphone que vous avez utilisé pour le paiement Wave.",
+        confirmButtonColor: '#7b2ff7',
+        confirmButtonText: 'Compris',
+        customClass: {
+          popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+        }
+      });
       return;
     }
 
