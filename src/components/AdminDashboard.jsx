@@ -55,7 +55,7 @@ const AdminDashboard = () => {
   const handleActivate = async (leadId) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put(`${API_BASE_URL}/leads/${leadId}/activate`, {}, {
+      await axios.put(`${API_BASE_URL}/leads/${leadId}`, { action: 'activate' }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
   const handleDeactivate = async (leadId) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put(`${API_BASE_URL}/leads/${leadId}/deactivate`, {}, {
+      await axios.put(`${API_BASE_URL}/leads/${leadId}`, { action: 'deactivate' }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem('adminToken');
-        await axios.delete(`${API_BASE_URL}/leads/${leadId}/delete`, {
+        await axios.delete(`${API_BASE_URL}/leads/${leadId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
