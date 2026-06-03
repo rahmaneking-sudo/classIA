@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import connectDB from '../_lib/db.js';
 import { protectAdmin } from '../_lib/protect.js';
 import Lead from '../../backend/models/Lead.js';
+import allowCors from '../_lib/cors.js';
 
 // Helper WaSender
 const sendWaSenderMessage = async (to, text) => {
@@ -30,6 +31,8 @@ const sendWaSenderMessage = async (to, text) => {
 };
 
 export default async function handler(req, res) {
+  if (allowCors(req, res)) return;
+
   const { action } = req.query; // action is an array like ['123', 'activate']
 
   if (!Array.isArray(action) || action.length !== 2) {
