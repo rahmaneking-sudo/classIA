@@ -12,12 +12,13 @@ const THEMES = [
   { id: 'restaurant', name: 'Restaurant Gastronomique', image: '/restaurant.png' },
   { id: 'hotel', name: 'Hôtel 5 Étoiles', image: '/hotel.png' },
   { id: 'shop', name: 'Boutique Prêt-à-porter', image: '/shop.png' },
-  { id: 'beauty', name: 'Salon de Beauté', image: '/salon.png' },
-  { id: 'hair', name: 'Salon de Coiffure', image: '/salon.png' },
-  { id: 'massage', name: 'Institut de Massage', image: '/salon.png' },
-  { id: 'spa', name: 'Centre de Spa', image: '/salon.png' },
-  { id: 'electronics', name: 'Boutique Matériels Électroniques', image: '/electronics.png' },
-  { id: 'agriculture', name: 'Vente Produits Agricoles', image: '/agriculture.png' }
+  { id: 'beauty', name: 'Salon de Beauté / Spa', image: '/salon.png' },
+  { id: 'health', name: 'Clinique & Hôpital', image: '/dentist.png' },
+  { id: 'dentist', name: 'Cabinet Dentaire', image: '/dentist.png' },
+  { id: 'realestate', name: 'Agence Immobilière', image: '/realestate.png' },
+  { id: 'auto', name: 'Location & Vente Auto', image: '/car.png' },
+  { id: 'electronics', name: 'Boutique Électronique', image: '/electronics.png' },
+  { id: 'agriculture', name: 'Produits Agricoles', image: '/agriculture.png' }
 ];
 
 const Builder = () => {

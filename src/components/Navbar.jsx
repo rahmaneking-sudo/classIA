@@ -1,9 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, User } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, User, LogOut } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Vérifier l'état de connexion au chargement
+    const token = localStorage.getItem('studentToken');
+    setIsLoggedIn(!!token);
+
+    // Écouter les changements potentiels
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem('studentToken'));
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('studentToken');
+    localStorage.removeItem('studentInfo');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
 
   const links = [
     { name: 'Accueil', href: '/' },
@@ -40,13 +62,32 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <Link
-                to="/login"
-                className="flex items-center gap-2 px-4 py-2 bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 rounded-lg hover:bg-[var(--color-neon-blue)]/20 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all font-bold tracking-widest uppercase text-sm"
-              >
-                <User size={16} />
-                Connexion
-              </Link>
+              {isLoggedIn ? (
+                <div className="flex items-center gap-4">
+                  <Link
+                    to="/student/dashboard"
+                    className="flex items-center gap-2 px-4 py-2 bg-[var(--color-neon-purple)]/10 text-[var(--color-neon-purple)] border border-[var(--color-neon-purple)]/30 rounded-lg hover:bg-[var(--color-neon-purple)]/20 hover:shadow-[0_0_15px_rgba(186,85,211,0.4)] transition-all font-bold tracking-widest uppercase text-sm"
+                  >
+                    <User size={16} />
+                    Mon espace
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-3 py-2 bg-red-500/10 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all font-bold tracking-widest uppercase text-sm"
+                    title="Se déconnecter"
+                  >
+                    <LogOut size={16} />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 px-4 py-2 bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 rounded-lg hover:bg-[var(--color-neon-blue)]/20 hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all font-bold tracking-widest uppercase text-sm"
+                >
+                  <User size={16} />
+                  Connexion
+                </Link>
+              )}
             </div>
           </div>
 
@@ -79,14 +120,37 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <Link
-              to="/login"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 mt-4 px-3 py-3 bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 rounded-md hover:bg-[var(--color-neon-blue)]/20 transition-all font-bold tracking-widest uppercase"
-            >
-              <User size={18} />
-              Connexion
-            </Link>
+            {isLoggedIn ? (
+              <div className="flex flex-col gap-3 mt-4">
+                <Link
+                  to="/student/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-center gap-2 px-3 py-3 bg-[var(--color-neon-purple)]/10 text-[var(--color-neon-purple)] border border-[var(--color-neon-purple)]/30 rounded-md hover:bg-[var(--color-neon-purple)]/20 transition-all font-bold tracking-widest uppercase"
+                >
+                  <User size={18} />
+                  Mon espace
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 px-3 py-3 bg-red-500/10 text-red-400 border border-red-500/30 rounded-md hover:bg-red-500/20 transition-all font-bold tracking-widest uppercase"
+                >
+                  <LogOut size={18} />
+                  Se déconnecter
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center gap-2 mt-4 px-3 py-3 bg-[var(--color-neon-blue)]/10 text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/30 rounded-md hover:bg-[var(--color-neon-blue)]/20 transition-all font-bold tracking-widest uppercase"
+              >
+                <User size={18} />
+                Connexion
+              </Link>
+            )}
           </div>
         </div>
       )}

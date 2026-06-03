@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Play, Sparkles, ChevronRight, Video, Image as ImageIcon, MonitorPlay, ArrowLeft, BookOpen, Quote, Copy, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Play, Sparkles, ChevronRight, Video, Image as ImageIcon, MonitorPlay, ArrowLeft, BookOpen, Quote, Copy, Check, Lock } from 'lucide-react';
 import API_BASE_URL from '../config/api';
 
 const Typewriter = ({ text, onComplete, speed = 15 }) => {
@@ -112,7 +113,31 @@ const Courses = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedSim, setSelectedSim] = useState(null);
   const [copiedPrompt, setCopiedPrompt] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('studentToken');
+    setIsLoggedIn(!!token);
+    
+    // Si connecté, charger les cours
+    if (token) {
+      const fetchSimulations = async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/simulations`);
+          setSimulations(response.data);
+        } catch (err) {
+          console.error("Erreur de chargement des cours");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchSimulations();
+    } else {
+      setLoading(false); // Arrêter le chargement pour montrer l'écran verrouillé
+    }
+  }, []);
   const handleCopyPrompt = () => {
     if (selectedSim?.prompt) {
       navigator.clipboard.writeText(selectedSim.prompt);
@@ -120,21 +145,6 @@ const Courses = () => {
       setTimeout(() => setCopiedPrompt(false), 2000);
     }
   };
-
-  useEffect(() => {
-    const fetchSimulations = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/simulations`);
-        setSimulations(response.data);
-      } catch (err) {
-        console.error("Erreur de chargement des cours");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSimulations();
-  }, []);
 
   useEffect(() => {
     const handleNavClick = (e) => {
@@ -158,6 +168,28 @@ const Courses = () => {
 
   if (loading) {
     return <div className="py-24 min-h-screen text-[var(--color-neon-blue)] flex justify-center items-center text-2xl font-bold animate-pulse">Chargement de la Classe...</div>;
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="relative min-h-screen text-white font-['Rajdhani'] flex flex-col items-center justify-center pt-20 px-4">
+        <div className="bg-black/60 border border-white/10 p-12 rounded-3xl backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.8)] text-center max-w-2xl w-full animate-fade-in-up">
+          <div className="w-24 h-24 bg-[var(--color-neon-blue)]/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-[var(--color-neon-blue)]/30 shadow-[0_0_30px_rgba(0,212,255,0.2)]">
+            <Lock className="w-12 h-12 text-[var(--color-neon-blue)]" />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-widest mb-4">Accès Restreint</h2>
+          <p className="text-gray-300 text-lg mb-8 font-medium">
+            Le contenu de la Classe IA est exclusif. Vous devez vous connecter à votre espace étudiant pour accéder aux vidéos, astuces et ressources de formation.
+          </p>
+          <button
+            onClick={() => navigate('/login')}
+            className="px-8 py-4 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white rounded-xl font-bold tracking-widest uppercase hover:shadow-[0_0_30px_rgba(0,212,255,0.5)] transition-all transform hover:-translate-y-1"
+          >
+            Me Connecter
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
