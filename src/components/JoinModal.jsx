@@ -4,6 +4,7 @@ import API_BASE_URL from '../config/api';
 
 const JoinModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+  const [createdLeadId, setCreatedLeadId] = useState(null);
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -14,7 +15,8 @@ const JoinModal = ({ isOpen, onClose }) => {
     setStatus('loading');
     
     try {
-      await axios.post(`${API_BASE_URL}/leads`, formData);
+      const response = await axios.post(`${API_BASE_URL}/leads`, formData);
+      setCreatedLeadId(response.data._id);
       setStatus('payment');
     } catch (err) {
       setStatus('error');
@@ -27,6 +29,7 @@ const JoinModal = ({ isOpen, onClose }) => {
     try {
       await axios.post(`${API_BASE_URL}/notify-payment`, {
         type: 'course',
+        id: createdLeadId,
         name: formData.name,
         identifier: formData.email,
         amount: 10000

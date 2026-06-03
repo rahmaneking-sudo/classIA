@@ -236,6 +236,7 @@ const Builder = () => {
             try {
               await axios.post(`${API_BASE_URL}/notify-payment`, {
                 type: 'site',
+                id: res.data._id,
                 name: formData.businessName,
                 identifier: formData.slug,
                 amount: 50000

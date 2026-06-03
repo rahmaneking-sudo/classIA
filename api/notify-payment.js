@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Méthode non autorisée' });
   }
 
-  const { type, name, identifier, amount } = req.body;
+  const { type, id, name, identifier, amount } = req.body;
 
   try {
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -22,18 +22,23 @@ export default async function handler(req, res) {
 
     let messageText = `🟢 *NOUVEAU PAIEMENT REÇU* 🟢\n\n`;
     
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || 'https://classia.vercel.app';
+    const validationUrl = `${siteUrl}/api/quick-validate?type=${type}&id=${id}&token=${botToken}`;
+
     if (type === 'course') {
       messageText += `*Type:* Inscription Étudiant (Formation IA)\n`;
       messageText += `*Nom:* ${name}\n`;
       messageText += `*Email/Tel:* ${identifier}\n`;
       messageText += `*Montant:* ${amount} FCFA\n\n`;
-      messageText += `👉 Connectez-vous à votre Dashboard Admin pour l'activer.`;
+      messageText += `✅ *[VALIDER CET ÉTUDIANT](${validationUrl})*\n\n`;
+      messageText += `_Cliquez sur le lien pour l'activer automatiquement et lui envoyer son accès par WhatsApp._`;
     } else if (type === 'site') {
       messageText += `*Type:* Création de Site Web\n`;
       messageText += `*Nom/Business:* ${name}\n`;
       messageText += `*Slug:* ${identifier}\n`;
       messageText += `*Montant:* ${amount} FCFA\n\n`;
-      messageText += `👉 Connectez-vous à votre Dashboard Admin pour valider la création du site.`;
+      messageText += `✅ *[VALIDER CE SITE](${validationUrl})*\n\n`;
+      messageText += `_Cliquez sur le lien pour l'activer automatiquement et envoyer le code PIN par WhatsApp._`;
     } else {
       messageText += `Détails: ${name} - ${identifier} (${amount} FCFA)`;
     }
