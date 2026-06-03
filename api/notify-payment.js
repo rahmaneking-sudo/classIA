@@ -31,15 +31,15 @@ export default async function handler(req, res) {
       messageText += `*Nom:* ${name}\n`;
       messageText += `*Email/Tel:* ${identifier}\n`;
       messageText += `*Montant:* ${amount} FCFA\n\n`;
-      messageText += `✅ *[VALIDER CET ÉTUDIANT](${validationUrl})*\n\n`;
-      messageText += `_Cliquez sur le lien pour l'activer automatiquement et lui envoyer son accès par WhatsApp._`;
+      messageText += `✅ *Paiement vérifié ?*\n`;
+      messageText += `_Cliquez sur le bouton ci-dessous pour activer et envoyer l'accès WhatsApp automatiquement._`;
     } else if (type === 'site') {
       messageText += `*Type:* Création de Site Web\n`;
       messageText += `*Nom/Business:* ${name}\n`;
       messageText += `*Slug:* ${identifier}\n`;
       messageText += `*Montant:* ${amount} FCFA\n\n`;
-      messageText += `✅ *[VALIDER CE SITE](${validationUrl})*\n\n`;
-      messageText += `_Cliquez sur le lien pour l'activer automatiquement et envoyer le code PIN par WhatsApp._`;
+      messageText += `✅ *Paiement vérifié ?*\n`;
+      messageText += `_Cliquez sur le bouton ci-dessous pour activer et envoyer le code PIN WhatsApp automatiquement._`;
     } else {
       messageText += `Détails: ${name} - ${identifier} (${amount} FCFA)`;
     }
@@ -47,7 +47,12 @@ export default async function handler(req, res) {
     await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       chat_id: chatId,
       text: messageText,
-      parse_mode: 'Markdown'
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "✅ VALIDER LE PAIEMENT", url: validationUrl }]
+        ]
+      }
     });
 
     return res.status(200).json({ message: 'Notification envoyée avec succès' });

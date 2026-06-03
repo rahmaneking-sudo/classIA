@@ -18,13 +18,15 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  const actionParam = req.query.action ? (Array.isArray(req.query.action) ? req.query.action.join('/') : req.query.action) : '';
   const url = req.url || '';
+  const fullPath = actionParam || url;
 
   try {
     await connectDB();
 
     // POST /api/auth/student-login
-    if (req.method === 'POST' && url.includes('student-login')) {
+    if (req.method === 'POST' && fullPath.includes('student-login')) {
       const { email, password } = req.body;
       const student = await Lead.findOne({ email });
 
@@ -49,7 +51,7 @@ export default async function handler(req, res) {
     }
 
     // POST /api/auth/student-forgot-password
-    if (req.method === 'POST' && url.includes('student-forgot-password')) {
+    if (req.method === 'POST' && fullPath.includes('student-forgot-password')) {
       const { email } = req.body;
       const student = await Lead.findOne({ email });
 
@@ -106,7 +108,7 @@ export default async function handler(req, res) {
     }
 
     // POST /api/auth/login
-    if (req.method === 'POST' && url.includes('login')) {
+    if (req.method === 'POST' && fullPath.includes('login') && !fullPath.includes('student')) {
       const { username, password } = req.body;
       const admin = await Admin.findOne({ username });
 
@@ -122,7 +124,7 @@ export default async function handler(req, res) {
     }
 
     // PUT /api/auth/student/change-password
-    if (req.method === 'PUT' && url.includes('change-password')) {
+    if (req.method === 'PUT' && fullPath.includes('change-password')) {
       const user = await protectStudent(req);
       if (!user) {
         return res.status(401).json({ message: 'Non autorisé' });
@@ -153,7 +155,7 @@ export default async function handler(req, res) {
         method: req.method,
         url: req.url,
         query: req.query,
-        pathParsed: path
+        fullPath: fullPath
       }
     });
 
