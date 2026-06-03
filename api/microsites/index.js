@@ -3,6 +3,32 @@ import { protectAdmin } from '../_lib/protect.js';
 import MicroSite from '../../backend/models/MicroSite.js';
 import allowCors from '../_lib/cors.js';
 
+// Helper WaSender
+const sendWaSenderMessage = async (to, text) => {
+  try {
+    const apiKey = process.env.WASENDER_API_KEY;
+    if (!apiKey) return;
+
+    let formattedPhone = to.replace(/[\s\-\(\)\+]/g, '');
+    if (formattedPhone.startsWith('7') && formattedPhone.length === 9) {
+      formattedPhone = '221' + formattedPhone;
+    }
+
+    const { default: axios } = await import('axios');
+    await axios.post('https://www.wasenderapi.com/api/send-message', {
+      to: formattedPhone,
+      text
+    }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('WaSender Error:', error.response?.data || error.message);
+  }
+};
+
 export default async function handler(req, res) {
   if (allowCors(req, res)) return;
   await connectDB();
@@ -73,6 +99,12 @@ export default async function handler(req, res) {
       // Toggle activation status
       site.isActive = !site.isActive;
       await site.save();
+
+      if (site.isActive && site.whatsapp) {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || 'https://classia.vercel.app';
+        const message = `Bonjour ! 🎉\n\nVotre site web "${site.businessName}" vient d'être activé avec succès suite à la validation de votre paiement.\nVous pouvez le consulter dès maintenant et utiliser votre code PIN secret pour le modifier.\n\nLien du site : ${siteUrl}/site/${site.slug}\n\nMerci de votre confiance en CLASSE IA.`;
+        sendWaSenderMessage(site.whatsapp, message);
+      }
 
       return res.status(200).json({ 
         message: `Site ${site.isActive ? 'activé' : 'désactivé'} avec succès`,

@@ -15,15 +15,38 @@ const JoinModal = ({ isOpen, onClose }) => {
     
     try {
       await axios.post(`${API_BASE_URL}/leads`, formData);
+      setStatus('payment');
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err.response?.data?.message || 'Erreur lors de l\'inscription');
+    }
+  };
+
+  const handlePaymentComplete = async () => {
+    setStatus('loading');
+    try {
+      await axios.post(`${API_BASE_URL}/notify-payment`, {
+        type: 'course',
+        name: formData.name,
+        identifier: formData.email,
+        amount: 10000
+      });
       setStatus('success');
-      
-      // Reset form after 3 seconds and close
       setTimeout(() => {
         setStatus('idle');
         setFormData({ name: '', email: '', phone: '' });
         onClose();
-      }, 3000);
+      }, 5000);
     } catch (err) {
+      // Même si la notification échoue, on affiche le succès pour ne pas bloquer l'utilisateur
+      setStatus('success');
+      setTimeout(() => {
+        setStatus('idle');
+        setFormData({ name: '', email: '', phone: '' });
+        onClose();
+      }, 5000);
+    }
+  };
       setStatus('error');
       setErrorMessage(err.response?.data?.message || 'Erreur lors de l\'inscription');
     }
@@ -50,14 +73,39 @@ const JoinModal = ({ isOpen, onClose }) => {
           ✕
         </button>
 
-        {status === 'success' ? (
-          <div className="text-center py-12 relative z-10">
+        {status === 'payment' ? (
+          <div className="text-center py-8 relative z-10 animate-[fade-in_0.3s_ease-out]">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] mb-4 uppercase tracking-widest">
+              PAIEMENT REQUIS
+            </h2>
+            <p className="text-gray-300 mb-8 text-sm">
+              Votre inscription a été pré-enregistrée. Pour finaliser l'accès à la formation, veuillez procéder au paiement de <strong className="text-[var(--color-neon-blue)]">10 000 FCFA</strong> via Wave.
+            </p>
+            
+            <a 
+              href="https://pay.wave.com/m/M_sn_gsBAcsJlO1IE/c/sn/?amount=10000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full btn-sci-fi bg-[#00a2ff]/20 border-2 border-[#00a2ff] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-[#00a2ff]/40 hover:shadow-[0_0_20px_rgba(0,162,255,0.4)] transition-all mb-4"
+            >
+              Payer avec Wave (10 000 FCFA)
+            </a>
+
+            <button 
+              onClick={handlePaymentComplete}
+              className="w-full text-sm py-3 border border-gray-600 text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors uppercase font-bold tracking-wider"
+            >
+              J'ai effectué le paiement
+            </button>
+          </div>
+        ) : status === 'success' ? (
+          <div className="text-center py-12 relative z-10 animate-[fade-in_0.3s_ease-out]">
             <div className="text-6xl mb-6">🚀</div>
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] mb-4">
               INSCRIPTION RÉUSSIE
             </h2>
             <p className="text-gray-300">
-              Bienvenue dans le futur. Nous te contacterons très bientôt pour la suite de l'aventure CLASSE IA.
+              Bienvenue dans le futur. Nous validons actuellement votre paiement. Vous recevrez un message de confirmation pour accéder à votre espace étudiant.
             </p>
           </div>
         ) : (

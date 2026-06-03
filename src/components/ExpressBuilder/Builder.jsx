@@ -209,24 +209,64 @@ const Builder = () => {
         const res = await axios.post(`${API_BASE_URL}/microsites`, payload);
         const newPin = res.data.pinCode;
         
+        // PAIEMENT REQUIS (50 000 FCFA)
         Swal.fire({
           background: '#0a0a10',
           color: '#ffffff',
-          icon: 'success',
-          title: 'Félicitations !',
-          html: `Votre site a été généré avec succès.<br/><br/>
-                 <div style="background: rgba(186,85,211,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(186,85,211,0.3);">
-                   <p style="color: #bbb; font-size: 14px; margin-bottom: 5px;">Votre Code PIN de modification :</p>
-                   <h2 style="color: var(--color-neon-blue); font-size: 32px; letter-spacing: 5px; margin: 0;">${newPin}</h2>
-                   <p style="color: #bbb; font-size: 12px; margin-top: 5px;">⚠️ Gardez ce code précieusement !</p>
-                 </div>`,
-          confirmButtonText: 'Voir mon site',
+          title: 'PAIEMENT REQUIS',
+          html: `
+            <p style="color: #bbb; font-size: 14px; margin-bottom: 20px;">
+              Votre site a été généré avec succès ! Pour finaliser sa création et recevoir votre code PIN d'administration, veuillez procéder au paiement de <strong style="color: var(--color-neon-blue);">50 000 FCFA</strong>.
+            </p>
+            <a href="https://pay.wave.com/m/M_sn_gsBAcsJlO1IE/c/sn/?amount=50000" target="_blank" style="display: block; background: rgba(0,162,255,0.2); border: 2px solid #00a2ff; color: white; padding: 15px; text-decoration: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; transition: all 0.3s;">
+              Payer avec Wave (50 000 FCFA)
+            </a>
+          `,
+          showCancelButton: true,
+          confirmButtonText: "J'ai effectué le paiement",
+          cancelButtonText: "Annuler",
           confirmButtonColor: '#7b2ff7',
+          cancelButtonColor: '#333333',
           customClass: {
             popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
           }
-        }).then(() => {
-          navigate(`/site/${res.data.slug}`);
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            // Notifier le paiement
+            try {
+              await axios.post(`${API_BASE_URL}/notify-payment`, {
+                type: 'site',
+                name: formData.businessName,
+                identifier: formData.slug,
+                amount: 50000
+              });
+            } catch (e) {
+              console.error("Erreur notification paiement:", e);
+            }
+
+            // Afficher le PIN après avoir cliqué sur j'ai payé
+            Swal.fire({
+              background: '#0a0a10',
+              color: '#ffffff',
+              icon: 'success',
+              title: 'Paiement en vérification',
+              html: `Nous vérifions votre paiement. En attendant, voici votre Code PIN de modification :<br/><br/>
+                     <div style="background: rgba(186,85,211,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(186,85,211,0.3);">
+                       <h2 style="color: var(--color-neon-blue); font-size: 32px; letter-spacing: 5px; margin: 0;">${newPin}</h2>
+                       <p style="color: #bbb; font-size: 12px; margin-top: 5px;">⚠️ Gardez ce code précieusement !</p>
+                     </div>`,
+              confirmButtonText: 'Voir mon site',
+              confirmButtonColor: '#7b2ff7',
+              customClass: {
+                popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+              }
+            }).then(() => {
+              navigate(`/site/${res.data.slug}`);
+            });
+          } else {
+            // Annulé, on redirige vers l'accueil ou le builder
+            navigate('/');
+          }
         });
       }
 
