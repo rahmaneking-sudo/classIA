@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import axios from 'axios';
 import connectDB from './_lib/db.js';
 import Lead from '../backend/models/Lead.js';
 import MicroSite from '../backend/models/MicroSite.js';
@@ -14,7 +15,6 @@ const sendWaSenderMessage = async (to, text) => {
       formattedPhone = '221' + formattedPhone;
     }
 
-    const { default: axios } = await import('axios');
     await axios.post('https://www.wasenderapi.com/api/send-message', {
       to: formattedPhone,
       text
@@ -76,13 +76,13 @@ export default async function handler(req, res) {
       await lead.save();
 
       // Envoi du message WhatsApp
-      const message = \`Bonjour \${lead.name} ! 🎉\\n\\nVotre inscription à CLASSE IA a bien été validée.\\nVous pouvez dès maintenant vous connecter à votre Espace Étudiant.\\n\\nLien : \${siteUrl}/login\\nMot de passe par défaut : votre numéro de téléphone\`;
+      const message = `Bonjour ${lead.name} ! 🎉\n\nVotre inscription à CLASSE IA a bien été validée.\nVous pouvez dès maintenant vous connecter à votre Espace Étudiant.\n\nLien : ${siteUrl}/login\nMot de passe par défaut : votre numéro de téléphone`;
       await sendWaSenderMessage(lead.phone, message);
 
       return res.status(200).send(`
         <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
           <h1 style="color: #16a34a;">✅ Étudiant Validé !</h1>
-          <p>Le compte de <b>\${lead.name}</b> a été activé et le message WhatsApp a été envoyé avec succès.</p>
+          <p>Le compte de <b>${lead.name}</b> a été activé et le message WhatsApp a été envoyé avec succès.</p>
         </div>
       `);
 
@@ -104,14 +104,14 @@ export default async function handler(req, res) {
       await site.save();
 
       if (site.whatsapp) {
-        const message = \`Bonjour ! 🎉\\n\\nVotre site web "\${site.businessName}" vient d'être activé avec succès suite à la validation de votre paiement.\\nVous pouvez le consulter dès maintenant et utiliser votre code PIN secret pour le modifier.\\n\\nLien du site : \${siteUrl}/site/\${site.slug}\\n\\nMerci de votre confiance en CLASSE IA.\`;
+        const message = `Bonjour ! 🎉\n\nVotre site web "${site.businessName}" vient d'être activé avec succès suite à la validation de votre paiement.\nVous pouvez le consulter dès maintenant et utiliser votre code PIN secret pour le modifier.\n\nLien du site : ${siteUrl}/site/${site.slug}\n\nMerci de votre confiance en CLASSE IA.`;
         await sendWaSenderMessage(site.whatsapp, message);
       }
 
       return res.status(200).send(`
         <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
           <h1 style="color: #16a34a;">✅ Site Web Validé !</h1>
-          <p>Le site <b>\${site.businessName}</b> a été activé et le code PIN a été envoyé sur WhatsApp avec succès.</p>
+          <p>Le site <b>${site.businessName}</b> a été activé et le code PIN a été envoyé sur WhatsApp avec succès.</p>
         </div>
       `);
     } else {
