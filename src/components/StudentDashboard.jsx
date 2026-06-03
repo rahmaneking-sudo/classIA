@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
 import Swal from 'sweetalert2';
-import { LogOut } from 'lucide-react';
+import { LogOut, PlayCircle, Sparkles, ChevronRight, BookOpen, Crown } from 'lucide-react';
 
 const StudentDashboard = () => {
   const [studentName, setStudentName] = useState('');
@@ -130,35 +130,67 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        {/* Coming Soon Area */}
-        <div className="relative bg-[#0a0a10]/80 p-12 rounded-3xl border border-[var(--color-neon-blue)]/30 backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center min-h-[400px]">
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-neon-blue)]/10 to-[var(--color-neon-purple)]/10 opacity-50" />
+        {/* Quick Access Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
-          <div className="text-8xl mb-6 relative z-10 animate-bounce">🎓</div>
-          
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-widest uppercase relative z-10">
-            Félicitations !
-          </h2>
-          
-          <p className="text-gray-300 max-w-lg text-lg mb-8 relative z-10">
-            Tu es officiellement inscrit(e) à CLASSE IA. La plateforme de cours est actuellement en cours de finalisation par nos experts. 
-          </p>
-          
-          <div className="inline-block border border-[var(--color-neon-blue)]/50 bg-[var(--color-neon-blue)]/10 px-8 py-4 rounded-xl relative z-10 mb-8">
-            <span className="text-[var(--color-neon-blue)] font-bold tracking-widest uppercase animate-pulse">
-              Les modules vidéo seront disponibles très bientôt
-            </span>
+          {/* Card 1: La Classe (Cours) */}
+          <div 
+            onClick={() => navigate('/cours')}
+            className="group cursor-pointer relative bg-[#0a0a10]/80 p-8 rounded-3xl border border-white/10 hover:border-[var(--color-neon-blue)]/50 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-2 shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_40px_rgba(0,212,255,0.2)] flex flex-col h-full"
+          >
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--color-neon-blue)]/10 blur-[50px] rounded-full group-hover:bg-[var(--color-neon-blue)]/20 transition-all pointer-events-none" />
+            
+            <div className="flex justify-between items-start mb-8 relative z-10">
+              <div className="w-16 h-16 bg-[var(--color-neon-blue)]/10 rounded-2xl flex items-center justify-center border border-[var(--color-neon-blue)]/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                <PlayCircle className="w-8 h-8 text-[var(--color-neon-blue)]" />
+              </div>
+              <span className="px-4 py-1.5 bg-[var(--color-neon-blue)] text-black text-xs font-black uppercase tracking-widest rounded-full shadow-[0_0_15px_rgba(0,212,255,0.4)]">
+                Formation
+              </span>
+            </div>
+            
+            <div className="relative z-10 flex-1 flex flex-col">
+              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider mb-4 group-hover:text-[var(--color-neon-blue)] transition-colors">
+                La Classe Vidéo
+              </h2>
+              <p className="text-gray-300 font-medium mb-8 flex-1 leading-relaxed">
+                Accédez à tous nos modules de formation, tutoriels vidéos HQ, et astuces inédites pour maîtriser l'Intelligence Artificielle.
+              </p>
+              
+              <div className="flex items-center text-[var(--color-neon-blue)] font-bold uppercase tracking-widest text-sm group-hover:gap-4 transition-all gap-2 mt-auto">
+                Accéder aux cours <ChevronRight className="w-5 h-5" />
+              </div>
+            </div>
           </div>
 
-          <div className="relative z-10 w-full max-w-md">
-            <button
-              onClick={() => navigate('/prompts')}
-              className="w-full btn-sci-fi bg-[var(--color-neon-blue)]/20 border-2 border-[var(--color-neon-blue)] text-white font-bold py-4 rounded-lg uppercase tracking-widest hover:bg-[var(--color-neon-blue)]/40 hover:shadow-[0_0_20px_rgba(0,212,255,0.4)] transition-all flex flex-col items-center justify-center gap-2"
-            >
-              <span className="text-xl">✨</span>
-              <span>Accéder à la Bibliothèque de Prompts</span>
-              <span className="text-xs text-[var(--color-neon-blue)] normal-case tracking-normal">Premium (ChatGPT, Claude, Midjourney...)</span>
-            </button>
+          {/* Card 2: Bibliothèque de Prompts */}
+          <div 
+            onClick={() => navigate('/prompts')}
+            className="group cursor-pointer relative bg-[#0a0a10]/80 p-8 rounded-3xl border border-white/10 hover:border-[var(--color-neon-purple)]/50 backdrop-blur-md overflow-hidden transition-all duration-500 hover:-translate-y-2 shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_40px_rgba(186,85,211,0.2)] flex flex-col h-full"
+          >
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--color-neon-purple)]/10 blur-[50px] rounded-full group-hover:bg-[var(--color-neon-purple)]/20 transition-all pointer-events-none" />
+            
+            <div className="flex justify-between items-start mb-8 relative z-10">
+              <div className="w-16 h-16 bg-[var(--color-neon-purple)]/10 rounded-2xl flex items-center justify-center border border-[var(--color-neon-purple)]/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                <Sparkles className="w-8 h-8 text-[var(--color-neon-purple)]" />
+              </div>
+              <span className="px-4 py-1.5 bg-gradient-to-r from-[var(--color-neon-blue)] to-[var(--color-neon-purple)] text-white text-xs font-black uppercase tracking-widest rounded-full shadow-[0_0_15px_rgba(186,85,211,0.4)] flex items-center gap-1">
+                <Crown className="w-3 h-3" /> Premium
+              </span>
+            </div>
+            
+            <div className="relative z-10 flex-1 flex flex-col">
+              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider mb-4 group-hover:text-[var(--color-neon-purple)] transition-colors">
+                Bibliothèque de Prompts
+              </h2>
+              <p className="text-gray-300 font-medium mb-8 flex-1 leading-relaxed">
+                Copiez et collez nos instructions secrètes pour générer des résultats professionnels avec ChatGPT, Midjourney, Claude, etc.
+              </p>
+              
+              <div className="flex items-center text-[var(--color-neon-purple)] font-bold uppercase tracking-widest text-sm group-hover:gap-4 transition-all gap-2 mt-auto">
+                Ouvrir la bibliothèque <ChevronRight className="w-5 h-5" />
+              </div>
+            </div>
           </div>
         </div>
 
