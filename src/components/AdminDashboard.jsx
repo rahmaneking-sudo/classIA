@@ -120,6 +120,50 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDelete = async (leadId) => {
+    const result = await Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: "Cette action supprimera définitivement cet étudiant !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#374151',
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler',
+      background: '#0a0a10',
+      color: '#fff'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const token = localStorage.getItem('adminToken');
+        await axios.delete(`${API_BASE_URL}/leads/${leadId}/delete`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        // Update local state to reflect deletion
+        setLeads(leads.filter(lead => lead._id !== leadId));
+        
+        Swal.fire({
+          title: 'Supprimé !',
+          text: 'L\'étudiant a été supprimé de la base de données.',
+          icon: 'success',
+          background: '#0a0a10',
+          color: '#fff',
+          confirmButtonColor: '#bd00ff'
+        });
+      } catch (err) {
+        Swal.fire({
+          title: 'Erreur',
+          text: 'Impossible de supprimer cet étudiant.',
+          icon: 'error',
+          background: '#0a0a10',
+          color: '#fff'
+        });
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen text-white p-6 md:p-12 font-['Rajdhani']">
       <div className="max-w-6xl mx-auto relative z-10">
@@ -233,7 +277,7 @@ const AdminDashboard = () => {
                           day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
                         })}
                       </td>
-                      <td className="p-4 text-right">
+                      <td className="p-4 text-right flex justify-end gap-2">
                         {!lead.isActive ? (
                           <button
                             onClick={() => handleActivate(lead._id)}
@@ -244,11 +288,17 @@ const AdminDashboard = () => {
                         ) : (
                           <button
                             onClick={() => handleDeactivate(lead._id)}
-                            className="bg-red-500/10 text-red-500 border border-red-500/30 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all"
+                            className="bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-yellow-500/20 hover:shadow-[0_0_15px_rgba(234,179,8,0.4)] transition-all"
                           >
                             Désactiver
                           </button>
                         )}
+                        <button
+                          onClick={() => handleDelete(lead._id)}
+                          className="bg-red-500/10 text-red-500 border border-red-500/30 px-4 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all"
+                        >
+                          Supprimer
+                        </button>
                       </td>
                     </tr>
                   ))}

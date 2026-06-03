@@ -88,6 +88,23 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: 'Erreur lors de la désactivation' });
     }
   }
+  // DELETE /api/leads/[id]/delete
+  if (req.method === 'DELETE' && methodAction === 'delete') {
+    const admin = await protectAdmin(req);
+    if (!admin) return res.status(401).json({ message: 'Non autorisé' });
+
+    try {
+      await connectDB();
+      const lead = await Lead.findByIdAndDelete(id);
+
+      if (!lead) return res.status(404).json({ message: 'Candidat introuvable' });
+
+      return res.status(200).json({ message: 'Compte étudiant supprimé avec succès' });
+    } catch (error) {
+      console.error('Delete error:', error);
+      return res.status(500).json({ message: 'Erreur lors de la suppression' });
+    }
+  }
 
   return res.status(405).json({ message: 'Méthode non autorisée' });
 }
