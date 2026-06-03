@@ -1,7 +1,8 @@
 import connectDB from '../_lib/db.js';
 import { protectAdmin } from '../_lib/protect.js';
 import AgencyClient from '../../backend/models/AgencyClient.js';
-
+import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 export default async function handler(req, res) {
   await connectDB();
 
@@ -18,8 +19,82 @@ export default async function handler(req, res) {
     }
   }
 
-  // POST /api/clients - Create a new client (Admin only)
+  // POST /api/clients - Create a new client, login or forgot-password
   if (req.method === 'POST') {
+    const { action } = req.query;
+
+    if (action === 'login') {
+      try {
+        const { email, password } = req.body;
+        const client = await AgencyClient.findOne({ email });
+        if (!client || !(await client.matchPassword(password))) {
+          return res.status(401).json({ message: 'Identifiants invalides' });
+        }
+
+        const token = jwt.sign(
+          { id: client._id, role: 'client' },
+          process.env.JWT_SECRET || 'fallback_secret',
+          { expiresIn: '30d' }
+        );
+
+        const clientData = client.toObject();
+        delete clientData.password;
+
+        return res.status(200).json({ token, client: clientData });
+      } catch (error) {
+        return res.status(500).json({ message: 'Erreur lors de la connexion', error: error.message });
+      }
+    }
+
+    if (action === 'forgot-password') {
+      try {
+        const { email } = req.body;
+        if (!email) return res.status(400).json({ message: 'Email requis' });
+
+        const client = await AgencyClient.findOne({ email });
+        if (!client) return res.status(404).json({ message: 'Aucun compte trouvé avec cet email.' });
+
+        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+          return res.status(500).json({ message: 'Le service email n\\'est pas configuré sur le serveur.' });
+        }
+
+        const tempPassword = Math.random().toString(36).slice(-8);
+        client.password = tempPassword;
+        await client.save();
+
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST || 'smtp.gmail.com',
+          port: parseInt(process.env.SMTP_PORT || '587'),
+          secure: false,
+          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        });
+
+        const emailHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a10; color: #fff; padding: 20px; border-radius: 10px;">
+            <h2 style="color: #00d4ff;">Réinitialisation de votre mot de passe</h2>
+            <p>Bonjour \${client.name},</p>
+            <p>Voici votre nouveau mot de passe temporaire :</p>
+            <div style="background: #1a1a2e; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 2px; border-radius: 5px; margin: 20px 0; border: 1px solid #00d4ff;">
+              <strong>\${tempPassword}</strong>
+            </div>
+            <p>Nous vous conseillons de vous connecter dès maintenant avec ce mot de passe.</p>
+          </div>
+        `;
+
+        await transporter.sendMail({
+          from: \`"Support CLASSIA" <\${process.env.SMTP_USER}>\`,
+          to: email,
+          subject: 'Réinitialisation de votre mot de passe - CLASSIA',
+          html: emailHtml
+        });
+
+        return res.status(200).json({ message: 'Un nouveau mot de passe a été envoyé à votre adresse email.' });
+      } catch (error) {
+        return res.status(500).json({ message: 'Erreur lors de la réinitialisation', error: error.message });
+      }
+    }
+
+    // Default POST: create client
     const admin = await protectAdmin(req);
     if (!admin) return res.status(401).json({ message: 'Non autorisé' });
 

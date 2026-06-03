@@ -20,7 +20,7 @@ const ClientLogin = () => {
     setError('');
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/clients/login`, {
+      const response = await axios.post(`${API_BASE_URL}/clients?action=login`, {
         email,
         password,
       });
@@ -43,7 +43,7 @@ const ClientLogin = () => {
     setResetSuccess('');
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/clients/forgot-password`, { email });
+      const response = await axios.post(`${API_BASE_URL}/clients?action=forgot-password`, { email });
       setResetSuccess(response.data.message || 'Un nouveau mot de passe a été envoyé à votre adresse email.');
       setTimeout(() => {
         setIsForgotPassword(false);
