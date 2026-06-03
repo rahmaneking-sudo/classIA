@@ -52,7 +52,8 @@ export default async function handler(req, res) {
 
   try {
     await connectDB();
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || 'https://classia.vercel.app';
+    const siteDomain = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'classia-eight.vercel.app';
+    const siteUrl = siteDomain.startsWith('http') ? siteDomain : `https://${siteDomain}`;
 
     if (type === 'course') {
       const lead = await Lead.findById(id);
