@@ -25,7 +25,7 @@ const JoinModal = ({ isOpen, onClose }) => {
             clearInterval(interval);
             localStorage.setItem('studentToken', response.data.token);
             localStorage.setItem('studentInfo', JSON.stringify(response.data));
-            window.location.href = '/student'; // Redirige vers le dashboard étudiant
+            window.location.href = '/student/dashboard'; // Redirige vers le dashboard étudiant
           }
         } catch (err) {
           // Normal, compte pas encore activé
