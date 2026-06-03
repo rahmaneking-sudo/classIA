@@ -27,6 +27,7 @@ const Builder = () => {
   const [currentStep, setCurrentStep] = useState(0); 
   const [isEditMode, setIsEditMode] = useState(false);
   const [pinCode, setPinCode] = useState('');
+  const [wavePhone, setWavePhone] = useState('');
 
   const [formData, setFormData] = useState({
     businessName: '',
@@ -221,51 +222,96 @@ const Builder = () => {
             <a href="https://pay.wave.com/m/M_sn_gsBAcsJlO1IE/c/sn/?amount=50000" target="_blank" style="display: block; background: rgba(0,162,255,0.2); border: 2px solid #00a2ff; color: white; padding: 15px; text-decoration: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; transition: all 0.3s;">
               Payer avec Wave (50 000 FCFA)
             </a>
+            <div style="text-align: left; margin-top: 15px;">
+              <label style="color: #aaa; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Numéro Wave utilisé</label>
+              <input type="tel" id="swal-wave-phone" class="swal2-input" placeholder="Ex: 77 000 00 00" style="background: #11111a; border: 1px solid #333; color: white; margin-top: 5px;" required>
+            </div>
           `,
           showCancelButton: true,
-          confirmButtonText: "J'ai effectué le paiement",
+          confirmButtonText: "Valider mon paiement",
           cancelButtonText: "Annuler",
           confirmButtonColor: '#7b2ff7',
           cancelButtonColor: '#333333',
           customClass: {
             popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+          },
+          preConfirm: () => {
+            const phone = document.getElementById('swal-wave-phone').value;
+            if (!phone) {
+              Swal.showValidationMessage("Veuillez saisir le numéro Wave utilisé");
+              return false;
+            }
+            return phone;
           }
         }).then(async (result) => {
           if (result.isConfirmed) {
+            const userPhone = result.value;
+            
+            // On affiche un modal de chargement infini
+            Swal.fire({
+              background: '#0a0a10',
+              color: '#ffffff',
+              title: 'VÉRIFICATION EN COURS...',
+              html: `
+                <div style="margin: 20px 0;">
+                  <div class="inline-block w-12 h-12 border-4 border-[var(--color-neon-blue)] border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                <p style="color: #bbb; font-size: 14px;">Ne fermez pas cette page. Nous attendons la validation de votre paiement par notre équipe.</p>
+              `,
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              showConfirmButton: false,
+              customClass: {
+                popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+              }
+            });
+
             // Notifier le paiement
             try {
               await axios.post(`${API_BASE_URL}/notify-payment`, {
                 type: 'site',
                 id: res.data._id,
                 name: formData.businessName,
-                identifier: formData.slug,
+                identifier: `${formData.slug} (Wave: ${userPhone})`,
                 amount: 50000
               });
             } catch (e) {
               console.error("Erreur notification paiement:", e);
             }
 
-            // Afficher le PIN après avoir cliqué sur j'ai payé
-            Swal.fire({
-              background: '#0a0a10',
-              color: '#ffffff',
-              icon: 'success',
-              title: 'Paiement en vérification',
-              html: `Nous vérifions votre paiement. En attendant, voici votre Code PIN de modification :<br/><br/>
-                     <div style="background: rgba(186,85,211,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(186,85,211,0.3);">
-                       <h2 style="color: var(--color-neon-blue); font-size: 32px; letter-spacing: 5px; margin: 0;">${newPin}</h2>
-                       <p style="color: #bbb; font-size: 12px; margin-top: 5px;">⚠️ Gardez ce code précieusement !</p>
-                     </div>`,
-              confirmButtonText: 'Voir mon site',
-              confirmButtonColor: '#7b2ff7',
-              customClass: {
-                popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+            // Polling
+            const pollInterval = setInterval(async () => {
+              try {
+                const checkRes = await axios.get(`${API_BASE_URL}/microsites/${formData.slug}`);
+                if (checkRes.data && checkRes.data.isActive) {
+                  clearInterval(pollInterval);
+                  
+                  // Afficher le PIN après validation
+                  Swal.fire({
+                    background: '#0a0a10',
+                    color: '#ffffff',
+                    icon: 'success',
+                    title: 'Paiement Validé !',
+                    html: `Voici votre Code PIN de modification :<br/><br/>
+                           <div style="background: rgba(186,85,211,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(186,85,211,0.3);">
+                             <h2 style="color: var(--color-neon-blue); font-size: 32px; letter-spacing: 5px; margin: 0;">${newPin}</h2>
+                             <p style="color: #bbb; font-size: 12px; margin-top: 5px;">⚠️ Gardez ce code précieusement !</p>
+                           </div>`,
+                    confirmButtonText: 'Voir mon site',
+                    confirmButtonColor: '#7b2ff7',
+                    customClass: {
+                      popup: 'border border-[var(--color-neon-blue)]/30 rounded-2xl backdrop-blur-xl',
+                    }
+                  }).then(() => {
+                    navigate(`/site/${res.data.slug}`);
+                  });
+                }
+              } catch (err) {
+                // Erreur reseau ou site introuvable (ne devrait pas arriver), on continue d'attendre
               }
-            }).then(() => {
-              navigate(`/site/${res.data.slug}`);
-            });
+            }, 5000);
           } else {
-            // Annulé, on redirige vers l'accueil ou le builder
+            // Annulé
             navigate('/');
           }
         });
