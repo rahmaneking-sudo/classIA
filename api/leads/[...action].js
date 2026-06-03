@@ -33,13 +33,18 @@ const sendWaSenderMessage = async (to, text) => {
 export default async function handler(req, res) {
   if (allowCors(req, res)) return;
 
-  const { action } = req.query; // action is an array like ['123', 'activate']
+  let actionParams = req.query.action;
 
-  if (!Array.isArray(action) || action.length !== 2) {
+  // Sur Vercel, action peut être une string "id/activate"
+  if (typeof actionParams === 'string') {
+    actionParams = actionParams.split('/');
+  }
+
+  if (!Array.isArray(actionParams) || actionParams.length !== 2) {
     return res.status(404).json({ message: 'Ressource introuvable' });
   }
 
-  const [id, methodAction] = action;
+  const [id, methodAction] = actionParams;
 
   // PUT /api/leads/[id]/activate
   if (req.method === 'PUT' && methodAction === 'activate') {
