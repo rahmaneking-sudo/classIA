@@ -47,10 +47,6 @@ const JoinModal = ({ isOpen, onClose }) => {
       }, 5000);
     }
   };
-      setStatus('error');
-      setErrorMessage(err.response?.data?.message || 'Erreur lors de l\'inscription');
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
