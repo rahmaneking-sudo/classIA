@@ -12,7 +12,10 @@ const THEMES = [
   { id: 'restaurant', name: 'Restaurant Gastronomique', image: '/restaurant.png' },
   { id: 'hotel', name: 'Hôtel 5 Étoiles', image: '/hotel.png' },
   { id: 'shop', name: 'Boutique Prêt-à-porter', image: '/shop.png' },
-  { id: 'salon', name: 'Institut de Massage & Spa', image: '/salon.png' },
+  { id: 'beauty', name: 'Salon de Beauté', image: '/salon.png' },
+  { id: 'hair', name: 'Salon de Coiffure', image: '/salon.png' },
+  { id: 'massage', name: 'Institut de Massage', image: '/salon.png' },
+  { id: 'spa', name: 'Centre de Spa', image: '/salon.png' },
   { id: 'electronics', name: 'Boutique Matériels Électroniques', image: '/electronics.png' },
   { id: 'agriculture', name: 'Vente Produits Agricoles', image: '/agriculture.png' }
 ];
@@ -414,7 +417,7 @@ const Builder = () => {
                   { name: 'desc', type: 'textarea', placeholder: 'Description des ingrédients...' }
                 ])}
 
-                {formData.themeId === 'salon' && renderDynamicList('services', 'Nos Prestations', 'var(--color-neon-purple)', [
+                {['beauty', 'hair', 'massage', 'spa'].includes(formData.themeId) && renderDynamicList('services', 'Nos Prestations', 'var(--color-neon-purple)', [
                   { name: 'title', placeholder: 'Prestation (ex: Tresses Africaines)', bold: true },
                   { name: 'price', placeholder: 'Prix (ex: 15000 FCFA)' }
                 ])}
@@ -431,7 +434,7 @@ const Builder = () => {
                   { name: 'desc', type: 'textarea', placeholder: 'Description du bien...' }
                 ])}
 
-                {formData.themeId === 'shop' && renderDynamicList('products', 'Nos Produits Phares', 'var(--color-neon-blue)', [
+                {['shop', 'electronics', 'agriculture'].includes(formData.themeId) && renderDynamicList('products', 'Nos Produits Phares', 'var(--color-neon-blue)', [
                   { name: 'title', placeholder: 'Produit (ex: Robe de soirée)', bold: true },
                   { name: 'price', placeholder: 'Prix (ex: 10.000 FCFA)' }
                 ])}

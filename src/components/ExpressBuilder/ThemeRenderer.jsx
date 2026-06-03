@@ -316,8 +316,8 @@ const ThemeRenderer = ({ data }) => {
     );
   }
 
-  // ----- THEME 2: SALON DE COIFFURE -----
-  if (themeId === 'salon') {
+  // ----- THEME 2: BEAUTE / COIFFURE / MASSAGE / SPA -----
+  if (['beauty', 'hair', 'massage', 'spa'].includes(themeId)) {
     return (
       <div className="min-h-screen bg-[#0f1715] text-[#e8e4db] font-serif w-full scroll-smooth flex flex-col">
         {renderNavbar([
