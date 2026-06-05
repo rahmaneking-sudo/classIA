@@ -394,7 +394,7 @@ const ThemeRenderer = ({ data }) => {
   }
 
   // ----- THEME 3: LOCATION VOITURES -----
-  if (themeId === 'car') {
+  if (themeId === 'car' || themeId === 'auto') {
     return (
       <div className="min-h-screen bg-white text-gray-900 font-sans w-full scroll-smooth flex flex-col">
         {renderNavbar([
@@ -614,7 +614,7 @@ const ThemeRenderer = ({ data }) => {
   }
 
   // ----- THEME DENTISTE -----
-  if (themeId === 'dentist') {
+  if (themeId === 'dentist' || themeId === 'health') {
     return (
       <div className="min-h-screen bg-slate-50 text-slate-800 font-sans w-full scroll-smooth flex flex-col">
         {renderNavbar([

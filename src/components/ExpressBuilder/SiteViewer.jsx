@@ -26,18 +26,23 @@ const SiteViewer = () => {
       }
     };
     fetchSite();
-    
-    // Auto-refresh polling if site is inactive
-    let interval;
-    if (siteData && !siteData.isActive) {
-      interval = setInterval(() => {
-        fetchSite();
-      }, 10000); // Check every 10 seconds
-    }
-    
-    return () => {
-      if (interval) clearInterval(interval);
+  }, [slug]);
+
+  // Auto-refresh polling if site is inactive (separate effect)
+  useEffect(() => {
+    if (!siteData || siteData.isActive) return;
+
+    const fetchSite = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/microsites/${slug}`);
+        setSiteData(response.data);
+      } catch (err) {
+        // silently ignore polling errors
+      }
     };
+
+    const interval = setInterval(fetchSite, 10000);
+    return () => clearInterval(interval);
   }, [slug, siteData?.isActive]);
 
   if (loading) {

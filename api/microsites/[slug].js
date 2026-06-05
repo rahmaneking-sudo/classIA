@@ -109,7 +109,7 @@ export default async function handler(req, res) {
       await transporter.sendMail({
         from: `"CLASSIA Réservations" <${process.env.SMTP_USER}>`,
         to: site.ownerEmail,
-        replyTo: site.ownerEmail,
+        replyTo: clientEmail,
         subject: `Nouvelle demande de ${clientName} - ${site.businessName}`,
         html: emailHtml
       });

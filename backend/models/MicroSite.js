@@ -27,7 +27,11 @@ const microSiteSchema = new mongoose.Schema({
   },
   themeId: {
     type: String,
-    required: true, // e.g., 'basic-dark', 'standard-minimal', 'premium-3d'
+    required: true,
+  },
+  address: {
+    type: String,
+    default: ''
   },
   tier: {
     type: String,

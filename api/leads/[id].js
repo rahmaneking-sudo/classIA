@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         lead.status = 'inscrit';
         await lead.save();
 
-        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || 'https://classia.vercel.app';
+        const siteUrl = process.env.VITE_SITE_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL || 'https://classia-eight.vercel.app';
         const message = `Bonjour ${lead.name} ! 🎉\n\nVotre inscription à CLASSE IA a bien été validée.\nVous pouvez dès maintenant vous connecter à votre Espace Étudiant.\n\nLien : ${siteUrl}/login\nMot de passe par défaut : votre numéro de téléphone`;
         sendWaSenderMessage(lead.phone, message);
 

@@ -3,8 +3,8 @@
  * Uses UNSIGNED upload preset — no server interaction needed.
  */
 
-const CLOUD_NAME = 'ds9zdiebv';
-const UPLOAD_PRESET = 'cvpro_unsigned';
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'ds9zdiebv';
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'classia_preset';
 
 /**
  * Upload a file directly to Cloudinary from the browser
