@@ -21,8 +21,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  /* Hide default cursor for custom cursor */
-  cursor: none;
+  /* cursor: none removed to show default pointer */
 }
 
 html, body, #root {
@@ -92,10 +91,7 @@ p {
   left: 100%;
 }
 
-/* Links cursor fallback */
-a, button {
-  cursor: none;
-}
+/* Links cursor fallback removed */
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
